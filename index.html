@@ -3,107 +3,214 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Yousef Alkhuzam | Cyber Threat Analyst</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://paveldogreat.github.io/WebGL-Fluid-Simulation/script.js" defer></script>
     <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            font-family: 'Arial', sans-serif;
-            color: white;
-            text-align: center;
+        :root {
+            --primary: #2a2a2a;
+            --secondary: #4a4a4a;
+            --accent: #6c6c6c;
+            --background: #1a1a1a;
+            --text: #e0e0e0;
         }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            margin: 0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
         #fluid-canvas {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
             z-index: -1;
+            opacity: 0.3;
         }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
         header {
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.8);
+            text-align: center;
+            padding: 60px 20px 40px;
+            position: relative;
         }
-        nav ul {
-            list-style: none;
-            padding: 0;
+
+        .profile-emoji {
+            font-size: 2.5em;
+            margin-right: 15px;
         }
-        nav ul li {
-            display: inline;
-            margin: 0 15px;
+
+        h1 {
+            color: var(--text);
+            font-size: 2.8em;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        nav a {
-            color: cyan;
-            text-decoration: none;
-            font-weight: bold;
-        }
+
         .widget {
-            margin: 50px auto;
-            padding: 20px;
-            background: rgba(50, 50, 50, 0.8);
+            background: rgba(42, 42, 42, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--accent);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(255,255,255,0.03);
             border-radius: 10px;
-            width: 60%;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+            border-left: 3px solid var(--accent);
         }
-        button {
-            background: cyan;
-            color: black;
-            padding: 10px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
+
+        h2 {
+            color: var(--text);
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 10px;
+            margin: 0 0 25px 0;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
-        footer {
-            margin-top: 30px;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.8);
+
+        ul {
+            list-style-type: none;
+            padding-left: 25px;
+        }
+
+        ul li {
+            position: relative;
+            margin-bottom: 15px;
+            padding-left: 30px;
+        }
+
+        ul li:before {
+            content: "▹";
+            color: var(--accent);
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 2.2em;
+            }
         }
     </style>
 </head>
 <body>
     <canvas id="fluid-canvas"></canvas>
+    
     <header>
-        <h1>👨‍💻 Welcome to My Portfolio</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">🏠 Home</a></li>
-                <li><a href="cv.html">📄 My CV</a></li>
-                <li><a href="tools.html">🛠 Tools</a></li>
-            </ul>
-        </nav>
+        <h1>
+            <span class="profile-emoji">🕵️♂️</span>
+            Yousef Alkhuzam
+        </h1>
     </header>
-    <main>
-        <section class="widget">
-            <h2>🌟 About Me</h2>
-            <p>Hello! This is my portfolio website. Feel free to explore my CV and tools.</p>
-        </section>
-        
-        <section class="widget" id="quote-widget">
-            <h2>📜 Islamic Wisdom</h2>
-            <p id="quote-text">"The best among you are those who have the best manners and character." - Prophet Muhammad ﷺ</p>
-            <button onclick="changeQuote()">🔄 New Quote</button>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2030 Yousef Khuzam</p>
-    </footer>
+
+    <div class="container">
+        <div class="widget">
+            <div class="contact-grid">
+                <div class="contact-item">
+                    📧 <span>Khuzam97@gmail.com</span>
+                </div>
+                <div class="contact-item">
+                    📱 <span>+966 531080685<br>+973 32300932</span>
+                </div>
+                <div class="contact-item">
+                    🔗 <a href="https://linkedin.com/in/yousefalkhuzam" target="_blank">LinkedIn Profile</a>
+                </div>
+                <div class="contact-item">
+                    🌍 <span>Saudi National</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="widget">
+            <h2>🔍 Professional Profile</h2>
+            <p>Cybersecurity specialist with expertise in threat analysis and incident response. Passionate about developing robust defense strategies against evolving cyber threats.</p>
+        </div>
+
+        <div class="widget">
+            <h2>💼 Experience</h2>
+            
+            <h3>🛡️ CTM360 W.L.L. - Cyber Threat Analyst</h3>
+            <p>📅 May 2022 - Present</p>
+            <ul>
+                <li>Conduct proactive threat detection and analysis</li>
+                <li>Monitor global cyber threat trends</li>
+                <li>Generate comprehensive security reports</li>
+            </ul>
+
+            <h3>💡 Kanoo Elite Technologies - Associate Consultant</h3>
+            <p>📅 March 2022 - May 2022</p>
+            <ul>
+                <li>Conducted market analysis for emerging tech trends</li>
+                <li>Identified potential business opportunities</li>
+            </ul>
+        </div>
+
+        <div class="widget">
+            <h2>🎓 Education</h2>
+            <h3>🎓 University of Northern Iowa, USA</h3>
+            <p>📅 January 2017 - May 2021</p>
+            <ul>
+                <li>Bachelor of Management Information Systems</li>
+                <li>GPA: 3.26/4.00</li>
+                <li>Dean's List Honors</li>
+            </ul>
+        </div>
+
+        <div class="widget">
+            <h2>🏆 Certifications</h2>
+            <ul>
+                <li>Certified Threat Hunting Professional (eCTHPv2) - July 2024</li>
+                <li>Fortinet Network Security Expert 1-3 - March 2022</li>
+            </ul>
+        </div>
+    </div>
 
     <script>
-        const quotes = [
-            "The best among you are those who have the best manners and character. - Prophet Muhammad ﷺ",
-            "Knowledge enlivens the soul. - Imam Ali (AS)",
-            "Honour lies in humility. - Imam Hussain (AS)",
-            "Patience is of two kinds: patience over what pains you, and patience against what you covet. - Imam Ali (AS)"
-        ];
-        function changeQuote() {
-            const quoteText = document.getElementById("quote-text");
-            const randomIndex = Math.floor(Math.random() * quotes.length);
-            quoteText.textContent = quotes[randomIndex];
-        }
+        document.addEventListener('DOMContentLoaded', () => {
+            if(window.initFluid) {
+                initFluid({
+                    TRANSPARENT_BACKGROUND: true,
+                    COLOR: 0x4a4a4a,
+                    COLOR_PALETTE: ['#1a1a1a', '#4a4a4a', '#2a2a2a'],
+                    BLOOM: true,
+                    SPLAT_COUNT: 0
+                });
+            }
+        });
     </script>
 </body>
 </html>
