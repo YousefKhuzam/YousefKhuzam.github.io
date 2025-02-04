@@ -5,23 +5,105 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Portfolio</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://paveldogreat.github.io/WebGL-Fluid-Simulation/script.js" defer></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            color: white;
+            text-align: center;
+        }
+        #fluid-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+        }
+        header {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+        nav a {
+            color: cyan;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .widget {
+            margin: 50px auto;
+            padding: 20px;
+            background: rgba(50, 50, 50, 0.8);
+            border-radius: 10px;
+            width: 60%;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+        }
+        button {
+            background: cyan;
+            color: black;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        footer {
+            margin-top: 30px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.8);
+        }
+    </style>
 </head>
 <body>
+    <canvas id="fluid-canvas"></canvas>
     <header>
-        <h1>Welcome to My Portfolio</h1>
+        <h1>👨‍💻 Welcome to My Portfolio</h1>
         <nav>
             <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="cv.html">My CV</a></li>
-                <li><a href="tools.html">Tools</a></li>
+                <li><a href="index.html">🏠 Home</a></li>
+                <li><a href="cv.html">📄 My CV</a></li>
+                <li><a href="tools.html">🛠 Tools</a></li>
             </ul>
         </nav>
     </header>
     <main>
-        <p>Hello! This is my portfolio website. Feel free to explore my CV and tools.</p>
+        <section class="widget">
+            <h2>🌟 About Me</h2>
+            <p>Hello! This is my portfolio website. Feel free to explore my CV and tools.</p>
+        </section>
+        
+        <section class="widget" id="quote-widget">
+            <h2>📜 Islamic Wisdom</h2>
+            <p id="quote-text">"The best among you are those who have the best manners and character." - Prophet Muhammad ﷺ</p>
+            <button onclick="changeQuote()">🔄 New Quote</button>
+        </section>
     </main>
     <footer>
         <p>&copy; 2030 Yousef Khuzam</p>
     </footer>
+
+    <script>
+        const quotes = [
+            "The best among you are those who have the best manners and character. - Prophet Muhammad ﷺ",
+            "Knowledge enlivens the soul. - Imam Ali (AS)",
+            "Honour lies in humility. - Imam Hussain (AS)",
+            "Patience is of two kinds: patience over what pains you, and patience against what you covet. - Imam Ali (AS)"
+        ];
+        function changeQuote() {
+            const quoteText = document.getElementById("quote-text");
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            quoteText.textContent = quotes[randomIndex];
+        }
+    </script>
 </body>
 </html>
