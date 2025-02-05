@@ -16,41 +16,7 @@ body {
     transition: background 0.3s, color 0.3s;
 }
 
-.dark-mode {
-    --background: #ffffff;
-    --text: #1a1a1a;
-    --primary: #dddddd;
-    --secondary: #bbbbbb;
-    --accent: #888888;
-}
-
-button {
-    cursor: pointer;
-}
-
 .theme-toggle {
     background: var(--secondary);
     border: 2px solid var(--accent);
-    padding: 10px;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-}
-
-.theme-toggle:hover {
-    background: var(--accent);
-}
-
-.tools-btn, .cv-btn {
-    background: var(--secondary);
-    color: var(--text);
-    padding: 10px 20px;
-    border-radius: 25px;
-    border: 2px solid var(--accent);
-    text-decoration: none;
-    transition: all 0.3s ease;
-}
-
-.tools-btn:hover, .cv-btn:hover {
-    background: var(--accent);
-    transform: translateY(-2px);
-}
+    padding: 
