@@ -6,25 +6,181 @@
     <title>Yousef Alkhuzam | Cyber Threat Intel</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script src="script.js" defer></script>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --primary: #2a2a2a;
+            --secondary: #4a4a4a;
+            --accent: #6c6c6c;
+            --background: #1a1a1a;
+            --text: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            margin: 0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            position: relative;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            position: relative;
+        }
+
+        .profile-picture {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid var(--accent);
+            margin-right: 20px;
+            object-fit: cover;
+        }
+
+        h1 {
+            color: var(--text);
+            font-size: 2.8em;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tools-btn {
+            background: var(--secondary);
+            color: var(--text) !important;
+            border: 2px solid var(--accent);
+            margin-left: auto;
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .tools-btn:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .widget {
+            background: rgba(42, 42, 42, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--accent);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            border-left: 3px solid var(--accent);
+        }
+
+        h2 {
+            color: var(--text);
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 10px;
+            margin: 0 0 25px 0;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 25px;
+        }
+
+        ul li {
+            position: relative;
+            margin-bottom: 15px;
+            padding-left: 30px;
+        }
+
+        ul li:before {
+            content: "▹";
+            color: var(--accent);
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 2.2em;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- Particles.js Background -->
     <div id="particles-js"></div>
 
     <header>
         <h1>
+            <!-- Add your Bitmoji here -->
             <img src="images/bitmoji.png" alt="Your Bitmoji" class="profile-picture">
             Yousef Alkhuzam
         </h1>
         <nav class="nav-grid">
-            <button class="theme-toggle">🌙</button>
-            <a href="tools.html" class="tools-btn">🛠️ Email Analyzer</a>
-            <a href="Resume_Yousef_Alkhuzam.pdf" download class="cv-btn">📄 Download My CV</a>
+            <!-- Tools Button -->
+            <a href="tools.html" class="nav-item tools-btn">🛠️ Email Analyzer</a>
         </nav>
     </header>
 
     <div class="container">
+        <div class="widget">
+            <div class="contact-grid">
+                <div class="contact-item">
+                    📧 <span>Khuzam97@gmail.com<br>iam@yousefkhuzam.me</span>
+                </div>
+                <div class="contact-item">
+                    📱 <span>+966 531080685<br>+973 32300932</span>
+                </div>
+                <div class="contact-item">
+                    🔗 <a href="https://linkedin.com/in/yousefalkhuzam" target="_blank">LinkedIn Profile</a>
+                </div>
+                <div class="contact-item">
+                    🇸🇦🇧🇭 <span>Saudi National<br>with Bahraini Blood</span>
+                </div>
+            </div>
+        </div>
+
         <div class="widget">
             <h2>🔍 Professional Profile</h2>
             <p>Cybersecurity specialist with expertise in threat analysis and incident response. Passionate about developing robust defense strategies against evolving cyber threats.</p>
@@ -32,6 +188,7 @@
 
         <div class="widget">
             <h2>💼 Experience</h2>
+            
             <h3>🛡️ CTM360 W.L.L. - Cyber Threat Analyst</h3>
             <p>📅 May 2022 - Present</p>
             <ul>
@@ -39,12 +196,24 @@
                 <li>Monitor global cyber threat trends</li>
                 <li>Generate comprehensive security reports</li>
             </ul>
+
+            <h3>💡 Kanoo Elite Technologies - Associate Consultant</h3>
+            <p>📅 March 2022 - May 2022</p>
+            <ul>
+                <li>Conducted market analysis for emerging tech trends</li>
+                <li>Identified potential business opportunities</li>
+            </ul>
         </div>
 
         <div class="widget">
             <h2>🎓 Education</h2>
             <h3>🎓 University of Northern Iowa, USA</h3>
             <p>📅 January 2017 - May 2021</p>
+            <ul>
+                <li>Bachelor of Management Information Systems</li>
+                <li>GPA: 3.26/4.00</li>
+                <li>Dean's List Honors</li>
+            </ul>
         </div>
 
         <div class="widget">
@@ -54,26 +223,13 @@
                 <li>Fortinet Network Security Expert 1-3 - March 2022</li>
             </ul>
         </div>
-
-        <div class="widget">
-            <h2>🚀 Latest Blog Post</h2>
-            <article>
-                <h3>🚨 A New Wave of Degree Mill Scams Targeting Professionals in the GCC 🚨</h3>
-                <p><strong>Recently, a surge of scams targeting professionals and job seekers in the GCC has emerged.</strong></p>
-                <ul>
-                    <li>Fake LinkedIn profiles pretending to be HR managers.</li>
-                    <li>Directing victims to fake educational websites.</li>
-                    <li>Collecting personal/financial data for fraud.</li>
-                    <li>Charging small fees that add up.</li>
-                    <li>Issuing worthless certificates.</li>
-                </ul>
-            </article>
-        </div>
-
-        <div class="widget">
-            <h2>🔍 Threat Intelligence Updates</h2>
-            <div id="threat-feed">Loading latest cyber threats...</div>
-        </div>
     </div>
+
+    <script>
+        // Particles.js Configuration
+        particlesJS.load('particles-js', 'particles-config.json', function() {
+            console.log('Particles.js loaded!');
+        });
+    </script>
 </body>
 </html>
