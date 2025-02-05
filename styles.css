@@ -1,38 +1,56 @@
+:root {
+    --primary: #2a2a2a;
+    --secondary: #4a4a4a;
+    --accent: #6c6c6c;
+    --background: #1a1a1a;
+    --text: #e0e0e0;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
+    font-family: 'Arial', sans-serif;
+    background-color: var(--background);
+    color: var(--text);
     margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-    color: #333;
+    line-height: 1.6;
+    overflow-x: hidden;
+    transition: background 0.3s, color 0.3s;
 }
-header {
-    background: #333;
-    color: #fff;
-    padding: 10px 0;
-    text-align: center;
+
+.dark-mode {
+    --background: #ffffff;
+    --text: #1a1a1a;
+    --primary: #dddddd;
+    --secondary: #bbbbbb;
+    --accent: #888888;
 }
-nav ul {
-    list-style: none;
-    padding: 0;
+
+button {
+    cursor: pointer;
 }
-nav ul li {
-    display: inline;
-    margin: 0 10px;
-}
-nav ul li a {
-    color: #fff;
-    text-decoration: none;
-}
-main {
-    padding: 20px;
-}
-footer {
-    text-align: center;
+
+.theme-toggle {
+    background: var(--secondary);
+    border: 2px solid var(--accent);
     padding: 10px;
-    background: #333;
-    color: #fff;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+    background: var(--accent);
+}
+
+.tools-btn, .cv-btn {
+    background: var(--secondary);
+    color: var(--text);
+    padding: 10px 20px;
+    border-radius: 25px;
+    border: 2px solid var(--accent);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.tools-btn:hover, .cv-btn:hover {
+    background: var(--accent);
+    transform: translateY(-2px);
 }
