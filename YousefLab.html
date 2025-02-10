@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YousefLab - Cyber Toolkit</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+    <header>
+        <h1>🔧 YousefLab</h1>
+        <p>Encrypt, decode, and analyze data with ease.</p>
+    </header>
+
+    <div class="container">
+        <textarea id="inputText" placeholder="Enter text here..."></textarea>
+
+        <div class="buttons">
+            <button onclick="base64Encode()">Base64 Encode</button>
+            <button onclick="base64Decode()">Base64 Decode</button>
+            <button onclick="generateSHA256()">SHA-256 Hash</button>
+            <button onclick="generateMD5()">MD5 Hash</button>
+            <button onclick="caesarCipherEncrypt()">Caesar Cipher Encrypt</button>
+            <button onclick="caesarCipherDecrypt()">Caesar Cipher Decrypt</button>
+        </div>
+
+        <textarea id="outputText" placeholder="Output..." readonly></textarea>
+    </div>
+
+</body>
+</html>
