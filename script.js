@@ -74,3 +74,8 @@ function caesarCipherDecrypt() {
     }).join("");
     document.getElementById("outputText").value = output;
 }
+
+function toggleMenu() {
+    document.querySelector('.nav-links').classList.toggle('active');
+}
+
