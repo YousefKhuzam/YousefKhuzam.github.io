@@ -1,75 +1,49 @@
-/* General Styles */
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #1a1a1a;
-    color: #e0e0e0;
+    font-family: 'Poppins', sans-serif;
+    background: #1a1a1a;
+    color: white;
     margin: 0;
     display: flex;
 }
 
-/* Sidebar Styles */
+/* Sidebar */
 .sidebar {
     width: 250px;
     background: #2a2a2a;
     padding: 20px;
     height: 100vh;
     position: fixed;
-    left: 0;
-    top: 0;
-    text-align: center;
 }
 
-.profile-pic {
+.avatar-box img {
     width: 100px;
     border-radius: 50%;
-    margin-bottom: 10px;
-    border: 2px solid #6c6c6c;
 }
 
-.sidebar h2 {
+.sidebar h1 {
+    font-size: 1.5em;
     margin: 10px 0;
-    color: #fff;
 }
 
-.sidebar p {
-    font-size: 14px;
-    color: #aaa;
-}
-
-.contact-info p {
-    font-size: 14px;
-    margin: 5px 0;
+.contact-item {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
 .contact-info a {
-    color: #6c6c6c;
+    color: #ddd;
     text-decoration: none;
-}
-
-.sidebar-nav button {
-    display: block;
-    width: 100%;
-    background: none;
-    border: none;
-    padding: 10px;
-    color: #e0e0e0;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: left;
-}
-
-.sidebar-nav button:hover {
-    background: #4a4a4a;
 }
 
 /* Main Content */
 .main-content {
-    margin-left: 250px;
+    margin-left: 270px;
     padding: 20px;
-    flex-grow: 1;
 }
 
-/* Hide inactive sections */
+/* Tabs */
 .tab-content {
     display: none;
 }
@@ -78,29 +52,11 @@ body {
     display: block;
 }
 
-/* Button Styles */
+/* Buttons */
 .button {
-    display: inline-block;
     padding: 10px 15px;
     background: #4a4a4a;
     color: white;
-    text-decoration: none;
     border-radius: 5px;
-    margin-top: 10px;
-}
-
-.button:hover {
-    background: #6c6c6c;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-    }
-    .main-content {
-        margin-left: 0;
-    }
+    text-decoration: none;
 }
