@@ -78,4 +78,16 @@ function caesarCipherDecrypt() {
 function toggleMenu() {
     document.querySelector('.nav-links').classList.toggle('active');
 }
+// Function to Defang URLs (convert them to a safer format)
+function defangURL() {
+    let input = document.getElementById("inputText").value;
+    let defanged = input.replace(/http/g, "hxxp").replace(/\./g, "[.]");
+    document.getElementById("outputText").value = defanged;
+}
 
+// Function to Fang URLs (convert back to normal)
+function fangURL() {
+    let input = document.getElementById("inputText").value;
+    let fanged = input.replace(/hxxp/g, "http").replace(/\[\.\]/g, ".");
+    document.getElementById("outputText").value = fanged;
+}
