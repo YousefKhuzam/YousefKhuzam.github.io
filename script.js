@@ -10,10 +10,6 @@ if (localStorage.getItem('darkMode') === "true") {
     document.body.classList.add('dark-mode');
 }
 
-// Fake Threat Intelligence Feed
-const threatFeed = document.getElementById('threat-feed');
-const threats
-
 // Base64 Encoding
 function base64Encode() {
     let input = document.getElementById("inputText").value.trim();
