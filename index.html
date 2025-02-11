@@ -1,67 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yousef Alkhuzam - Portfolio</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
+    <title>Yousef Alkhuzam</title>
+
+    <link rel="shortcut icon" href="./assets/images/logo.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="./assets/css/style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
-    <!-- Sidebar Profile Section -->
-    <div class="sidebar">
-        <img src="images/bitmoji.png" alt="Your Bitmoji" class="profile-pic">
-        <h2>Yousef Alkhuzam</h2>
-        <p>Cyber Threat Intelligence</p>
-        
-        <div class="contact-info">
-            <p>📧 <a href="mailto:Khuzam97@gmail.com">Khuzam97@gmail.com</a></p>
-            <p>📧 <a href="mailto:iam@yousefkhuzam.me">iam@yousefkhuzam.me</a></p>
-            <p>📱 +966 531080685</p>
-            <p>📱 +973 32300932</p>
-            <p>🔗 <a href="https://linkedin.com/in/yousefalkhuzam" target="_blank">LinkedIn</a></p>
+    <main>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+
+            <div class="sidebar-info">
+                <figure class="avatar-box">
+                    <img src="./assets/images/bitmoji.png" alt="Yousef Alkhuzam" width="80">
+                </figure>
+
+                <div class="info-content">
+                    <h1 class="name">Yousef Alkhuzam</h1>
+                    <p class="title">Cyber Threat Intel</p>
+                </div>
+
+                <button class="info_more-btn">
+                    <span>Show Contacts</span>
+                    <ion-icon name="chevron-down"></ion-icon>
+                </button>
+            </div>
+
+            <div class="sidebar-info_more">
+                <div class="separator"></div>
+
+                <ul class="contacts-list">
+                    <li class="contact-item">
+                        <div class="icon-box"><ion-icon name="mail-outline"></ion-icon></div>
+                        <div class="contact-info">
+                            <p class="contact-title">Email</p>
+                            <a href="mailto:Khuzam97@gmail.com" class="contact-link">Khuzam97@gmail.com</a>
+                        </div>
+                    </li>
+                    <li class="contact-item">
+                        <div class="icon-box"><ion-icon name="call-outline"></ion-icon></div>
+                        <div class="contact-info">
+                            <p class="contact-title">Phone</p>
+                            <p class="contact-link">+966 531080685 | +973 32300932</p>
+                        </div>
+                    </li>
+                    <li class="contact-item">
+                        <div class="icon-box"><ion-icon name="location-outline"></ion-icon></div>
+                        <div class="contact-info">
+                            <p class="contact-title">Location</p>
+                            <address>Saudi Arabia & Bahrain</address>
+                        </div>
+                    </li>
+                </ul>
+
+                <div class="separator"></div>
+
+                <ul class="social-list">
+                    <li class="social-item">
+                        <a href="https://linkedin.com/in/yousefalkhuzam" class="social-link">
+                            <ion-icon name="logo-linkedin"></ion-icon>
+                        </a>
+                    </li>
+                    <li class="social-item">
+                        <a href="https://github.com/YousefKhuzam" class="social-link">
+                            <ion-icon name="logo-github"></ion-icon>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+
+            <!-- Navbar -->
+            <nav class="navbar">
+                <ul class="navbar-list">
+                    <li class="navbar-item"><button class="navbar-link active" onclick="showTab('about')">About</button></li>
+                    <li class="navbar-item"><button class="navbar-link" onclick="showTab('email-analyzer')">Email Analyzer</button></li>
+                    <li class="navbar-item"><button class="navbar-link" onclick="showTab('youseflab')">YousefLab</button></li>
+                    <li class="navbar-item"><button class="navbar-link" onclick="showTab('cv')">View CV</button></li>
+                    <li class="navbar-item"><button class="navbar-link" onclick="showTab('blog')">Blog</button></li>
+                </ul>
+            </nav>
+
+            <!-- About Me -->
+            <section id="about" class="tab-content active">
+                <h2>About Me</h2>
+                <p>Cybersecurity specialist with expertise in threat intelligence, digital forensics, and cyber defense.</p>
+            </section>
+
+            <!-- Email Analyzer -->
+            <section id="email-analyzer" class="tab-content">
+                <h2>Email Analyzer</h2>
+                <p>Analyze email headers for threats.</p>
+                <a href="tools.html" class="button">Open Email Analyzer</a>
+            </section>
+
+            <!-- YousefLab -->
+            <section id="youseflab" class="tab-content">
+                <h2>YousefLab</h2>
+                <p>Encrypt, decode, and analyze data.</p>
+                <a href="youseflab.html" class="button">Open YousefLab</a>
+            </section>
+
+            <!-- CV Viewer -->
+            <section id="cv" class="tab-content">
+                <h2>View My CV</h2>
+                <iframe src="CV.pdf" width="100%" height="500px"></iframe>
+            </section>
+
+            <!-- Blog -->
+            <section id="blog" class="tab-content">
+                <h2>Blog</h2>
+                <p>🚨 A New Wave of Degree Mill Scams Targeting Professionals in the GCC 🚨</p>
+                <a href="blog.html" class="button">Read More</a>
+            </section>
+
         </div>
 
-        <nav class="sidebar-nav">
-            <button onclick="showTab('about')">🏠 About Me</button>
-            <button onclick="showTab('email-analyzer')">📩 Email Analyzer</button>
-            <button onclick="showTab('youseflab')">🔧 YousefLab</button>
-            <button onclick="showTab('cv')">📄 View CV</button>
-            <button onclick="showTab('blog')">📝 Blogs</button>
-        </nav>
-    </div>
+    </main>
 
-    <!-- Main Content Section -->
-    <div class="main-content">
-        <div id="about" class="tab-content active">
-            <h1>🙋‍♂️ About Me</h1>
-            <p>Cybersecurity specialist with expertise in threat intelligence and digital forensics. Passionate about building robust security solutions.</p>
-        </div>
-
-        <div id="email-analyzer" class="tab-content">
-            <h1>📩 Email Analyzer</h1>
-            <p>Analyze email headers for threats.</p>
-            <a href="tools.html" class="button">Go to Email Analyzer</a>
-        </div>
-
-        <div id="youseflab" class="tab-content">
-            <h1>🔧 YousefLab</h1>
-            <p>Encrypt, decode, and analyze data.</p>
-            <a href="youseflab.html" class="button">Open YousefLab</a>
-        </div>
-
-        <div id="cv" class="tab-content">
-            <h1>📄 My CV</h1>
-            <iframe src="CV.pdf" width="100%" height="500px"></iframe>
-        </div>
-
-        <div id="blog" class="tab-content">
-            <h1>📝 Blogs</h1>
-            <p>🚨 A New Wave of Degree Mill Scams Targeting Professionals in the GCC 🚨</p>
-            <a href="blog.html" class="button">Read More</a>
-        </div>
-    </div>
+    <script src="./assets/js/script.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
 </body>
 </html>
