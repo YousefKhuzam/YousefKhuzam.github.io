@@ -76,13 +76,11 @@ function caesarCipherDecrypt() {
 }
 
 function showTab(tabId) {
-    let tabs = document.querySelectorAll('.tab-content');
-    tabs.forEach(tab => tab.classList.remove('active'));
-
+    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
     document.getElementById(tabId).classList.add('active');
 }
 
-// Show "About Me" by default
+// Show About Me by default
 document.addEventListener("DOMContentLoaded", function () {
     showTab('about');
 });
