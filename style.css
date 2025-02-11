@@ -1,107 +1,106 @@
-/* Root variables for color consistency */
-:root {
-    --primary: #2a2a2a;
-    --secondary: #3a3a3a;
-    --accent: #6c6c6c;
-    --background: #1a1a1a;
-    --text: #e0e0e0;
-    --button-hover: #888;
-    --border: #555;
-}
-
-/* General body styling */
+/* General Styles */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: var(--background);
-    color: var(--text);
+    background-color: #1a1a1a;
+    color: #e0e0e0;
     margin: 0;
-    padding: 0;
-    text-align: center;
     display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
-/* Header styling */
-header {
-    width: 100%;
-    padding: 20px 0;
-    background: var(--primary);
+/* Sidebar Styles */
+.sidebar {
+    width: 250px;
+    background: #2a2a2a;
+    padding: 20px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
     text-align: center;
-    border-bottom: 2px solid var(--accent);
 }
 
-h1 {
-    font-size: 2em;
-    margin: 0;
-    padding: 10px;
-    color: var(--text);
+.profile-pic {
+    width: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    border: 2px solid #6c6c6c;
 }
 
-/* Main container */
-.container {
-    max-width: 700px;
-    width: 90%;
-    margin: 20px auto;
-    background: var(--secondary);
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    border: 1px solid var(--border);
+.sidebar h2 {
+    margin: 10px 0;
+    color: #fff;
 }
 
-/* Textarea styling */
-textarea {
+.sidebar p {
+    font-size: 14px;
+    color: #aaa;
+}
+
+.contact-info p {
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.contact-info a {
+    color: #6c6c6c;
+    text-decoration: none;
+}
+
+.sidebar-nav button {
+    display: block;
     width: 100%;
-    height: 120px;
-    background: #2d2d2d;
-    color: white;
-    border: 1px solid var(--border);
-    padding: 12px;
-    margin-top: 10px;
-    border-radius: 8px;
-    font-size: 1em;
-    resize: none;
-    outline: none;
-    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
-}
-
-/* Buttons layout */
-.buttons {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 15px;
-}
-
-/* Button styling */
-button {
-    background: var(--accent);
-    color: white;
-    padding: 12px 18px;
+    background: none;
     border: none;
-    border-radius: 8px;
+    padding: 10px;
+    color: #e0e0e0;
+    font-size: 16px;
     cursor: pointer;
-    font-size: 1em;
-    font-weight: bold;
-    transition: all 0.3s ease;
-    outline: none;
+    text-align: left;
 }
 
-button:hover {
-    background: var(--button-hover);
-    transform: translateY(-2px);
+.sidebar-nav button:hover {
+    background: #4a4a4a;
 }
 
-/* Mobile-friendly */
+/* Main Content */
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+    flex-grow: 1;
+}
+
+/* Hide inactive sections */
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Button Styles */
+.button {
+    display: inline-block;
+    padding: 10px 15px;
+    background: #4a4a4a;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.button:hover {
+    background: #6c6c6c;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-    .container {
-        width: 95%;
-        padding: 20px;
-    }
-    
-    button {
+    .sidebar {
         width: 100%;
+        height: auto;
+        position: relative;
+    }
+    .main-content {
+        margin-left: 0;
     }
 }
