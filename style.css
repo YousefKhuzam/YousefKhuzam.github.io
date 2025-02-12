@@ -105,3 +105,68 @@ button:hover {
         width: 100%;
     }
 }
+
+/* Responsive Layout */
+.container {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+@media (max-width: 1024px) {
+    .container {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+    }
+
+    .sidebar {
+        position: static;
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-menu {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .nav-menu {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .nav-btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .profile-picture {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-name {
+        font-size: 1.5rem;
+    }
+
+    .section-title {
+        font-size: 1.2rem;
+    }
+
+    .nav-btn {
+        font-size: 0.9rem;
+    }
+}
+
