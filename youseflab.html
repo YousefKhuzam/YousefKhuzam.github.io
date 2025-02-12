@@ -11,11 +11,11 @@
     <style>
         /* General Styling */
         :root {
-            --primary: #1a1a1a;
-            --secondary: #2d2d2d;
-            --accent: #4a9cff;
+            --primary: #2a2a2a;
+            --secondary: #3a3a3a;
+            --accent: #777777;
             --text: #e0e0e0;
-            --background: #0a0a0a;
+            --background: #1a1a1a;
             --button-hover: #62b1ff;
         }
 
@@ -72,8 +72,8 @@
 
         /* Textarea Styling */
         textarea {
-            width: 100%;
-            height: 120px;
+            width: 95%;
+            height: 122px;
             background: #2d2d2d;
             color: white;
             border: 1px solid var(--accent);
@@ -88,9 +88,10 @@
 
         /* Buttons Layout */
         .buttons {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
             margin-top: 15px;
         }
 
@@ -98,11 +99,11 @@
         button {
             background: var(--accent);
             color: white;
-            padding: 12px 18px;
+            padding: 8px 14px;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 1em;
+            font-size: 0.9em;
             font-weight: bold;
             transition: all 0.3s ease;
             outline: none;
