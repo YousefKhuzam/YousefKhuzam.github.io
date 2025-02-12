@@ -91,3 +91,32 @@ function fangURL() {
     let fanged = input.replace(/hxxp/g, "http").replace(/\[\.\]/g, ".");
     document.getElementById("outputText").value = fanged;
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Toggle Read More Sections
+    document.querySelectorAll(".read-more-btn").forEach((btn) => {
+        btn.addEventListener("click", function () {
+            let content = this.nextElementSibling;
+            content.style.display = content.style.display === "block" ? "none" : "block";
+            this.textContent = content.style.display === "block" ? "Show Less" : "Read More";
+        });
+    });
+
+    // Mobile Menu Toggle
+    const menuToggle = document.querySelector(".menu-toggle");
+    const navLinks = document.querySelector(".nav-links");
+
+    menuToggle.addEventListener("click", function () {
+        navLinks.classList.toggle("active");
+    });
+
+    // Smooth Scroll Effect
+    document.querySelectorAll("a[href^='#']").forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute("href")).scrollIntoView({
+                behavior: "smooth"
+            });
+        });
+    });
+});
