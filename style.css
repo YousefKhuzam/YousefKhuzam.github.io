@@ -2,10 +2,10 @@
 :root {
     --primary: #2a2a2a;
     --secondary: #3a3a3a;
-    --accent: #6c6c6c;
+    --accent: #4a9cff;
     --background: #1a1a1a;
     --text: #e0e0e0;
-    --button-hover: #888;
+    --button-hover: #62b1ff;
     --border: #555;
 }
 
@@ -22,6 +22,17 @@ body {
     align-items: center;
 }
 
+/* Particles.js Background */
+#particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.3;
+}
+
 /* Header styling */
 header {
     width: 100%;
@@ -32,7 +43,7 @@ header {
 }
 
 h1 {
-    font-size: 2em;
+    font-size: 2.2em;
     margin: 0;
     padding: 10px;
     color: var(--text);
@@ -40,7 +51,10 @@ h1 {
 
 /* Main container */
 .container {
-    max-width: 700px;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 1.5rem;
+    max-width: 1200px;
     width: 90%;
     margin: 20px auto;
     background: var(--secondary);
@@ -52,7 +66,7 @@ h1 {
 
 /* Textarea styling */
 textarea {
-    width: 95%;
+    width: 100%;
     height: 120px;
     background: #2d2d2d;
     color: white;
@@ -68,9 +82,8 @@ textarea {
 
 /* Buttons layout */
 .buttons {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 10px;
     margin-top: 15px;
 }
@@ -94,28 +107,7 @@ button:hover {
     transform: translateY(-2px);
 }
 
-/* Mobile-friendly */
-@media (max-width: 768px) {
-    .container {
-        width: 95%;
-        padding: 20px;
-    }
-    
-    button {
-        width: 100%;
-    }
-}
-
 /* Responsive Layout */
-.container {
-    display: grid;
-    grid-template-columns: 300px 1fr;
-    gap: 1.5rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-}
-
 @media (max-width: 1024px) {
     .container {
         grid-template-columns: 1fr;
@@ -169,6 +161,7 @@ button:hover {
         font-size: 0.9rem;
     }
 }
+
 /* Smooth Hover Effects */
 .nav-btn, .tools-btn, .cv-btn {
     transition: all 0.3s ease-in-out;
@@ -223,4 +216,3 @@ button:hover {
         display: flex;
     }
 }
-
