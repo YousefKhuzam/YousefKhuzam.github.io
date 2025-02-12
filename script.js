@@ -39,10 +39,6 @@ async function generateSHA256() {
     document.getElementById("outputText").value = hashHex;
 }
 
-// MD5 Hashing (Not natively supported in modern browsers)
-async function generateMD5() {
-    let input = document.getElementById("inputText").value.trim();
-    alert("MD5 hashing is not supported in modern browsers. Use SHA-256 instead.");
 }
 
 // Simple Caesar Cipher Encryption
