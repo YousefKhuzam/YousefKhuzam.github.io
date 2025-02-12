@@ -8,8 +8,136 @@
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="script.js" defer></script>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* General Styling */
+        :root {
+            --primary: #1a1a1a;
+            --secondary: #2d2d2d;
+            --accent: #4a9cff;
+            --text: #e0e0e0;
+            --background: #0a0a0a;
+            --button-hover: #62b1ff;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Particles Background */
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.2;
+        }
+
+        /* Header */
+        header {
+            width: 100%;
+            padding: 20px;
+            background: var(--primary);
+            text-align: center;
+            border-bottom: 2px solid var(--accent);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            font-size: 2em;
+            color: var(--text);
+            margin: 0;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 800px;
+            width: 90%;
+            margin: 20px auto;
+            background: var(--secondary);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--accent);
+        }
+
+        /* Textarea Styling */
+        textarea {
+            width: 100%;
+            height: 120px;
+            background: #2d2d2d;
+            color: white;
+            border: 1px solid var(--accent);
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 8px;
+            font-size: 1em;
+            resize: none;
+            outline: none;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Buttons Layout */
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        /* Button Styling */
+        button {
+            background: var(--accent);
+            color: white;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        button:hover {
+            background: var(--button-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Mobile-Friendly */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 20px;
+            }
+
+            textarea {
+                height: 90px;
+                font-size: 0.9em;
+            }
+
+            .buttons {
+                grid-template-columns: 1fr;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
+
+    <div id="particles-js"></div>
 
     <header>
         <h1>🔧 YousefLab</h1>
@@ -23,7 +151,6 @@
             <button onclick="base64Encode()">Base64 Encode</button>
             <button onclick="base64Decode()">Base64 Decode</button>
             <button onclick="generateSHA256()">SHA-256 Hash</button>
-            <button onclick="generateMD5()">MD5 Hash</button>
             <button onclick="caesarCipherEncrypt()">Caesar Cipher Encrypt</button>
             <button onclick="caesarCipherDecrypt()">Caesar Cipher Decrypt</button>
             <button onclick="defangURL()">Defang URL</button>
@@ -33,7 +160,12 @@
         <textarea id="outputText" placeholder="Output..." readonly></textarea>
     </div>
     
-    <script src="script.js" defer></script>
+    <script>
+        // Fix Particles.js Load
+        particlesJS.load('particles-js', 'particles-config.json', function() {
+            console.log('Particles.js loaded!');
+        });
+    </script>
 
 </body>
 </html>
