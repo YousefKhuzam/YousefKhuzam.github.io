@@ -37,18 +37,19 @@ async function lookupUsername() {
         
         if (platform.check) {
             try {
-                const response = await fetch(profileURL, { method: "HEAD" });
-                if (response.ok) {
+                const response = await fetch(profileURL, { method: "HEAD", mode: "no-cors" });
+
+                if (response.ok || response.status === 200) {
                     resultsHTML += `<p>✅ <b>${platform.name}</b>: <a href="${profileURL}" target="_blank">${profileURL}</a></p>`;
                     foundLinks.push(profileURL);
                 } else {
                     resultsHTML += `<p>❌ <b>${platform.name}</b>: Not Found</p>`;
                 }
             } catch (error) {
-                resultsHTML += `<p>⚠️ <b>${platform.name}</b>: Error Checking</p>`;
+                resultsHTML += `<p>⚠️ <b>${platform.name}</b>: Unable to Check</p>`;
             }
         } else {
-            resultsHTML += `<p>🔗 <b>${platform.name}</b>: <a href="${profileURL}" target="_blank">${profileURL}</a> (Manual Check)</p>`;
+            resultsHTML += `<p>✅ <b>${platform.name}</b>: <a href="${profileURL}" target="_blank">${profileURL}</a></p>`;
             foundLinks.push(profileURL);
         }
     }
