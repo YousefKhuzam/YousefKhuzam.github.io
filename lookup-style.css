@@ -119,17 +119,21 @@ button:hover {
     font-size: 1.2em;
 }
 
+/* Ensure links inherit the platform color */
+.platform a {
+    text-decoration: none;
+    font-weight: bold;
+}
+
 /* Platform-specific colors */
-.facebook { color: #1877F2; } /* Facebook Blue */
-.telegram { color: #0088cc; } /* Telegram Blue */
-.snapchat { color: #FFFC00; } /* Snapchat Yellow */
-.youtube { color: #FF0000; } /* YouTube Red */
-.twitter { color: #1DA1F2; } /* Twitter Blue */
-.instagram { color: #E1306C; } /* Instagram Pink */
-.reddit { color: #FF4500; } /* Reddit Orange */
-.linkedin { color: #0077B5; } /* LinkedIn Blue */
-.pinterest { color: #E60023; } /* Pinterest Red */
-.tiktok { color: #010101; } /* TikTok Black */
-.github { color: #171515; } /* GitHub Black */
-
-
+.facebook { color: #1877F2 !important; } /* Facebook Blue */
+.telegram { color: #0088cc !important; } /* Telegram Blue */
+.snapchat { color: #FFFC00 !important; } /* Snapchat Yellow */
+.youtube { color: #FF0000 !important; } /* YouTube Red */
+.twitter { color: #1DA1F2 !important; } /* Twitter Blue */
+.instagram { color: #E1306C !important; } /* Instagram Pink */
+.reddit { color: #FF4500 !important; } /* Reddit Orange */
+.linkedin { color: #0077B5 !important; } /* LinkedIn Blue */
+.pinterest { color: #E60023 !important; } /* Pinterest Red */
+.tiktok { color: #010101 !important; } /* TikTok Black */
+.github { color: #171515 !important; } /* GitHub Black */
