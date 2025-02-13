@@ -26,9 +26,11 @@ async function lookupUsername() {
     }
 
     const resultsDiv = document.getElementById("results");
+    const copyButton = document.getElementById("copyButton");
     resultsDiv.innerHTML = "<p>Checking username availability...</p>";
 
     let resultsHTML = "<h2>Results:</h2>";
+    let foundLinks = [];
 
     for (const platform of platforms) {
         const profileURL = `${platform.url}${username}`;
@@ -38,6 +40,7 @@ async function lookupUsername() {
                 const response = await fetch(profileURL, { method: "HEAD" });
                 if (response.ok) {
                     resultsHTML += `<p>✅ <b>${platform.name}</b>: <a href="${profileURL}" target="_blank">${profileURL}</a></p>`;
+                    foundLinks.push(profileURL);
                 } else {
                     resultsHTML += `<p>❌ <b>${platform.name}</b>: Not Found</p>`;
                 }
@@ -46,8 +49,32 @@ async function lookupUsername() {
             }
         } else {
             resultsHTML += `<p>🔗 <b>${platform.name}</b>: <a href="${profileURL}" target="_blank">${profileURL}</a> (Manual Check)</p>`;
+            foundLinks.push(profileURL);
         }
     }
 
     resultsDiv.innerHTML = resultsHTML;
+
+    if (foundLinks.length > 0) {
+        copyButton.style.display = "block";
+        copyButton.dataset.links = foundLinks.join("\n");
+    } else {
+        copyButton.style.display = "none";
+    }
+}
+
+function copyAllLinks() {
+    const copyButton = document.getElementById("copyButton");
+    const linksText = copyButton.dataset.links;
+
+    if (!linksText) {
+        alert("No links to copy!");
+        return;
+    }
+
+    navigator.clipboard.writeText(linksText).then(() => {
+        alert("All links copied to clipboard!");
+    }).catch(err => {
+        console.error("Failed to copy: ", err);
+    });
 }
