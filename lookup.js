@@ -54,8 +54,7 @@ function lookupUsername() {
 
 // Copy All Links Function
 function copyAllLinks() {
-    const resultsDiv = document.getElementById("results");
-    const links = resultsDiv.querySelectorAll("a");
+    const links = document.querySelectorAll("#results a");
     let linksText = "";
 
     links.forEach(link => {
@@ -64,12 +63,13 @@ function copyAllLinks() {
 
     if (linksText) {
         navigator.clipboard.writeText(linksText).then(() => {
-            alert("All profile links copied to clipboard!");
-        }).catch(err => {
-            alert("Failed to copy links. Try again.");
+            alert("📋 All profile links copied to clipboard!");
+        }).catch(() => {
+            alert("❌ Failed to copy links. Try again.");
         });
     }
 }
+
 const platformIcons = {
     "Facebook": "fab fa-facebook",
     "Telegram": "fab fa-telegram",
