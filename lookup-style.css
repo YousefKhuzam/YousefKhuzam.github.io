@@ -74,4 +74,23 @@ button {
 /* Copy Button */
 #copyButton {
     margin-top: 15px;
-    display
+    display: none; /* Hidden until results are available */
+}
+
+/* Hover Effects */
+button:hover {
+    background: var(--button-hover);
+    transform: translateY(-2px);
+}
+
+/* Results Styling */
+#results {
+    margin-top: 20px;
+}
+
+/* Icons in Results */
+#results i {
+    font-size: 1.2em;
+    margin-right: 5px;
+    color: #aaaaaa;
+}
