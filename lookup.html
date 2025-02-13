@@ -3,24 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OSINT Username Lookup</title>
+    <title>Yousef's Lookup</title>
     <link rel="stylesheet" href="lookup-style.css">
-    <script defer src="lookup.js"></script>
 </head>
 <body>
 
-    <header>
-        <h1>🔎 OSINT Username Lookup</h1>
-        <p>Check if a username exists on social media platforms</p>
-        <a href="index.html" class="home-btn">🏠 Home</a>
-    </header>
-
     <div class="container">
-        <input type="text" id="usernameInput" placeholder="Enter username..." />
+        <h1>🔍 Yousef's Lookup</h1>
+        <p>Enter a username to check its availability across platforms.</p>
+
+        <input type="text" id="usernameInput" placeholder="Enter username..." onkeypress="handleKeyPress(event)">
         <button onclick="lookupUsername()">Search</button>
 
         <div id="results"></div>
     </div>
+
+    <script src="lookup.js"></script>
 
 </body>
 </html>
