@@ -105,3 +105,31 @@ button:hover {
     color: #888888; /* Even darker grey */
     text-decoration: underline; /* Optional: Add underline on hover */
 }
+/* Default styling for platform icons and names */
+.platform {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+/* Set default icon size */
+.platform i {
+    font-size: 1.2em;
+}
+
+/* Platform-specific colors */
+.facebook { color: #1877F2; } /* Facebook Blue */
+.telegram { color: #0088cc; } /* Telegram Blue */
+.snapchat { color: #FFFC00; } /* Snapchat Yellow */
+.youtube { color: #FF0000; } /* YouTube Red */
+.twitter { color: #1DA1F2; } /* Twitter Blue */
+.instagram { color: #E1306C; } /* Instagram Pink */
+.reddit { color: #FF4500; } /* Reddit Orange */
+.linkedin { color: #0077B5; } /* LinkedIn Blue */
+.pinterest { color: #E60023; } /* Pinterest Red */
+.tiktok { color: #010101; } /* TikTok Black */
+.github { color: #171515; } /* GitHub Black */
+
+
