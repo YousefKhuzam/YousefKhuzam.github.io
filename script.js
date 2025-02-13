@@ -39,8 +39,6 @@ async function generateSHA256() {
     document.getElementById("outputText").value = hashHex;
 }
 
-}
-
 // Simple Caesar Cipher Encryption
 function caesarCipherEncrypt() {
     let input = document.getElementById("inputText").value.trim();
