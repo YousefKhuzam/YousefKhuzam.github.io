@@ -1,15 +1,15 @@
 const platforms = [
-    { name: "Facebook", url: "https://www.facebook.com/" },
-    { name: "Telegram", url: "https://t.me/" },
-    { name: "Snapchat", url: "https://www.snapchat.com/add/" },
-    { name: "YouTube", url: "https://www.youtube.com/@" },
-    { name: "Twitter", url: "https://twitter.com/" },
-    { name: "Instagram", url: "https://www.instagram.com/" },
-    { name: "Reddit", url: "https://www.reddit.com/user/" },
-    { name: "LinkedIn", url: "https://www.linkedin.com/in/" },  
-    { name: "Pinterest", url: "https://www.pinterest.com/" },  
-    { name: "TikTok", url: "https://www.tiktok.com/@" },  
-    { name: "GitHub", url: "https://github.com/" }  
+    { name: "Facebook", url: "https://www.facebook.com/", icon: "fab fa-facebook" },
+    { name: "Telegram", url: "https://t.me/", icon: "fab fa-telegram" },
+    { name: "Snapchat", url: "https://www.snapchat.com/add/", icon: "fab fa-snapchat" },
+    { name: "YouTube", url: "https://www.youtube.com/@", icon: "fab fa-youtube" },
+    { name: "Twitter", url: "https://twitter.com/", icon: "fab fa-twitter" },
+    { name: "Instagram", url: "https://www.instagram.com/", icon: "fab fa-instagram" },
+    { name: "Reddit", url: "https://www.reddit.com/user/", icon: "fab fa-reddit" },
+    { name: "LinkedIn", url: "https://www.linkedin.com/in/", icon: "fab fa-linkedin" },  
+    { name: "Pinterest", url: "https://www.pinterest.com/", icon: "fab fa-pinterest" },  
+    { name: "TikTok", url: "https://www.tiktok.com/@", icon: "fab fa-tiktok" },  
+    { name: "GitHub", url: "https://github.com/", icon: "fab fa-github" }  
 ];
 
 function handleKeyPress(event) {
@@ -33,7 +33,13 @@ function lookupUsername() {
 
     for (const platform of platforms) {
         const profileURL = `${platform.url}${username}`;
-        resultsHTML += `<p>✅ <b>${platform.name}</b>: <a href="${profileURL}" target="_blank">${profileURL}</a></p>`;
+        resultsHTML += `
+            <p>
+                <i class="${platform.icon}"></i>
+                <b>${platform.name}</b>: 
+                <a href="${profileURL}" target="_blank">${profileURL}</a>
+            </p>
+        `;
         foundLinks.push(profileURL);
     }
 
