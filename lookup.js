@@ -95,7 +95,7 @@ for (const platform of platforms) {
         <p class="platform ${platformClass}">
             <i class="${iconClass}"></i>
             <b>${platform.name}</b>: 
-            <a href="${profileURL}" target="_blank">${profileURL}</a>
+            <a href="${profileURL}" target="_blank" class="${platformClass}">${profileURL}</a>
         </p>
     `;
 }
