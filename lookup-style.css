@@ -96,7 +96,7 @@ button:hover {
 }
 #results a {
     color: #bbbbbb; /* Soft Dark Grey */
-    text-decoration: none; /* Remove underline */
+    text-decoration: underline; 
     font-weight: bold;
 }
 
