@@ -1,15 +1,15 @@
 const platforms = [
-    { name: "Facebook", url: "https://www.facebook.com/", check: true },
-    { name: "Telegram", url: "https://t.me/", check: false },
-    { name: "Snapchat", url: "https://www.snapchat.com/add/", check: false },
-    { name: "YouTube", url: "https://www.youtube.com/@", check: false },
-    { name: "Twitter", url: "https://twitter.com/", check: true },
-    { name: "Instagram", url: "https://www.instagram.com/", check: true },
-    { name: "Reddit", url: "https://www.reddit.com/user/", check: true },
-    { name: "LinkedIn", url: "https://www.linkedin.com/in/", check: true },  
-    { name: "Pinterest", url: "https://www.pinterest.com/", check: true },  
-    { name: "TikTok", url: "https://www.tiktok.com/@", check: true },  
-    { name: "GitHub", url: "https://github.com/", check: true }  
+    { name: "Facebook", url: "https://www.facebook.com/" },
+    { name: "Telegram", url: "https://t.me/" },
+    { name: "Snapchat", url: "https://www.snapchat.com/add/" },
+    { name: "YouTube", url: "https://www.youtube.com/@" },
+    { name: "Twitter", url: "https://twitter.com/" },
+    { name: "Instagram", url: "https://www.instagram.com/" },
+    { name: "Reddit", url: "https://www.reddit.com/user/" },
+    { name: "LinkedIn", url: "https://www.linkedin.com/in/" },  
+    { name: "Pinterest", url: "https://www.pinterest.com/" },  
+    { name: "TikTok", url: "https://www.tiktok.com/@" },  
+    { name: "GitHub", url: "https://github.com/" }  
 ];
 
 function handleKeyPress(event) {
@@ -18,7 +18,7 @@ function handleKeyPress(event) {
     }
 }
 
-async function lookupUsername() {
+function lookupUsername() {
     const username = document.getElementById("usernameInput").value.trim();
     if (!username) {
         alert("Please enter a username!");
@@ -27,31 +27,14 @@ async function lookupUsername() {
 
     const resultsDiv = document.getElementById("results");
     const copyButton = document.getElementById("copyButton");
-    resultsDiv.innerHTML = "<p>Checking username availability...</p>";
 
-    let resultsHTML = "<h2>Results:</h2>";
+    let resultsHTML = "<h2>Generated Profile Links:</h2>";
     let foundLinks = [];
 
     for (const platform of platforms) {
         const profileURL = `${platform.url}${username}`;
-        
-        if (platform.check) {
-            try {
-                const response = await fetch(profileURL, { method: "HEAD", mode: "no-cors" });
-
-                if (response.ok || response.status === 200) {
-                    resultsHTML += `<p>✅ <b>${platform.name}</b>: <a href="${profileURL}" target="_blank">${profileURL}</a></p>`;
-                    foundLinks.push(profileURL);
-                } else {
-                    resultsHTML += `<p>❌ <b>${platform.name}</b>: Not Found</p>`;
-                }
-            } catch (error) {
-                resultsHTML += `<p>⚠️ <b>${platform.name}</b>: Unable to Check</p>`;
-            }
-        } else {
-            resultsHTML += `<p>✅ <b>${platform.name}</b>: <a href="${profileURL}" target="_blank">${profileURL}</a></p>`;
-            foundLinks.push(profileURL);
-        }
+        resultsHTML += `<p>✅ <b>${platform.name}</b>: <a href="${profileURL}" target="_blank">${profileURL}</a></p>`;
+        foundLinks.push(profileURL);
     }
 
     resultsDiv.innerHTML = resultsHTML;
