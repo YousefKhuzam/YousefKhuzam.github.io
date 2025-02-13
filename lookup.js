@@ -116,24 +116,22 @@ async function generateResults(username) {
     for (const platform of platforms) {
         const profileURL = `${platform.url}${username}`;
         const iconClass = platform.icon || "fas fa-globe";
-        const platformClass = platform.name.toLowerCase();
+        const platformClass = platform.name.toLowerCase(); // Matches CSS class
 
         resultsHTML += `
             <p class="platform ${platformClass}">
-                <i class="${iconClass}"></i>
-                <b>${platform.name}</b>: 
-                <a href="${profileURL}" target="_blank" class="${platformClass}">${profileURL}</a>
+                <i class="${iconClass}" style="color: var(--${platformClass}, #e0e0e0);"></i> 
+                <b style="color: var(--${platformClass}, #e0e0e0);">${platform.name}</b>: 
+                <a href="${profileURL}" target="_blank">${profileURL}</a>
             </p>
         `;
         linksArray.push(profileURL);
 
-        // 🕒 Add random delay (1.5 to 3 seconds) between requests
         await new Promise(resolve => setTimeout(resolve, Math.random() * 1500 + 1500));
     }
 
     resultsDiv.innerHTML = resultsHTML;
 
-    // Show Copy Button if results are found
     if (linksArray.length > 0) {
         document.getElementById("copyButton").style.display = "block";
     }
