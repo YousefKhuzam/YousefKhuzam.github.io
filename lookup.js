@@ -6,18 +6,20 @@ const platforms = [
     { name: "Twitter", url: "https://twitter.com/", icon: "fab fa-twitter" },
     { name: "Instagram", url: "https://www.instagram.com/", icon: "fab fa-instagram" },
     { name: "Reddit", url: "https://www.reddit.com/user/", icon: "fab fa-reddit" },
-    { name: "LinkedIn", url: "https://www.linkedin.com/in/", icon: "fab fa-linkedin" },  
-    { name: "Pinterest", url: "https://www.pinterest.com/", icon: "fab fa-pinterest" },  
-    { name: "TikTok", url: "https://www.tiktok.com/@", icon: "fab fa-tiktok" },  
-    { name: "GitHub", url: "https://github.com/", icon: "fab fa-github" }  
+    { name: "LinkedIn", url: "https://www.linkedin.com/in/", icon: "fab fa-linkedin" },
+    { name: "Pinterest", url: "https://www.pinterest.com/", icon: "fab fa-pinterest" },
+    { name: "TikTok", url: "https://www.tiktok.com/@", icon: "fab fa-tiktok" },
+    { name: "GitHub", url: "https://github.com/", icon: "fab fa-github" }
 ];
 
+// Handle Enter Key Press
 function handleKeyPress(event) {
     if (event.key === "Enter") {
         lookupUsername();
     }
 }
 
+// Generate Profile Links
 function lookupUsername() {
     const username = document.getElementById("usernameInput").value.trim();
     if (!username) {
@@ -26,45 +28,45 @@ function lookupUsername() {
     }
 
     const resultsDiv = document.getElementById("results");
-    const copyButton = document.getElementById("copyButton");
+    resultsDiv.innerHTML = "<h2>Results:</h2>";
 
-    let resultsHTML = "<h2>Generated Profile Links:</h2>";
-    let foundLinks = [];
+    let resultsHTML = "";
+    let linksArray = [];
 
     for (const platform of platforms) {
         const profileURL = `${platform.url}${username}`;
+        linksArray.push(profileURL);
         resultsHTML += `
             <p>
-                <i class="${platform.icon}"></i>
-                <b>${platform.name}</b>: 
+                <i class="${platform.icon}"></i> <b>${platform.name}</b>: 
                 <a href="${profileURL}" target="_blank">${profileURL}</a>
             </p>
         `;
-        foundLinks.push(profileURL);
     }
 
     resultsDiv.innerHTML = resultsHTML;
 
-    if (foundLinks.length > 0) {
-        copyButton.style.display = "block";
-        copyButton.dataset.links = foundLinks.join("\n");
-    } else {
-        copyButton.style.display = "none";
+    // Show Copy Button if results are found
+    if (linksArray.length > 0) {
+        document.getElementById("copyButton").style.display = "block";
     }
 }
 
+// Copy All Links Function
 function copyAllLinks() {
-    const copyButton = document.getElementById("copyButton");
-    const linksText = copyButton.dataset.links;
+    const resultsDiv = document.getElementById("results");
+    const links = resultsDiv.querySelectorAll("a");
+    let linksText = "";
 
-    if (!linksText) {
-        alert("No links to copy!");
-        return;
-    }
-
-    navigator.clipboard.writeText(linksText).then(() => {
-        alert("All links copied to clipboard!");
-    }).catch(err => {
-        console.error("Failed to copy: ", err);
+    links.forEach(link => {
+        linksText += link.href + "\n";
     });
+
+    if (linksText) {
+        navigator.clipboard.writeText(linksText).then(() => {
+            alert("All profile links copied to clipboard!");
+        }).catch(err => {
+            alert("Failed to copy links. Try again.");
+        });
+    }
 }
