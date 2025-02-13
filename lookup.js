@@ -70,3 +70,34 @@ function copyAllLinks() {
         });
     }
 }
+const platformIcons = {
+    "Facebook": "fab fa-facebook",
+    "Telegram": "fab fa-telegram",
+    "Snapchat": "fab fa-snapchat",
+    "YouTube": "fab fa-youtube",
+    "Twitter": "fab fa-twitter",
+    "Instagram": "fab fa-instagram",
+    "Reddit": "fab fa-reddit",
+    "LinkedIn": "fab fa-linkedin",
+    "Pinterest": "fab fa-pinterest",
+    "TikTok": "fab fa-tiktok",
+    "GitHub": "fab fa-github"
+};
+
+let resultsHTML = "<h2>Results:</h2>";
+
+for (const platform of platforms) {
+    const profileURL = `${platform.url}${username}`;
+    const iconClass = platformIcons[platform.name] || "fas fa-globe";
+    const platformClass = platform.name.toLowerCase(); // Matches CSS class
+
+    resultsHTML += `
+        <p class="platform ${platformClass}">
+            <i class="${iconClass}"></i>
+            <b>${platform.name}</b>: 
+            <a href="${profileURL}" target="_blank">${profileURL}</a>
+        </p>
+    `;
+}
+
+resultsDiv.innerHTML = resultsHTML;
