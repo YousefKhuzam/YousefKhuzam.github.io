@@ -1,90 +1,65 @@
-/* Root Variables */
-:root {
-    --primary: #2a2a2a;
-    --secondary: #3a3a3a;
-    --accent: #777777;
-    --text: #e0e0e0;
-    --background: #1a1a1a;
-    --button-hover: #62b1ff;
-}
-
-/* General Styling */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: var(--background);
-    color: var(--text);
+    background-color: #1a1a1a;
+    color: #e0e0e0;
     text-align: center;
     margin: 0;
     padding: 0;
 }
 
-/* Header */
-header {
-    width: 100%;
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    background: #2a2a2a;
     padding: 20px;
-    background: var(--primary);
-    text-align: center;
-    border-bottom: 2px solid var(--accent);
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 h1 {
-    font-size: 2em;
-    color: var(--text);
-    margin: 0;
+    color: #4a9cff;
 }
 
-/* Main Container */
-.container {
-    max-width: 600px;
-    width: 90%;
-    margin: 50px auto;
-    background: var(--secondary);
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    border: 1px solid var(--accent);
-}
-
-/* Input Box */
 input {
     width: 80%;
     padding: 10px;
-    margin-bottom: 10px;
+    margin: 10px 0;
+    border: none;
     border-radius: 5px;
-    border: 1px solid var(--accent);
-    background: #2d2d2d;
-    color: white;
-    outline: none;
+    font-size: 1em;
+    text-align: center;
 }
 
-/* Buttons */
 button {
-    padding: 10px 15px;
-    background: var(--accent);
-    border: none;
+    background: #4a9cff;
     color: white;
-    cursor: pointer;
+    padding: 10px 20px;
+    border: none;
     border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
     transition: 0.3s;
 }
 
 button:hover {
-    background: var(--button-hover);
-    transform: translateY(-2px);
+    background: #62b1ff;
 }
 
-/* Home Button */
-.home-btn {
-    display: inline-block;
-    padding: 10px 15px;
-    background: var(--accent);
-    color: white;
+#results {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.result-item {
+    padding: 8px;
+    border-bottom: 1px solid #555;
+}
+
+.result-item a {
+    color: #4a9cff;
     text-decoration: none;
-    border-radius: 5px;
-    margin-top: 10px;
 }
 
-.home-btn:hover {
-    background: var(--button-hover);
+.result-item a:hover {
+    text-decoration: underline;
 }
