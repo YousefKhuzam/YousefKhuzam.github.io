@@ -1,16 +1,72 @@
 const platforms = [
-    { name: "Facebook", url: "https://www.facebook.com/", icon: "fab fa-facebook" },
-    { name: "Telegram", url: "https://t.me/", icon: "fab fa-telegram" },
-    { name: "Snapchat", url: "https://www.snapchat.com/add/", icon: "fab fa-snapchat" },
-    { name: "YouTube", url: "https://www.youtube.com/@", icon: "fab fa-youtube" },
-    { name: "Twitter", url: "https://twitter.com/", icon: "fab fa-twitter" },
-    { name: "Instagram", url: "https://www.instagram.com/", icon: "fab fa-instagram" },
-    { name: "Reddit", url: "https://www.reddit.com/user/", icon: "fab fa-reddit" },
-    { name: "LinkedIn", url: "https://www.linkedin.com/in/", icon: "fab fa-linkedin" },
-    { name: "Pinterest", url: "https://www.pinterest.com/", icon: "fab fa-pinterest" },
-    { name: "TikTok", url: "https://www.tiktok.com/@", icon: "fab fa-tiktok" },
-    { name: "GitHub", url: "https://github.com/", icon: "fab fa-github" }
+    { 
+        name: "Facebook", 
+        url: "https://www.facebook.com/", 
+        icon: "fab fa-facebook", 
+        notFoundText: "This Page Isn't Available" 
+    },
+    { 
+        name: "Twitter", 
+        url: "https://twitter.com/", 
+        icon: "fab fa-twitter", 
+        notFoundText: "This account doesn’t exist" 
+    },
+    { 
+        name: "Instagram", 
+        url: "https://www.instagram.com/", 
+        icon: "fab fa-instagram", 
+        notFoundText: "Sorry, this page isn't available" 
+    },
+    { 
+        name: "LinkedIn", 
+        url: "https://www.linkedin.com/in/", 
+        icon: "fab fa-linkedin", 
+        notFoundText: "Profile Not Found" 
+    },
+    { 
+        name: "Reddit", 
+        url: "https://www.reddit.com/user/", 
+        icon: "fab fa-reddit", 
+        notFoundText: "page not found" 
+    },
+    { 
+        name: "TikTok", 
+        url: "https://www.tiktok.com/@", 
+        icon: "fab fa-tiktok", 
+        notFoundText: "Couldn't find this account" 
+    },
+    { 
+        name: "YouTube", 
+        url: "https://www.youtube.com/@", 
+        icon: "fab fa-youtube", 
+        notFoundText: "This channel does not exist" 
+    },
+    { 
+        name: "Snapchat", 
+        url: "https://www.snapchat.com/add/", 
+        icon: "fab fa-snapchat", 
+        check: false 
+    }, 
+    { 
+        name: "Telegram", 
+        url: "https://t.me/", 
+        icon: "fab fa-telegram", 
+        check: false 
+    },
+    { 
+        name: "Pinterest", 
+        url: "https://www.pinterest.com/", 
+        icon: "fab fa-pinterest", 
+        notFoundText: "Oops! That page can’t be found" 
+    },
+    { 
+        name: "GitHub", 
+        url: "https://github.com/", 
+        icon: "fab fa-github", 
+        notFoundText: "Not Found" 
+    }
 ];
+
 
 // Handle Enter Key Press
 function handleKeyPress(event) {
@@ -116,18 +172,45 @@ async function generateResults(username) {
     for (const platform of platforms) {
         const profileURL = `${platform.url}${username}`;
         const iconClass = platform.icon || "fas fa-globe";
-        const platformClass = platform.name.toLowerCase(); // Matches CSS class
+        const platformClass = platform.name.toLowerCase(); 
 
-        resultsHTML += `
-            <p class="platform ${platformClass}">
-                <i class="${iconClass}" style="color: var(--${platformClass}, #e0e0e0);"></i> 
-                <b style="color: var(--${platformClass}, #e0e0e0);">${platform.name}</b>: 
-                <a href="${profileURL}" target="_blank">${profileURL}</a>
-            </p>
-        `;
-        linksArray.push(profileURL);
+        try {
+            // 🕒 Add delay to avoid getting blocked
+            await new Promise(resolve => setTimeout(resolve, Math.random() * 1500 + 1500));
 
-        await new Promise(resolve => setTimeout(resolve, Math.random() * 1500 + 1500));
+            // 🛠️ Fetch the profile page
+            const response = await fetch(profileURL);
+            const pageText = await response.text(); // Convert page to text
+
+            if (platform.notFoundText && pageText.includes(platform.notFoundText)) {
+                // 🚫 User does NOT exist
+                resultsHTML += `
+                    <p class="platform ${platformClass}">
+                        <i class="${iconClass}" style="color: var(--${platformClass}, #e0e0e0);"></i> 
+                        <b style="color: var(--${platformClass}, #e0e0e0);">${platform.name}</b>: 
+                        ❌ Not Found
+                    </p>
+                `;
+            } else {
+                // ✅ User EXISTS
+                resultsHTML += `
+                    <p class="platform ${platformClass}">
+                        <i class="${iconClass}" style="color: var(--${platformClass}, #e0e0e0);"></i> 
+                        <b style="color: var(--${platformClass}, #e0e0e0);">${platform.name}</b>: 
+                        <a href="${profileURL}" target="_blank">${profileURL}</a>
+                    </p>
+                `;
+                linksArray.push(profileURL);
+            }
+        } catch (error) {
+            resultsHTML += `
+                <p class="platform ${platformClass}">
+                    <i class="${iconClass}" style="color: var(--${platformClass}, #e0e0e0);"></i> 
+                    <b style="color: var(--${platformClass}, #e0e0e0);">${platform.name}</b>: 
+                    ⚠️ Error Checking
+                </p>
+            `;
+        }
     }
 
     resultsDiv.innerHTML = resultsHTML;
@@ -136,3 +219,4 @@ async function generateResults(username) {
         document.getElementById("copyButton").style.display = "block";
     }
 }
+
