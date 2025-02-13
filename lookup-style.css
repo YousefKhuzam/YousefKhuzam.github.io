@@ -1,65 +1,77 @@
+/* Root Variables */
+:root {
+    --primary: #2a2a2a;
+    --secondary: #3a3a3a;
+    --accent: #777777;
+    --text: #e0e0e0;
+    --background: #1a1a1a;
+    --button-hover: #62b1ff;
+}
+
+/* General Body Styling */
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #1a1a1a;
-    color: #e0e0e0;
-    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: var(--background);
+    color: var(--text);
     margin: 0;
     padding: 0;
-}
-
-.container {
-    max-width: 600px;
-    margin: 50px auto;
-    background: #2a2a2a;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-h1 {
-    color: #4a9cff;
-}
-
-input {
-    width: 80%;
-    padding: 10px;
-    margin: 10px 0;
-    border: none;
-    border-radius: 5px;
-    font-size: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
 }
 
-button {
-    background: #4a9cff;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
+/* Particles.js Background */
+#particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.3; /* Adjust opacity to make it more visible */
+}
+
+/* Container */
+.container {
+    max-width: 800px;
+    width: 90%;
+    margin: 40px auto;
+    background: var(--secondary);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--accent);
+}
+
+/* Input Field */
+input {
+    width: 90%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 2px solid var(--accent);
+    border-radius: 6px;
     font-size: 1em;
+    background: #2d2d2d;
+    color: white;
+    outline: none;
+}
+
+/* Button Styling */
+button {
+    background: var(--accent);
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
-    transition: 0.3s;
+    font-size: 1em;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    outline: none;
 }
 
-button:hover {
-    background: #62b1ff;
-}
-
-#results {
-    margin-top: 20px;
-    text-align: left;
-}
-
-.result-item {
-    padding: 8px;
-    border-bottom: 1px solid #555;
-}
-
-.result-item a {
-    color: #4a9cff;
-    text-decoration: none;
-}
-
-.result-item a:hover {
-    text-decoration: underline;
-}
+/* Copy Button */
+#copyButton {
+    margin-top: 15px;
+    display
