@@ -94,3 +94,14 @@ button:hover {
     margin-right: 5px;
     color: #aaaaaa;
 }
+#results a {
+    color: #bbbbbb; /* Soft Dark Grey */
+    text-decoration: none; /* Remove underline */
+    font-weight: bold;
+}
+
+/* Change link color on hover */
+#results a:hover {
+    color: #888888; /* Even darker grey */
+    text-decoration: underline; /* Optional: Add underline on hover */
+}
