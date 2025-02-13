@@ -84,20 +84,57 @@ const platformIcons = {
     "GitHub": "fab fa-github"
 };
 
-let resultsHTML = "<h2>Results:</h2>";
 
-for (const platform of platforms) {
-    const profileURL = `${platform.url}${username}`;
-    const iconClass = platformIcons[platform.name] || "fas fa-globe";
-    const platformClass = platform.name.toLowerCase(); // Matches CSS class
-
-    resultsHTML += `
-        <p class="platform ${platformClass}">
-            <i class="${iconClass}"></i>
-            <b>${platform.name}</b>: 
-            <a href="${profileURL}" target="_blank" class="${platformClass}">${profileURL}</a>
-        </p>
-    `;
+function validateUsername(username) {
+    const regex = /^[a-zA-Z0-9_.-]{3,30}$/; // Allow letters, numbers, "_", ".", "-" (3 to 30 chars)
+    return regex.test(username);
 }
 
-resultsDiv.innerHTML = resultsHTML;
+function lookupUsername() {
+    const username = document.getElementById("usernameInput").value.trim();
+    
+    if (!username) {
+        alert("⚠️ Please enter a username!");
+        return;
+    }
+
+    if (!validateUsername(username)) {
+        alert("⚠️ Invalid username format! Use only letters, numbers, '_', '.' or '-'.");
+        return;
+    }
+
+    generateResults(username);
+}
+
+async function generateResults(username) {
+    const resultsDiv = document.getElementById("results");
+    resultsDiv.innerHTML = "<p>⌛ Searching for username...</p>";
+
+    let resultsHTML = "<h2>Results:</h2>";
+    let linksArray = [];
+
+    for (const platform of platforms) {
+        const profileURL = `${platform.url}${username}`;
+        const iconClass = platform.icon || "fas fa-globe";
+        const platformClass = platform.name.toLowerCase();
+
+        resultsHTML += `
+            <p class="platform ${platformClass}">
+                <i class="${iconClass}"></i>
+                <b>${platform.name}</b>: 
+                <a href="${profileURL}" target="_blank" class="${platformClass}">${profileURL}</a>
+            </p>
+        `;
+        linksArray.push(profileURL);
+
+        // 🕒 Add random delay (1.5 to 3 seconds) between requests
+        await new Promise(resolve => setTimeout(resolve, Math.random() * 1500 + 1500));
+    }
+
+    resultsDiv.innerHTML = resultsHTML;
+
+    // Show Copy Button if results are found
+    if (linksArray.length > 0) {
+        document.getElementById("copyButton").style.display = "block";
+    }
+}
