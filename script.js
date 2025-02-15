@@ -118,7 +118,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     });
-});
 // Theme Toggle Script
 const themeToggle = document.createElement('button');
 themeToggle.classList.add('theme-toggle');
