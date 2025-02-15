@@ -11,16 +11,17 @@
     <style>
         /* General Styling */
         :root {
-            --primary: #2a2a2a;
-            --secondary: #3a3a3a;
-            --accent: #777777;
-            --text: #e0e0e0;
+            --primary: rgba(255, 251, 251, 0); /* Semi-transparent */
+            --secondary: rgba(107, 106, 106, 0.523); /* Semi-transparent */
+            --accent: #6c6c6c;
             --background: #1a1a1a;
+            --text: #e0e0e0;
             --button-hover: #62b1ff;
+            --border: #555;
         }
 
         body {
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Courier New', monospace;
             background-color: var(--background);
             color: var(--text);
             margin: 0;
@@ -77,8 +78,7 @@
             padding: 20px;
             background: var(--primary);
             text-align: center;
-            border-bottom: 2px solid var(--accent);
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            border-bottom: -1px solid var(--accent);
         }
 
         h1 {
@@ -94,25 +94,23 @@
             margin: 20px auto;
             background: var(--secondary);
             padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            border: 1px solid var(--accent);
+            border-radius: 25px;
+            border:-1px solid var(--accent);
         }
 
         /* Textarea Styling */
         textarea {
-            width: 95%;
-            height: 122px;
+            width: 97%;
+            height: 130px;
             background: #2d2d2d;
             color: white;
-            border: 1px solid var(--accent);
-            padding: 12px;
+            border: -1px solid var(--accent);
+            padding: 14px;
             margin-top: 10px;
             border-radius: 8px;
             font-size: 1em;
             resize: none;
             outline: none;
-            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
         }
 
         /* Buttons Layout */
