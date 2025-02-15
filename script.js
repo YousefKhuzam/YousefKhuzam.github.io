@@ -87,14 +87,19 @@ function fangURL() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    // Toggle Read More Sections
-    document.querySelectorAll(".read-more-btn").forEach((btn) => {
-        btn.addEventListener("click", function () {
-            let content = this.nextElementSibling;
-            content.style.display = content.style.display === "block" ? "none" : "block";
-            this.textContent = content.style.display === "block" ? "Show Less" : "Read More";
+    document.querySelectorAll(".read-more-btn").forEach(button => {
+        button.addEventListener("click", function () {
+            let content = this.nextElementSibling; // Get the next sibling
+            if (content && content.classList.contains("read-more-content")) {
+                content.classList.toggle("show"); // Toggle the 'show' class
+                this.textContent = content.classList.contains("show") ? "Show Less" : "Read More";
+            } else {
+                console.error("No .read-more-content found after this button.");
+            }
         });
     });
+});
+
 
     // Mobile Menu Toggle
     const menuToggle = document.querySelector(".menu-toggle");
