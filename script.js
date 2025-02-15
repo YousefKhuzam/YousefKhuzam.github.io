@@ -114,3 +114,52 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+// Theme Toggle Script
+const themeToggle = document.createElement('button');
+themeToggle.classList.add('theme-toggle');
+themeToggle.textContent = '🌓'; // Emoji for the toggle button
+document.body.appendChild(themeToggle);
+
+// Function to toggle theme
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    if (currentTheme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark'); // Save theme preference
+    } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light'); // Save theme preference
+    }
+}
+
+// Event listener for the toggle button
+themeToggle.addEventListener('click', toggleTheme);
+
+// Apply saved theme on page load
+function applySavedTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'dark'; // Default to dark mode
+    document.documentElement.setAttribute('data-theme', savedTheme);
+}
+
+// Run the function when the page loads
+applySavedTheme();
+
+// Open CV Popup
+function openCVPopup() {
+    const popup = document.getElementById('cv-popup');
+    popup.style.display = 'flex'; // Show the popup
+}
+
+// Close CV Popup
+function closeCVPopup() {
+    const popup = document.getElementById('cv-popup');
+    popup.style.display = 'none'; // Hide the popup
+}
+
+// Close popup when clicking outside the content
+window.addEventListener('click', (event) => {
+    const popup = document.getElementById('cv-popup');
+    if (event.target === popup) {
+        closeCVPopup();
+    }
+});
