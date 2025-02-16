@@ -1,0 +1,80 @@
+/* Add these styles to your existing CSS */
+
+/* Input Section */
+.input-section {
+    margin: 25px 0;
+}
+
+.input-options {
+    margin-bottom: 15px;
+}
+
+.tab-btn {
+    background: var(--secondary);
+    margin: 0 5px;
+    padding: 8px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.tab-btn.active {
+    background: var(--accent);
+}
+
+textarea {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    background: var(--primary);
+    color: var(--text);
+    font-family: 'Courier New', monospace;
+    resize: vertical;
+}
+
+.analyze-btn {
+    width: 100%;
+    padding: 15px;
+    margin: 15px 0;
+}
+
+/* Results Section */
+#results {
+    margin-top: 20px;
+}
+
+.result-section {
+    margin-bottom: 20px;
+}
+
+.result-section h3 {
+    margin-bottom: 10px;
+}
+
+.result-item {
+    background: var(--secondary);
+    padding: 10px;
+    border-radius: 6px;
+    margin: 10px 0;
+}
+
+.external-links {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 10px 0;
+}
+
+.external-links a {
+    padding: 6px 12px;
+    background: var(--primary);
+    border-radius: 4px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.3s;
+}
+
+.external-links a:hover {
+    background: var(--accent);
+}

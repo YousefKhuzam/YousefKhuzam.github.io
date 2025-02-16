@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Email Analyzer</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <div class="container">
+        <h1>🔍 Email Analyzer</h1>
+        <p>Analyze and extract intelligence from email headers and content.</p>
+        
+        <div class="input-section">
+            <div class="input-options">
+                <button class="tab-btn active" onclick="switchInput('text')">Paste Text</button>
+                <button class="tab-btn" onclick="switchInput('file')">Upload .eml</button>
+            </div>
+            
+            <textarea id="emailInput" placeholder="Paste email content here..." rows="8"></textarea>
+            <input type="file" id="emlFile" accept=".eml" style="display: none;">
+            
+            <button onclick="analyzeEmail()" class="analyze-btn">Analyze</button>
+        </div>
+
+        <div id="results"></div>
+    </div>
+
+    <script>
+        particlesJS.load('particles-js', '/particles-config.json', function() {
+            console.log('Particles.js loaded!');
+        });
+    </script>
+</body>
+</html>
