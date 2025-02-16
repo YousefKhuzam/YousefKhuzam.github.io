@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Analyzer - OSINT</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <header>
+        <h1>📧 Email Analyzer</h1>
+        <p>Paste an email header to analyze sender details, routing, and authentication.</p>
+    </header>
+
+    <div class="container">
+        <textarea id="emailHeader" placeholder="Paste email header here..."></textarea>
+        <button onclick="analyzeHeader()">Analyze</button>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        function analyzeHeader() {
+            let emailHeader = document.getElementById("emailHeader").value;
+            if (!emailHeader.trim()) {
+                alert("Please paste an email header!");
+                return;
+            }
+            fetch('/analyze', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ header: emailHeader })
+            })
+            .then(response => response.json())
+            .then(data => {
+                let resultsHTML = `<h2>Analysis Results</h2>`;
+                resultsHTML += `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                document.getElementById("results").innerHTML = resultsHTML;
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+
+</body>
+</html>
