@@ -1,59 +1,136 @@
-/* Add these styles to your existing CSS */
+/* Root variables for dark mode */
+:root {
+    --primary: rgba(42, 42, 42, 0.7); /* Semi-transparent */
+    --secondary: rgba(74, 74, 74, 0.7); /* Semi-transparent */
+    --accent: #6c6c6c;
+    --background: #1a1a1a;
+    --text: #e0e0e0;
+    --button-hover: rgba(108, 108, 108, 0.7); /* Semi-transparent */
+    --border: #555;
+}
+
+/* Root variables for light mode */
+[data-theme="light"] {
+    --primary: rgba(190, 190, 190, 0.7); /* Semi-transparent */
+    --secondary: rgba(190, 190, 190, 0.7); /* Semi-transparent */
+    --accent: #4a4a4a;
+    --background: #f8f5f598;
+    --text: #333333;
+    --button-hover: rgba(112, 112, 112, 0.85); /* Semi-transparent */
+    --border: #cccccc;
+}
+
+/* General body styling */
+body {
+    font-family: 'Courier New', monospace;
+    background-color: var(--background);
+    color: var(--text);
+    margin: 0;
+    line-height: 1.6;
+    overflow-x: hidden;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Dynamic background */
+#particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+/* Main container */
+.container {
+    max-width: 1000px;
+    margin: 0px auto;
+    padding: 30px 20px;
+    position: relative;
+}
+
+/* Header styling */
+header {
+    text-align: center;
+    padding: 60px 10px 10px;
+    position: relative;
+}
+
+/* Main heading */
+h1 {
+    color: var(--text);
+    font-size: 2.8em;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 /* Input Section */
 .input-section {
-    margin: 25px 0;
+    text-align: center;
+    margin-top: 20px;
 }
 
 .input-options {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
     margin-bottom: 15px;
 }
 
 .tab-btn {
     background: var(--secondary);
-    margin: 0 5px;
-    padding: 8px 20px;
+    color: var(--text);
+    padding: 10px 20px;
     border-radius: 6px;
     cursor: pointer;
+    transition: all 0.3s;
 }
 
 .tab-btn.active {
     background: var(--accent);
 }
 
-textarea {
+textarea, input[type="file"] {
     width: 100%;
     padding: 15px;
     margin: 10px 0;
-    border: 1px solid var(--accent);
+    border: 1px solid var(--border);
     border-radius: 6px;
     background: var(--primary);
     color: var(--text);
-    font-family: 'Courier New', monospace;
     resize: vertical;
+    transition: background 0.3s, color 0.3s;
 }
 
 .analyze-btn {
     width: 100%;
     padding: 15px;
-    margin: 15px 0;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.analyze-btn:hover {
+    background: var(--button-hover);
 }
 
 /* Results Section */
 #results {
     margin-top: 20px;
+    text-align: left;
 }
 
 .result-section {
     margin-bottom: 20px;
 }
 
-.result-section h3 {
-    margin-bottom: 10px;
-}
-
 .result-item {
-    background: var(--secondary);
+    background: var(--primary);
     padding: 10px;
     border-radius: 6px;
     margin: 10px 0;
@@ -68,7 +145,7 @@ textarea {
 
 .external-links a {
     padding: 6px 12px;
-    background: var(--primary);
+    background: var(--secondary);
     border-radius: 4px;
     text-decoration: none;
     color: var(--text);
@@ -76,5 +153,30 @@ textarea {
 }
 
 .external-links a:hover {
-    background: var(--accent);
+    background: var(--button-hover);
+}
+/* Theme Toggle Button */
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: var(--secondary);
+    color: var(--text);
+    padding: 10px;
+    border-radius: 50%; /* Circular button */
+    border: 1px solid var(--accent);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    font-size: 1.2em;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-toggle:hover {
+    background: var(--button-hover);
+    transform: translateY(-2px);
 }
