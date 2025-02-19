@@ -1,39 +1,3 @@
-document.addEventListener("DOMContentLoaded", function () {
-    console.log("✅ DOM Loaded - Running script.js");
-
-    // 🌙 Dark Mode Toggle (Fix Applied)
-    const themeToggle = document.querySelector('.theme-toggle');
-
-    if (!themeToggle) {
-        console.error("❌ Theme toggle button not found! Check your HTML.");
-    } else {
-        function toggleTheme() {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-        }
-
-        themeToggle.addEventListener('click', toggleTheme);
-
-        // Apply saved theme on page load
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-    }
-
-    // 📖 Read More Button Toggle
-    document.querySelectorAll(".read-more-btn").forEach(button => {
-        button.addEventListener("click", function () {
-            let content = this.nextElementSibling;
-            if (content && content.classList.contains("read-more-content")) {
-                content.classList.toggle("show");
-                this.textContent = content.classList.contains("show") ? "Show Less" : "Read More";
-            } else {
-                console.error("❌ No .read-more-content found after this button.");
-            }
-        });
-    });
 
 // Base64 Encoding
 function base64Encode() {
@@ -107,6 +71,43 @@ function fangURL() {
     let fanged = input.replace(/hxxp/g, "http").replace(/\[\.\]/g, ".");
     document.getElementById("outputText").value = fanged;
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("✅ DOM Loaded - Running script.js");
+
+    // 🌙 Dark Mode Toggle (Fix Applied)
+    const themeToggle = document.querySelector('.theme-toggle');
+
+    if (!themeToggle) {
+        console.error("❌ Theme toggle button not found! Check your HTML.");
+    } else {
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        themeToggle.addEventListener('click', toggleTheme);
+
+        // Apply saved theme on page load
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+
+    // 📖 Read More Button Toggle
+    document.querySelectorAll(".read-more-btn").forEach(button => {
+        button.addEventListener("click", function () {
+            let content = this.nextElementSibling;
+            if (content && content.classList.contains("read-more-content")) {
+                content.classList.toggle("show");
+                this.textContent = content.classList.contains("show") ? "Show Less" : "Read More";
+            } else {
+                console.error("❌ No .read-more-content found after this button.");
+            }
+        });
+    });
 
     // 📜 Blog Read More Toggle
     const blogReadMore = document.getElementById("full-blog");
