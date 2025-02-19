@@ -118,10 +118,13 @@ function extractArtifacts(emlContent) {
         emailBody: "",
         ipAddresses: [],
         urls: [],
-        securityHeaders: {},
+        securityHeaders: { risks: [], info: [] },  // ✅ Ensure this is initialized
         messageId: "",
-        receivedHeaders: []
+        receivedHeaders: [],
+        phishingRisk: [],   // ✅ Ensure these arrays exist
+        impersonationRisk: []
     };
+
 
     const headerBodySplit = emlContent.split("\n\n");
     if (headerBodySplit.length > 1) {
@@ -172,13 +175,113 @@ function extractArtifacts(emlContent) {
 function analyzeSecurityHeaders(content) {
     console.log("Analyzing security headers...");
     const analysis = { warnings: [] };
+
+    // Convert headers to lowercase for case-insensitive search
     const headers = content.split("\n\n")[0].toLowerCase();
 
-    if (!headers.includes('spf=pass')) analysis.warnings.push('SPF validation missing or failed');
-    if (!headers.includes('dkim=pass')) analysis.warnings.push('DKIM signature missing or invalid');
-    if (!headers.includes('dmarc=pass')) analysis.warnings.push('DMARC policy check failed');
+    // Extract SPF, DKIM, DMARC results
+    const spfMatch = headers.match(/spf=(pass|fail|neutral|softfail|permerror|temperror)/);
+    const dkimMatch = headers.match(/dkim=(pass|fail|neutral|permerror|temperror)/);
+    const dmarcMatch = headers.match(/dmarc=(pass|fail|none|permerror|temperror)/);
+
+    const spfResult = spfMatch ? spfMatch[1] : "missing";
+    const dkimResult = dkimMatch ? dkimMatch[1] : "missing";
+    const dmarcResult = dmarcMatch ? dmarcMatch[1] : "missing";
+
+    // 🛑 SPF Status Logic
+    if (spfResult === "fail" || spfResult === "missing") {
+        analysis.warnings.push("SPF validation failed or missing (email spoofing risk).");
+    } else if (spfResult === "neutral" || spfResult === "softfail") {
+        analysis.warnings.push("SPF is not fully enforced (neutral/softfail).");
+    }
+
+    // 🔐 DKIM Status Logic
+    if (dkimResult === "fail" || dkimResult === "missing") {
+        analysis.warnings.push("DKIM signature is invalid or missing.");
+    }
+
+    // 📜 DMARC Status Logic
+    if (dmarcResult === "fail" || dmarcResult === "missing") {
+        analysis.warnings.push("DMARC policy check failed (risk of spoofing).");
+    } else if (dmarcResult === "none") {
+        analysis.warnings.push("DMARC is not enforced (policy is set to 'none').");
+    }
+
     return analysis;
 }
+
+
+function generateThreatSummary(artifacts) {
+    let riskLevel = "Low"; // Default risk level
+    let verdict = "This email appears safe, no immediate threats detected.";
+    let reasoning = [];
+
+    // 🚨 Check for Phishing Risks
+    if (artifacts.phishingRisk.length > 0) {
+        riskLevel = "High";
+        verdict = "This email is highly suspicious and may be a phishing attempt.";
+        reasoning.push("Phishing-like content detected in email body.");
+    }
+
+    // 🛑 Check for Impersonation
+    if (artifacts.impersonationRisk.length > 0) {
+        riskLevel = "Medium";
+        verdict = "The email contains signs of sender impersonation.";
+        reasoning.push("Sender’s return-path differs from email domain (potential spoofing).");
+    }
+
+    // 🛡️ Check Security Headers from pre-analyzed data
+    if (artifacts.securityHeaders.risks) {
+        artifacts.securityHeaders.risks.forEach(risk => reasoning.push(risk));
+    }
+
+    // 📊 Final threat assessment
+    if (artifacts.threatScore > 70) riskLevel = "High";
+    else if (artifacts.threatScore > 40) riskLevel = "Medium";
+
+    return {
+        riskLevel,
+        verdict,
+        reasoning: reasoning.join(" ")
+    };
+
+    function analyzeSecurityHeaders(content) {
+        console.log("Analyzing security headers...");
+        const analysis = { risks: [], info: [] }; // Separate risks & info
+    
+        // Convert headers to lowercase for case-insensitive search
+        const headers = content.split("\n\n")[0].toLowerCase();
+    }
+        // Extract SPF, DKIM, DMARC results
+        const spfMatch = headers.match(/spf=(pass|fail|neutral|softfail|permerror|temperror)/);
+        const dkimMatch = headers.match(/dkim=(pass|fail|neutral|permerror|temperror)/);
+        const dmarcMatch = headers.match(/dmarc=(pass|fail|none|permerror|temperror)/);
+    
+        const spfResult = spfMatch ? spfMatch[1] : "missing";
+        const dkimResult = dkimMatch ? dkimMatch[1] : "missing";
+        const dmarcResult = dmarcMatch ? dmarcMatch[1] : "missing";
+    
+        // 🛑 SPF Status Logic
+        if (spfResult === "fail" || spfResult === "missing") {
+            analysis.risks.push("SPF validation failed or missing. This allows email spoofing.");
+        } else if (spfResult === "neutral" || spfResult === "softfail") {
+            analysis.info.push("SPF is set to 'neutral/softfail'. This is not a full failure but reduces email authentication effectiveness.");
+        }
+    
+        // 🔐 DKIM Status Logic
+        if (dkimResult === "fail" || dkimResult === "missing") {
+            analysis.risks.push("DKIM signature is invalid or missing. This weakens email integrity.");
+        }
+    
+        // 📜 DMARC Status Logic
+        if (dmarcResult === "fail" || dmarcResult === "missing") {
+            analysis.risks.push("DMARC policy check failed or missing. This increases the risk of email spoofing.");
+        } else if (dmarcResult === "none") {
+            analysis.info.push("DMARC policy is set to 'none', meaning emails are monitored but not rejected. Consider stricter policies.");
+        }
+    
+        return analysis;
+    }
 
 function displayResults(artifacts) {
     const resultsDiv = document.getElementById("results");
@@ -205,19 +308,19 @@ function displayResults(artifacts) {
         </div>
     </div>`;
 
-    // Security Warnings
-    if (artifacts.securityHeaders.warnings.length > 0 || artifacts.phishingRisk.length > 0 || artifacts.impersonationRisk.length > 0) {
-        resultsHTML += `<div class="result-section">
-            <h3>⚠️ Security Risks</h3>
-            <div class="result-item">
-                <ul>
-                    ${artifacts.securityHeaders.warnings.map(issue => `<li>⚠️ ${issue}</li>`).join('')}
-                    ${artifacts.phishingRisk.map(issue => `<li>🚨 ${issue}</li>`).join('')}
-                    ${artifacts.impersonationRisk.map(issue => `<li>🔴 ${issue}</li>`).join('')}
-                </ul>
-            </div>
-        </div>`;
-    }
+// Security Risks & Informational Warnings
+if (artifacts.securityHeaders && artifacts.securityHeaders.risks && artifacts.securityHeaders.info) {
+    resultsHTML += `<div class="result-section">
+        <h3>⚠️ Security Analysis</h3>
+        <div class="result-item">
+            <ul>
+                ${artifacts.securityHeaders.risks.map(issue => `<li>🚨 <b>Risk:</b> ${issue}</li>`).join('')}
+                ${artifacts.securityHeaders.info.map(issue => `<li>ℹ️ <b>Info:</b> ${issue}</li>`).join('')}
+            </ul>
+        </div>
+    </div>`;
+}
+
 
 // URLs Found
 if (artifacts.urls.length > 0) {
@@ -252,13 +355,17 @@ if (artifacts.urls.length > 0) {
         </div>`;
     }
 
-    // Email Body Preview
-    resultsHTML += `<div class="result-section">
-        <h3>AI-Gen Summary (Soooon)</h3>
+    // AI-Generated Threat Summary
+    const aiSummary = generateThreatSummary(artifacts);
+    resultsHTML += `<div class="result-section alert-${aiSummary.riskLevel.toLowerCase()}">
+        <h3>🤖 AI-Generated Threat Summary</h3>
         <div class="result-item">
-            <textarea readonly style="width:100%; height:150px;">${artifacts.emailBody.slice(0, 500)}...</textarea>
+            <p><b>Risk Level:</b> <span class="risk-${aiSummary.riskLevel.toLowerCase()}">${aiSummary.riskLevel}</span></p>
+            <p><b>Verdict:</b> ${aiSummary.verdict}</p>
+            <p><b>Reasoning:</b> ${aiSummary.reasoning}</p>
         </div>
     </div>`;
+
 
     resultsDiv.innerHTML = resultsHTML;
 }
