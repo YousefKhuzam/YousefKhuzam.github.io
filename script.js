@@ -35,6 +35,79 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+// Base64 Encoding
+function base64Encode() {
+    let input = document.getElementById("inputText").value.trim();
+    let output = btoa(unescape(encodeURIComponent(input)));
+    document.getElementById("outputText").value = output;
+}
+
+// Base64 Decoding
+function base64Decode() {
+    let input = document.getElementById("inputText").value.trim();
+    try {
+        let output = decodeURIComponent(escape(atob(input)));
+        document.getElementById("outputText").value = output;
+    } catch (e) {
+        alert("Invalid Base64 input");
+    }
+}
+
+// SHA-256 Hashing
+async function generateSHA256() {
+    let input = document.getElementById("inputText").value.trim();
+    const encoder = new TextEncoder();
+    const data = encoder.encode(input);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+    document.getElementById("outputText").value = hashHex;
+}
+
+// Simple Caesar Cipher Encryption
+function caesarCipherEncrypt() {
+    let input = document.getElementById("inputText").value.trim();
+    let shift = 3; // Shift by 3 characters
+    let output = input.split("").map(char => {
+        if (char.match(/[a-zA-Z]/)) {
+            let code = char.charCodeAt(0);
+            let shiftBase = code >= 65 && code <= 90 ? 65 : 97;
+            return String.fromCharCode(((code - shiftBase + shift) % 26) + shiftBase);
+        }
+        return char;
+    }).join("");
+    document.getElementById("outputText").value = output;
+}
+
+// Simple Caesar Cipher Decryption
+function caesarCipherDecrypt() {
+    let input = document.getElementById("inputText").value.trim();
+    let shift = 3; // Shift by 3 characters
+    let output = input.split("").map(char => {
+        if (char.match(/[a-zA-Z]/)) {
+            let code = char.charCodeAt(0);
+            let shiftBase = code >= 65 && code <= 90 ? 65 : 97;
+            return String.fromCharCode(((code - shiftBase - shift + 26) % 26) + shiftBase);
+        }
+        return char;
+    }).join("");
+    document.getElementById("outputText").value = output;
+}
+
+// Function to Defang URLs (convert them to a safer format)
+function defangURL() {
+    let input = document.getElementById("inputText").value;
+    let defanged = input.replace(/http/g, "hxxp").replace(/\./g, "[.]");
+    document.getElementById("outputText").value = defanged;
+}
+
+// Function to Fang URLs (convert back to normal)
+function fangURL() {
+    let input = document.getElementById("inputText").value;
+    let fanged = input.replace(/hxxp/g, "http").replace(/\[\.\]/g, ".");
+    document.getElementById("outputText").value = fanged;
+}
+
     // 📜 Blog Read More Toggle
     const blogReadMore = document.getElementById("full-blog");
     const blogButton = document.querySelector(".read-more-btn");
