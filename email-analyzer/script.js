@@ -1,3 +1,42 @@
+// Base URL for fetching rule files from GitHub
+const GITHUB_USER = "YousefKhuzam";
+const GITHUB_REPO = "yousefkhuzam.github.io";
+const RULES_PATH = "email-analyzer/email_analysis_rules/";
+const GITHUB_RAW_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/${RULES_PATH}`;
+
+const RULE_FILES = [
+    "free_email_providers.txt",
+    "free_file_hosts.txt",
+    "free_subdomain_hosts.txt",
+    "suspicious_content.txt",
+    "suspicious_subjects.txt",
+    "suspicious_tlds.txt",
+    "url_shorteners.txt"
+];
+
+// Object to store loaded rules
+const rules = {};
+
+async function loadRules() {
+    console.log("Fetching rule files...");
+    const fetchPromises = RULE_FILES.map(file =>
+        fetch(GITHUB_RAW_URL + file)
+            .then(res => res.text())
+            .then(text => {
+                rules[file.replace(".txt", "")] = text.split("\n").map(line => line.trim()).filter(line => line);
+                console.log(`✅ Loaded ${file}:`, rules[file.replace(".txt", "")]); // 👈 Debugging
+            })
+            .catch(err => console.error(`Error fetching ${file}:`, err))
+    );
+
+    await Promise.all(fetchPromises);
+    console.log("Rules loaded:", rules);
+}
+
+
+// Load rules when the script initializes
+loadRules();
+
 document.addEventListener("DOMContentLoaded", function () {
     particlesJS.load('particles-js', '/particles-config.json', function () {
         console.log("Particles.js loaded!");
@@ -59,8 +98,73 @@ async function processContent(content) {
     artifacts.securityHeaders = analyzeSecurityHeaders(content);
     artifacts.phishingRisk = await analyzePhishingContent(artifacts.emailBody);
     artifacts.impersonationRisk = analyzeImpersonation(artifacts);
+    artifacts.ruleFindings = applyRuleChecks(artifacts);
+
+    console.log("✅ Rule Findings:", artifacts.ruleFindings); 
     artifacts.threatScore = calculateThreatScore(artifacts);
+
     displayResults(artifacts);
+}
+
+function applyRuleChecks(artifacts) {
+    console.log("Applying rule-based analysis...");
+    console.log("🔍 Loaded Rules:", rules);
+    console.log("📩 Artifacts Extracted:", artifacts);
+
+    let findings = [];
+
+    // 📌 Check if sender uses a free email provider
+    if (artifacts.emailMetadata.senderEmail) {
+        const senderDomain = artifacts.emailMetadata.senderEmail.split("@")[1].trim();
+        if (rules.free_email_providers.includes(senderDomain)) {
+            findings.push(`🚩 Sender uses a free email provider: ${senderDomain}`);
+        }
+    }
+
+    // 🔗 Check if email contains blacklisted URLs
+    if (artifacts.urls.length > 0) {
+        artifacts.urls.forEach(url => {
+            const hostname = new URL(url).hostname;
+
+            // Check Free File Hosts
+            if (rules.free_file_hosts.some(host => hostname.includes(host))) {
+                findings.push(`⚠️ URL links to a free file host: ${url}`);
+            }
+
+            // Check URL Shorteners
+            if (rules.url_shorteners.some(shortener => hostname.includes(shortener))) {
+                findings.push(`🚨 Shortened URL detected: ${url}`);
+            }
+
+            // Check Suspicious TLDs
+            rules.suspicious_tlds.forEach(tld => {
+                if (hostname.endsWith("." + tld)) {
+                    findings.push(`⚠️ Suspicious TLD found in URL: ${url}`);
+                }
+            });
+        });
+    }
+
+    // 📝 Check if email body contains suspicious words
+    if (artifacts.emailBody) {
+        rules.suspicious_content.forEach(phrase => {
+            if (artifacts.emailBody.toLowerCase().includes(phrase.toLowerCase())) {
+                findings.push(`🚨 Suspicious content found in email: "${phrase}"`);
+            }
+        });
+    }
+
+    // 📩 Check if subject contains suspicious words
+    if (artifacts.emailMetadata.subject) {
+        rules.suspicious_subjects.forEach(phrase => {
+            if (artifacts.emailMetadata.subject.toLowerCase().includes(phrase.toLowerCase())) {
+                findings.push(`⚠️ Suspicious subject detected: "${artifacts.emailMetadata.subject}"`);
+            }
+        });
+    }
+
+    console.log("✅ Rule Findings:", findings);
+    return findings;
 }
 
 async function analyzePhishingContent(text) {
@@ -87,11 +191,14 @@ async function analyzePhishingContent(text) {
 function calculateThreatScore(artifacts) {
     console.log("Calculating threat score...");
     let score = 0;
-    if (artifacts.securityHeaders.warnings.length) score += 30;
-    if (artifacts.phishingRisk.length) score += 40;
-    if (artifacts.impersonationRisk.length) score += 20;
-    if (artifacts.urls.length) score += artifacts.urls.length * 5;
-    if (artifacts.ipAddresses.length) score += artifacts.ipAddresses.length * 3;
+
+    if (artifacts.securityHeaders?.warnings?.length) score += 30;
+    if (artifacts.phishingRisk?.length) score += 40;
+    if (artifacts.impersonationRisk?.length) score += 20;
+    if (artifacts.urls?.length) score += artifacts.urls.length * 5;
+    if (artifacts.ipAddresses?.length) score += artifacts.ipAddresses.length * 3;
+    if (artifacts.ruleFindings?.length) score += artifacts.ruleFindings.length * 10; // ✅ Safe Access
+
     return Math.min(score, 100);
 }
 
@@ -118,11 +225,12 @@ function extractArtifacts(emlContent) {
         emailBody: "",
         ipAddresses: [],
         urls: [],
-        securityHeaders: { risks: [], info: [] },  // ✅ Ensure this is initialized
+        securityHeaders: { risks: [], info: [] }, 
         messageId: "",
         receivedHeaders: [],
-        phishingRisk: [],   // ✅ Ensure these arrays exist
-        impersonationRisk: []
+        phishingRisk: [],   
+        impersonationRisk: [],
+        ruleFindings: []
     };
 
 
@@ -350,6 +458,18 @@ if (artifacts.urls.length > 0) {
             <div class="result-item">
                 <ul>
                     ${artifacts.ipAddresses.map(ip => `<li>${ip}</li>`).join('')}
+                </ul>
+            </div>
+        </div>`;
+    }
+
+    // 📌 Rule-Based Findings
+    if (artifacts.ruleFindings.length > 0) {
+        resultsHTML += `<div class="result-section">
+            <h3>🚨 Findings Based on Rules</h3>
+            <div class="result-item">
+                <ul>
+                    ${artifacts.ruleFindings.map(issue => `<li>🔍 ${issue}</li>`).join('')}
                 </ul>
             </div>
         </div>`;
