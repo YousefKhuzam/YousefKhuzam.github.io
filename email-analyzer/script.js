@@ -199,6 +199,7 @@ function extractArtifacts(emlContent) {
 
     return artifacts;
 }
+
 function loadSampleEmail() {
     const sampleEmail = `From: "Security Team" <support@securebank-alerts.com>
 To: victim@example.com
