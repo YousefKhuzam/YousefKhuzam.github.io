@@ -72,6 +72,43 @@ function fangURL() {
     document.getElementById("outputText").value = fanged;
 }
 
+function decodeURL() {
+    let input = document.getElementById("inputText").value.trim();
+
+    try {
+        let urlObj = new URL(input);
+
+        // Decode Punycode domain
+        let decodedHost = urlObj.hostname;
+        if (decodedHost.includes("xn--")) {
+            try {
+                decodedHost = new URL("http://" + decodedHost).hostname;
+                decodedHost = decodeURIComponent(decodedHost);
+            } catch (e) {
+                // Fallback
+                decodedHost = urlObj.hostname;
+            }
+        }
+
+        // Decode path and query
+        let decodedPath = decodeURIComponent(urlObj.pathname);
+        let decodedQuery = decodeURIComponent(urlObj.search);
+
+        // Reconstruct final URL
+        let decoded = `${urlObj.protocol}//${decodedHost}${decodedPath}${decodedQuery}`;
+        document.getElementById("outputText").value = decoded;
+
+    } catch (error) {
+        // If it’s not a full URL, fallback to normal decoding
+        try {
+            let fallback = decodeURIComponent(input);
+            document.getElementById("outputText").value = fallback;
+        } catch (e) {
+            alert("Invalid input");
+        }
+    }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     console.log("✅ DOM Loaded - Running script.js");
 
