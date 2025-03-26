@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game | Yousef Alkhuzam</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <!-- Particles background -->
+    <div id="particles-js"></div>
+
+    <div class="game-container">
+        <h1>Snake Game (لعبه الحيه)</h1>
+        <canvas id="gameCanvas" width="650" height="420"></canvas>
+        <div id="score">Score: 0</div>
+    </div>
+
+    <script>
+        // Particles.js for background effect
+        particlesJS.load('particles-js', 'particles-config.json', function() {
+            console.log('Particles.js loaded!');
+        });
+    </script>
+</body>
+</html>
