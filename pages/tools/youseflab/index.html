@@ -40,77 +40,84 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            opacity: 1.0;
+            opacity: 0.5;
         }
+
         /* Home Button */
-        .home-btn {
+        .back-btn {
             position: absolute;
-            top: 15px;
-            left: 30px;
+            top: 20px;
+            left: 20px;
             background: var(--accent);
             color: white;
-            padding: 8px 14px;
-            border-radius: 6px;
+            padding: 10px 20px;
+            border-radius: 5px;
             text-decoration: none;
-            font-size: 0.9em;
-            font-weight: bold;
-            transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
         
-        .home-btn:hover {
+        .back-btn:hover {
             background: var(--button-hover);
             transform: translateY(-2px);
-        }
-        
-        /* Mobile Adjustments */
-        @media (max-width: 768px) {
-            .home-btn {
-                top: 10px;
-                right: 10px;
-                padding: 6px 12px;
-                font-size: 0.8em;
-            }
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
         
         /* Header */
         header {
-            width: 100%;
-            padding: 20px;
-            background: var(--primary);
             text-align: center;
-            border-bottom: -1px solid var(--accent);
+            padding: 40px 20px;
+            background: var(--secondary);
+            margin-bottom: 30px;
+            border-radius: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--accent);
         }
 
-        h1 {
-            font-size: 2em;
+        header h1 {
+            font-size: 2.5em;
             color: var(--text);
-            margin: 0;
+            margin-bottom: 10px;
+            font-family: inherit;
+        }
+
+        header p {
+            color: var(--accent);
+            font-size: 1.2em;
+            font-family: inherit;
         }
 
         /* Main Container */
         .container {
-            max-width: 800px;
-            width: 90%;
-            margin: 20px auto;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .tool-container {
             background: var(--secondary);
-            padding: 25px;
-            border-radius: 25px;
-            border:-1px solid var(--accent);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--accent);
         }
 
         /* Textarea Styling */
         textarea {
             width: 97%;
             height: 130px;
-            background: #2d2d2d;
-            color: white;
-            border: -1px solid var(--accent);
+            background: var(--background);
+            color: var(--text);
+            border: 1px solid var(--accent);
             padding: 14px;
             margin-top: 10px;
             border-radius: 8px;
             font-size: 1em;
             resize: none;
             outline: none;
+            font-family: inherit;
         }
 
         /* Buttons Layout */
@@ -119,26 +126,27 @@
             flex-wrap: wrap;
             justify-content: center;
             gap: 8px;
-            margin-top: 15px;
+            margin: 15px 0;
         }
 
         /* Button Styling */
         button {
             background: var(--accent);
             color: white;
-            padding: 8px 14px;
+            padding: 10px 20px;
             border: none;
-            border-radius: 6px;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 0.9em;
-            font-weight: bold;
             transition: all 0.3s ease;
-            outline: none;
+            font-family: inherit;
+            font-weight: normal;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         button:hover {
             background: var(--button-hover);
             transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
         /* Mobile-Friendly */
@@ -164,40 +172,39 @@
     </style>
 </head>
 <body>
-
+    <button class="theme-toggle">🌓</button>
     <div id="particles-js"></div>
+
+    <a href="../../../index.html" class="back-btn" onclick="event.preventDefault(); window.location.href='../../../index.html'">← Back to Home</a>
 
     <header>
         <h1>🔧 YousefLab</h1>
         <p>Encrypt, decode, and analyze data with ease.</p>
-        <a href="../../../index.html" class="home-btn">Back</a>
     </header>
 
     <div class="container">
-        <textarea id="inputText" placeholder="Enter text here..."></textarea>
+        <div class="tool-container">
+            <textarea id="inputText" placeholder="Enter text here..."></textarea>
 
-        <div class="buttons">
-            <button onclick="base64Encode()">Base64 Encode</button>
-            <button onclick="base64Decode()">Base64 Decode</button>
-            <button onclick="generateSHA256()">SHA-256 Hash</button>
-            <button onclick="caesarCipherEncrypt()">Caesar Cipher Encrypt</button>
-            <button onclick="caesarCipherDecrypt()">Caesar Cipher Decrypt</button>
-            <button onclick="defangURL()">Defang URL</button>
-            <button onclick="fangURL()">Fang URL</button>
-            <button onclick="decodeURL()">URL Decode</button>
+            <div class="buttons">
+                <button onclick="base64Encode()">Base64 Encode</button>
+                <button onclick="base64Decode()">Base64 Decode</button>
+                <button onclick="generateSHA256()">SHA-256 Hash</button>
+                <button onclick="caesarCipherEncrypt()">Caesar Cipher Encrypt</button>
+                <button onclick="caesarCipherDecrypt()">Caesar Cipher Decrypt</button>
+                <button onclick="defangURL()">Defang URL</button>
+                <button onclick="fangURL()">Fang URL</button>
+                <button onclick="decodeURL()">URL Decode</button>
+            </div>
+
+            <textarea id="outputText" placeholder="Output..." readonly></textarea>
         </div>
-
-        <textarea id="outputText" placeholder="Output..." readonly></textarea>
     </div>
-    
-    <script src="../../../assets/js/main.js" defer></script>
-    
+
     <script>
-        // Fix Particles.js Load
-        particlesJS.load('particles-js', 'particles-config.json', function() {
+        particlesJS.load('particles-js', '../../../assets/config/particles-config.json', function() {
             console.log('Particles.js loaded!');
         });
     </script>
-
 </body>
 </html>
