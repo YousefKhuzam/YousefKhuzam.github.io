@@ -1,4 +1,3 @@
-
 // Base64 Encoding
 function base64Encode() {
     let input = document.getElementById("inputText").value.trim();
@@ -99,7 +98,7 @@ function decodeURL() {
         document.getElementById("outputText").value = decoded;
 
     } catch (error) {
-        // If it’s not a full URL, fallback to normal decoding
+        // If it's not a full URL, fallback to normal decoding
         try {
             let fallback = decodeURIComponent(input);
             document.getElementById("outputText").value = fallback;
@@ -202,8 +201,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 🌐 Particles.js Background
     if (document.getElementById("particles-js")) {
-        particlesJS.load('particles-js', 'particles-config.json', function () {
-            console.log('✨ Particles.js loaded!');
+        particlesJS.load('particles-js', 'assets/config/particles-config.json', function() {
+            console.log('Particles.js loaded!');
         });
     } else {
         console.warn("⚠️ Particles.js container not found. Skipping background effect.");
