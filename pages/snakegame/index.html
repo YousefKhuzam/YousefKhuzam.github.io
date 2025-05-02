@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game | Yousef Alkhuzam</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="../../assets/js/main.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <button class="theme-toggle">🌓</button>
+    <div id="particles-js"></div>
+    
+    <a href="../../index.html" class="back-btn">← Back to Home</a>
+
+    <div class="game-container">
+        <h1>Snake Game</h1>
+        <canvas id="gameCanvas" width="400" height="400"></canvas>
+        <div id="score">Score: 0</div>
+        <div class="controls">Use arrow keys or WASD to move</div>
+        <button class="restart-btn" onclick="restartGame()">Restart Game</button>
+    </div>
+
+    <script>
+        particlesJS.load('particles-js', '../../assets/config/particles-config.json', function() {
+            console.log('Particles.js loaded!');
+        });
+    </script>
+</body>
+</html> 

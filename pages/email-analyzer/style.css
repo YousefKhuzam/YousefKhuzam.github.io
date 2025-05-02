@@ -68,8 +68,12 @@ h1 {
 
 /* Input Section */
 .input-section {
-    text-align: center;
-    margin-top: 20px;
+    background: var(--secondary);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--accent);
 }
 
 .input-options {
@@ -80,16 +84,17 @@ h1 {
 }
 
 .tab-btn {
-    background: var(--secondary);
+    background: var(--accent);
     color: var(--text);
     padding: 10px 20px;
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.3s;
+    border: none;
 }
 
 .tab-btn.active {
-    background: var(--accent);
+    background: var(--button-hover);
 }
 
 textarea, input[type="file"] {
@@ -102,21 +107,24 @@ textarea, input[type="file"] {
     color: var(--text);
     resize: vertical;
     transition: background 0.3s, color 0.3s;
+    font-family: inherit;
 }
 
 .analyze-btn {
     width: 100%;
     padding: 15px;
     background: var(--accent);
-    color: white;
+    color: var(--text);
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: all 0.3s;
+    font-family: inherit;
 }
 
 .analyze-btn:hover {
     background: var(--button-hover);
+    transform: translateY(-2px);
 }
 
 /* Results Section */
@@ -126,16 +134,42 @@ textarea, input[type="file"] {
 }
 
 .result-section {
+    background: var(--secondary);
+    border-radius: 15px;
+    padding: 20px;
     margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--accent);
+}
+
+.result-section h2, .result-section h3 {
+    color: var(--text);
+    margin-bottom: 15px;
 }
 
 .result-item {
     background: var(--primary);
-    padding: 10px;
-    border-radius: 6px;
+    padding: 15px;
+    border-radius: 8px;
     margin: 10px 0;
 }
 
+.result-item p {
+    margin: 5px 0;
+}
+
+/* Risk Levels */
+.alert-critical { border-color: #ff4444; }
+.alert-high { border-color: #ff8800; }
+.alert-medium { border-color: #ffbb33; }
+.alert-low { border-color: #00C851; }
+
+.risk-critical { color: #ff4444; }
+.risk-high { color: #ff8800; }
+.risk-medium { color: #ffbb33; }
+.risk-low { color: #00C851; }
+
+/* External Links */
 .external-links {
     display: flex;
     gap: 8px;
@@ -145,7 +179,7 @@ textarea, input[type="file"] {
 
 .external-links a {
     padding: 6px 12px;
-    background: var(--secondary);
+    background: var(--accent);
     border-radius: 4px;
     text-decoration: none;
     color: var(--text);
@@ -154,7 +188,9 @@ textarea, input[type="file"] {
 
 .external-links a:hover {
     background: var(--button-hover);
+    transform: translateY(-2px);
 }
+
 /* Theme Toggle Button */
 .theme-toggle {
     position: fixed;
