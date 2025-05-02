@@ -1,89 +1,115 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Analyzer | Yousef Alkhuzam</title>
+    <title>Email Analyzer - Yousef Khuzam</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/toxicity"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/qna"></script>
-    <script src="../../assets/js/main.js" defer></script>
-    <script src="script.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="script.js"></script>
 </head>
 <body>
-    <button class="theme-toggle">🌓</button>
     <div id="particles-js"></div>
-
-    <a href="../../index.html" class="back-btn">← Back to Home</a>
-
     <div class="container">
         <header>
-            <h1>📧 Email Header Analyzer</h1>
-            <p>Analyze email headers for potential threats and security risks</p>
+            <h1><i class="fas fa-envelope-open-text"></i> Email Analyzer</h1>
+            <p>Analyze email headers and content for potential threats</p>
         </header>
 
         <div class="input-section">
-            <div class="input-options">
-                <button class="tab-btn active" onclick="switchTab('paste')">Paste Headers</button>
-                <button class="tab-btn" onclick="switchTab('upload')">Upload File</button>
-                <button class="tab-btn" onclick="loadSampleEmail()">Load Sample</button>
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="switchTab('paste')">
+                    <i class="fas fa-paste"></i> Paste Email
+                </button>
+                <button class="tab-btn" onclick="switchTab('file')">
+                    <i class="fas fa-file-upload"></i> Upload .eml
+                </button>
+                <button class="tab-btn" onclick="loadSampleEmail()">
+                    <i class="fas fa-file-code"></i> Sample Email
+                </button>
             </div>
 
-            <div id="paste-input" class="input-tab">
-                <textarea id="emailInput" placeholder="Paste email headers here..."></textarea>
+            <div id="paste-input">
+                <textarea id="emailInput" placeholder="Paste email headers and content here..."></textarea>
             </div>
 
-            <div id="file-input" class="input-tab" style="display: none;">
-                <input type="file" id="emlFile" accept=".eml,.txt">
+            <div id="file-input" style="display: none;">
+                <div class="file-upload">
+                    <input type="file" id="emlFile" accept=".eml">
+                    <label for="emlFile" class="file-label">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Choose .eml file or drag and drop</span>
+                    </label>
+                </div>
             </div>
 
             <div class="analysis-options">
-                <label class="checkbox-container">
-                    <input type="checkbox" id="checkHeaders" checked>
-                    <span class="checkmark"></span>
-                    Analyze Security Headers
-                </label>
-                <label class="checkbox-container">
-                    <input type="checkbox" id="checkContent" checked>
-                    <span class="checkmark"></span>
-                    Analyze Content
-                </label>
-                <label class="checkbox-container">
-                    <input type="checkbox" id="checkLinks" checked>
-                    <span class="checkmark"></span>
-                    Analyze Links
-                </label>
-                <label class="checkbox-container">
-                    <input type="checkbox" id="checkImpersonation" checked>
-                    <span class="checkmark"></span>
-                    Check Impersonation
-                </label>
+                <div class="option-group">
+                    <h3><i class="fas fa-shield-alt"></i> Security Analysis</h3>
+                    <label><input type="checkbox" id="checkHeaders" checked> Analyze Security Headers</label>
+                    <label><input type="checkbox" id="checkContent" checked> Analyze Content</label>
+                    <label><input type="checkbox" id="checkLinks" checked> Analyze Links</label>
+                    <label><input type="checkbox" id="checkImpersonation" checked> Check Impersonation</label>
+                </div>
             </div>
 
             <button class="analyze-btn" onclick="analyzeEmail()">
-                <i class="fas fa-search"></i> Analyze Email
+                <span class="btn-text"><i class="fas fa-search"></i> Analyze Email</span>
+                <div class="loading-spinner" style="display: none;">
+                    <div class="spinner"></div>
+                    <span>Analyzing...</span>
+                </div>
             </button>
         </div>
 
-        <div id="loading-spinner" style="display: none;">
-            <div class="spinner"></div>
-            <p>Analyzing email...</p>
-        </div>
+        <div id="results" class="results-section">
+            <div class="overall-score">
+                <div class="score-circle">
+                    <div class="score-value">0%</div>
+                    <div class="score-label">Overall Security</div>
+                </div>
+                <div class="score-details">
+                    <div class="detail-item">
+                        <span class="label">Headers</span>
+                        <span class="value">0%</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Content</span>
+                        <span class="value">0%</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Links</span>
+                        <span class="value">0%</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Impersonation</span>
+                        <span class="value">0%</span>
+                    </div>
+                </div>
+            </div>
 
-        <div id="results">
-            <!-- Results will be populated here -->
+            <div class="analysis-details">
+                <div class="detail-card" id="headers-card">
+                    <h3><i class="fas fa-lock"></i> Security Headers</h3>
+                    <div class="detail-content"></div>
+                </div>
+                <div class="detail-card" id="content-card">
+                    <h3><i class="fas fa-file-alt"></i> Content Analysis</h3>
+                    <div class="detail-content"></div>
+                </div>
+                <div class="detail-card" id="links-card">
+                    <h3><i class="fas fa-link"></i> Link Analysis</h3>
+                    <div class="detail-content"></div>
+                </div>
+                <div class="detail-card" id="impersonation-card">
+                    <h3><i class="fas fa-user-shield"></i> Impersonation Check</h3>
+                    <div class="detail-content"></div>
+                </div>
+            </div>
         </div>
     </div>
-
-    <script>
-        particlesJS.load('particles-js', '../../assets/config/particles-config.json', function() {
-            console.log('Particles.js loaded!');
-        });
-    </script>
 </body>
 </html> 

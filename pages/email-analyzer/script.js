@@ -20,10 +20,10 @@ let sentenceEncoder;
 let qnaModel;
 let rules = {};
 
-// Load rules from GitHub
+// Load rules from local file
 async function loadRules() {
     try {
-        const response = await fetch('https://raw.githubusercontent.com/YousefKhuzam/email-analyzer-rules/main/rules.json');
+        const response = await fetch('rules.json');
         rules = await response.json();
         console.log('Rules loaded successfully');
     } catch (error) {
@@ -34,12 +34,11 @@ async function loadRules() {
 // Initialize TensorFlow models
 async function initializeModels() {
     try {
+        // Only load toxicity model as others are causing CORS issues
         toxicityModel = await toxicity.load();
-        sentenceEncoder = await use.load();
-        qnaModel = await qna.load();
-        console.log('ML models loaded successfully');
+        console.log('ML model loaded successfully');
     } catch (error) {
-        console.error('Error loading ML models:', error);
+        console.error('Error loading ML model:', error);
     }
 }
 
@@ -67,12 +66,24 @@ async function initializeSystem() {
 
 initializeSystem();
 
-// Switch between text and file input
-function switchInput(type) {
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.getElementById('emlFile').style.display = type === 'file' ? 'block' : 'none';
-    document.getElementById('emailInput').style.display = type === 'file' ? 'none' : 'block';
-    document.querySelector(`.tab-btn[onclick*="${type}"]`).classList.add('active');
+// Switch between input tabs
+function switchTab(tab) {
+    const pasteTab = document.getElementById('paste-input');
+    const fileTab = document.getElementById('file-input');
+    const pasteBtn = document.querySelector('.tab-btn:nth-child(1)');
+    const fileBtn = document.querySelector('.tab-btn:nth-child(2)');
+
+    if (tab === 'paste') {
+        pasteTab.style.display = 'block';
+        fileTab.style.display = 'none';
+        pasteBtn.classList.add('active');
+        fileBtn.classList.remove('active');
+    } else {
+        pasteTab.style.display = 'none';
+        fileTab.style.display = 'block';
+        pasteBtn.classList.remove('active');
+        fileBtn.classList.add('active');
+    }
 }
 
 // Load sample email for testing
@@ -97,6 +108,7 @@ MIME-Version: 1.0
 </html>`;
 
     document.getElementById('emailInput').value = sampleEmail;
+    switchTab('paste');
 }
 
 // Parse email content
@@ -137,8 +149,8 @@ function parseEmail(content) {
 
 // Analyze email content
 async function analyzeEmail() {
-    const loadingSpinner = document.getElementById('loading-spinner');
-    const resultsDiv = document.getElementById('results');
+    const loadingSpinner = document.querySelector('.loading-spinner');
+    const btnText = document.querySelector('.btn-text');
     const emailInput = document.getElementById('emailInput');
     const emlFile = document.getElementById('emlFile');
     const checkHeaders = document.getElementById('checkHeaders').checked;
@@ -147,8 +159,8 @@ async function analyzeEmail() {
     const checkImpersonation = document.getElementById('checkImpersonation').checked;
 
     // Show loading spinner
-    loadingSpinner.style.display = 'block';
-    resultsDiv.innerHTML = '';
+    loadingSpinner.style.display = 'flex';
+    btnText.style.display = 'none';
 
     try {
         let emailContent;
@@ -197,14 +209,11 @@ async function analyzeEmail() {
         displayResults(analysisResults);
 
     } catch (error) {
-        resultsDiv.innerHTML = `
-            <div class="result-card">
-                <h3><i class="fas fa-exclamation-circle"></i> Error</h3>
-                <p>${error.message}</p>
-            </div>
-        `;
+        console.error('Error analyzing email:', error);
+        alert('Error analyzing email: ' + error.message);
     } finally {
         loadingSpinner.style.display = 'none';
+        btnText.style.display = 'flex';
     }
 }
 
@@ -420,92 +429,60 @@ async function checkImpersonation(email) {
 
 // Display analysis results
 function displayResults(results) {
-    const resultsDiv = document.getElementById('results');
-    let html = '';
-
-    // Calculate overall score
+    // Update overall score
     const overallScore = Math.max(0, Math.min(100, 
         (results.security.score + results.content.score + 
          results.links.score + results.impersonation.score) / 4
     ));
 
-    // Overall score card
-    html += `
-        <div class="result-card">
-            <h3><i class="fas fa-shield-alt"></i> Overall Analysis</h3>
-            <div class="score ${getScoreClass(overallScore)}">
-                ${overallScore.toFixed(1)}% Secure
-            </div>
-        </div>
-    `;
+    document.querySelector('.score-value').textContent = `${overallScore}%`;
+    document.querySelector('.score-value').className = `score-value ${getScoreClass(overallScore)}`;
 
-    // Security headers card
-    if (results.security.details.length > 0) {
-        html += createResultCard('Security Headers', results.security);
-    }
+    // Update individual scores
+    document.querySelector('.detail-item:nth-child(1) .value').textContent = `${results.security.score}%`;
+    document.querySelector('.detail-item:nth-child(2) .value').textContent = `${results.content.score}%`;
+    document.querySelector('.detail-item:nth-child(3) .value').textContent = `${results.links.score}%`;
+    document.querySelector('.detail-item:nth-child(4) .value').textContent = `${results.impersonation.score}%`;
 
-    // Content analysis card
-    if (results.content.details.length > 0) {
-        html += createResultCard('Content Analysis', results.content);
-    }
-
-    // Links analysis card
-    if (results.links.details.length > 0) {
-        html += createResultCard('Link Analysis', results.links);
-    }
-
-    // Impersonation analysis card
-    if (results.impersonation.details.length > 0) {
-        html += createResultCard('Impersonation Check', results.impersonation);
-    }
-
-    resultsDiv.innerHTML = html;
+    // Update detail cards
+    updateDetailCard('headers-card', 'Security Headers', results.security);
+    updateDetailCard('content-card', 'Content Analysis', results.content);
+    updateDetailCard('links-card', 'Link Analysis', results.links);
+    updateDetailCard('impersonation-card', 'Impersonation Check', results.impersonation);
 }
 
-// Create result card HTML
-function createResultCard(title, result) {
-    return `
-        <div class="result-card">
-            <h3><i class="fas fa-${getIconForTitle(title)}"></i> ${title}</h3>
-            <div class="score ${getScoreClass(result.score)}">
-                ${result.score.toFixed(1)}% Secure
+// Update detail card content
+function updateDetailCard(cardId, title, result) {
+    const card = document.getElementById(cardId);
+    const content = card.querySelector('.detail-content');
+    
+    let html = '';
+    result.details.forEach(detail => {
+        html += `
+            <div class="detail-item ${detail.status}">
+                <span class="label">${detail.label}</span>
+                <span class="value">${detail.value}</span>
             </div>
-            <ul class="details-list">
-                ${result.details.map(detail => `
-                    <li>
-                        <span class="label">${detail.label}</span>
-                        <span class="value ${detail.status}">${detail.value}</span>
-                    </li>
-                `).join('')}
-            </ul>
-        </div>
-    `;
+        `;
+    });
+
+    content.innerHTML = html;
 }
 
 // Get score class based on value
 function getScoreClass(score) {
-    if (score >= 80) return 'safe';
+    if (score >= 80) return 'good';
     if (score >= 50) return 'warning';
-    return 'danger';
+    return 'bad';
 }
 
-// Get icon for result card title
-function getIconForTitle(title) {
-    const icons = {
-        'Security Headers': 'lock',
-        'Content Analysis': 'file-alt',
-        'Link Analysis': 'link',
-        'Impersonation Check': 'user-shield'
-    };
-    return icons[title] || 'info-circle';
-}
+// Initialize particles
+particlesJS.load('particles-js', 'particles-config.json', function() {
+    console.log('Particles.js loaded!');
+});
 
 // Initialize on page load
 document.addEventListener("DOMContentLoaded", function () {
-    particlesJS.load('particles-js', '/particles-config.json', function () {
-        console.log("Particles.js loaded!");
-    });
-
     // Theme toggle
     const toggleButton = document.querySelector('.theme-toggle');
     toggleButton.addEventListener("click", function () {
