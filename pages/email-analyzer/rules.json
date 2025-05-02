@@ -1,0 +1,154 @@
+{
+    "phishingPhrases": [
+        "verify your account",
+        "account suspended",
+        "unusual activity",
+        "security alert",
+        "immediate action required",
+        "account locked",
+        "password expired",
+        "click here to verify",
+        "update your information",
+        "confirm your identity",
+        "urgent security notice",
+        "account verification required",
+        "suspicious login attempt",
+        "unauthorized access",
+        "account compromised",
+        "verify your identity",
+        "account security alert",
+        "login attempt from new device",
+        "account access restricted",
+        "security verification required"
+    ],
+    "urgencyWords": [
+        "urgent",
+        "immediate",
+        "now",
+        "today",
+        "asap",
+        "critical",
+        "important",
+        "emergency",
+        "hurry",
+        "limited time",
+        "expires",
+        "last chance",
+        "final notice",
+        "action required",
+        "attention required",
+        "time sensitive",
+        "deadline",
+        "expiration",
+        "countdown",
+        "limited offer"
+    ],
+    "suspiciousDomains": [
+        "freehosting",
+        "freewebhosting",
+        "freehost",
+        "freehostingarea",
+        "freehostingpro",
+        "freehostingprovider",
+        "freehostingzone",
+        "freehostingworld",
+        "freehostingplanet",
+        "freehostinguniverse",
+        "freehostinggalaxy",
+        "freehostingcosmos",
+        "freehostinguniverse",
+        "freehostingworld",
+        "freehostingplanet",
+        "freehostinggalaxy",
+        "freehostingcosmos",
+        "freehostinguniverse",
+        "freehostingworld",
+        "freehostingplanet"
+    ],
+    "urlShorteners": [
+        "bit.ly",
+        "tinyurl.com",
+        "goo.gl",
+        "t.co",
+        "ow.ly",
+        "is.gd",
+        "buff.ly",
+        "adf.ly",
+        "shorte.st",
+        "bc.vc",
+        "adfoc.us",
+        "adf.ly",
+        "shorte.st",
+        "bc.vc",
+        "adfoc.us",
+        "adf.ly",
+        "shorte.st",
+        "bc.vc",
+        "adfoc.us",
+        "adf.ly"
+    ],
+    "knownBrands": [
+        {
+            "name": "Amazon",
+            "domain": "amazon.com"
+        },
+        {
+            "name": "PayPal",
+            "domain": "paypal.com"
+        },
+        {
+            "name": "Microsoft",
+            "domain": "microsoft.com"
+        },
+        {
+            "name": "Google",
+            "domain": "google.com"
+        },
+        {
+            "name": "Apple",
+            "domain": "apple.com"
+        },
+        {
+            "name": "Netflix",
+            "domain": "netflix.com"
+        },
+        {
+            "name": "Facebook",
+            "domain": "facebook.com"
+        },
+        {
+            "name": "Twitter",
+            "domain": "twitter.com"
+        },
+        {
+            "name": "LinkedIn",
+            "domain": "linkedin.com"
+        },
+        {
+            "name": "Instagram",
+            "domain": "instagram.com"
+        }
+    ],
+    "spoofedNames": [
+        "Security Team",
+        "Customer Support",
+        "Account Services",
+        "Technical Support",
+        "Help Desk",
+        "IT Department",
+        "System Administrator",
+        "Network Security",
+        "Account Security",
+        "Fraud Prevention",
+        "Security Alert",
+        "Account Verification",
+        "Payment Services",
+        "Billing Department",
+        "Customer Care",
+        "Account Management",
+        "Security Department",
+        "Technical Services",
+        "Network Administration",
+        "System Security"
+    ]
+} 

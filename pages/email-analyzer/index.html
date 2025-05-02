@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/toxicity"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/qna"></script>
     <script src="../../assets/js/main.js" defer></script>
     <script src="script.js" defer></script>
 </head>
@@ -27,17 +31,48 @@
             <div class="input-options">
                 <button class="tab-btn active" onclick="switchTab('paste')">Paste Headers</button>
                 <button class="tab-btn" onclick="switchTab('upload')">Upload File</button>
+                <button class="tab-btn" onclick="loadSampleEmail()">Load Sample</button>
             </div>
 
             <div id="paste-input" class="input-tab">
-                <textarea id="headerInput" placeholder="Paste email headers here..."></textarea>
+                <textarea id="emailInput" placeholder="Paste email headers here..."></textarea>
             </div>
 
             <div id="file-input" class="input-tab" style="display: none;">
-                <input type="file" id="fileInput" accept=".eml,.txt">
+                <input type="file" id="emlFile" accept=".eml,.txt">
             </div>
 
-            <button class="analyze-btn" onclick="analyzeHeaders()">Analyze Headers</button>
+            <div class="analysis-options">
+                <label class="checkbox-container">
+                    <input type="checkbox" id="checkHeaders" checked>
+                    <span class="checkmark"></span>
+                    Analyze Security Headers
+                </label>
+                <label class="checkbox-container">
+                    <input type="checkbox" id="checkContent" checked>
+                    <span class="checkmark"></span>
+                    Analyze Content
+                </label>
+                <label class="checkbox-container">
+                    <input type="checkbox" id="checkLinks" checked>
+                    <span class="checkmark"></span>
+                    Analyze Links
+                </label>
+                <label class="checkbox-container">
+                    <input type="checkbox" id="checkImpersonation" checked>
+                    <span class="checkmark"></span>
+                    Check Impersonation
+                </label>
+            </div>
+
+            <button class="analyze-btn" onclick="analyzeEmail()">
+                <i class="fas fa-search"></i> Analyze Email
+            </button>
+        </div>
+
+        <div id="loading-spinner" style="display: none;">
+            <div class="spinner"></div>
+            <p>Analyzing email...</p>
         </div>
 
         <div id="results">
