@@ -19,6 +19,8 @@ let toxicityModel;
 let sentenceEncoder;
 let qnaModel;
 let rules = {};
+let freeFileHosts = [];
+let freeSubdomainHosts = [];
 
 // Load rules from local file
 async function loadRules() {
@@ -57,10 +59,41 @@ async function loadPhishingPhrases() {
     }
 }
 
+// Load brands and spoofed display names
+let brandsList = [];
+let spoofedDisplayNames = [];
+async function loadImpersonationRules() {
+    try {
+        const brandsResp = await fetch('brands.json');
+        brandsList = await brandsResp.json();
+    } catch (e) { brandsList = []; }
+    try {
+        const spoofedResp = await fetch('spoofed_display_names.txt');
+        const text = await spoofedResp.text();
+        spoofedDisplayNames = text.split('\n').map(x => x.trim()).filter(Boolean);
+    } catch (e) { spoofedDisplayNames = []; }
+}
+
+// Load extra link rules
+async function loadExtraLinkRules() {
+    try {
+        const fileHostsResp = await fetch('email_analysis_rules/free_file_hosts.txt');
+        const text = await fileHostsResp.text();
+        freeFileHosts = text.split('\n').map(x => x.trim()).filter(Boolean);
+    } catch (e) { freeFileHosts = []; }
+    try {
+        const subdomainResp = await fetch('email_analysis_rules/free_subdomain_hosts.txt');
+        const text = await subdomainResp.text();
+        freeSubdomainHosts = text.split('\n').map(x => x.trim()).filter(Boolean);
+    } catch (e) { freeSubdomainHosts = []; }
+}
+
 // Initialize system
 async function initializeSystem() {
     await loadRules();
     await loadPhishingPhrases();
+    await loadImpersonationRules();
+    await loadExtraLinkRules();
     await initializeModels();
 }
 
@@ -153,10 +186,6 @@ async function analyzeEmail() {
     const btnText = document.querySelector('.btn-text');
     const emailInput = document.getElementById('emailInput');
     const emlFile = document.getElementById('emlFile');
-    const checkHeaders = document.getElementById('checkHeaders').checked;
-    const checkContent = document.getElementById('checkContent').checked;
-    const checkLinks = document.getElementById('checkLinks').checked;
-    const checkImpersonation = document.getElementById('checkImpersonation').checked;
 
     // Show loading spinner
     loadingSpinner.style.display = 'flex';
@@ -174,39 +203,8 @@ async function analyzeEmail() {
         }
 
         const email = parseEmail(emailContent);
-        const analysisResults = {
-            security: { score: 0, details: [] },
-            content: { score: 0, details: [] },
-            links: { score: 0, details: [] },
-            impersonation: { score: 0, details: [] }
-        };
-
-        // Analyze security headers
-        if (checkHeaders) {
-            const securityScore = analyzeSecurityHeaders(email);
-            analysisResults.security = securityScore;
-        }
-
-        // Analyze content
-        if (checkContent) {
-            const contentScore = await analyzeContent(email);
-            analysisResults.content = contentScore;
-        }
-
-        // Analyze links
-        if (checkLinks) {
-            const linksScore = await analyzeLinks(email);
-            analysisResults.links = linksScore;
-        }
-
-        // Check for impersonation
-        if (checkImpersonation) {
-            const impersonationScore = await checkImpersonation(email);
-            analysisResults.impersonation = impersonationScore;
-        }
-
-        // Display results
-        displayResults(analysisResults);
+        const findings = await analyzeEmailContent(email);
+        displayFindings(findings, email);
 
     } catch (error) {
         console.error('Error analyzing email:', error);
@@ -217,65 +215,174 @@ async function analyzeEmail() {
     }
 }
 
-// Analyze security headers
-function analyzeSecurityHeaders(email) {
-    const score = {
-        score: 0,
-        details: []
-    };
-
-    // Check SPF
-    if (email.security.spf) {
-        score.score += 25;
-        score.details.push({ label: 'SPF', value: 'Pass', status: 'safe' });
-    } else {
-        score.details.push({ label: 'SPF', value: 'Fail', status: 'danger' });
+// Helper: Levenshtein distance
+function levenshtein(a, b) {
+    const matrix = Array.from({ length: a.length + 1 }, () => []);
+    for (let i = 0; i <= a.length; i++) matrix[i][0] = i;
+    for (let j = 0; j <= b.length; j++) matrix[0][j] = j;
+    for (let i = 1; i <= a.length; i++) {
+        for (let j = 1; j <= b.length; j++) {
+            if (a[i - 1] === b[j - 1]) {
+                matrix[i][j] = matrix[i - 1][j - 1];
+            } else {
+                matrix[i][j] = Math.min(
+                    matrix[i - 1][j] + 1,
+                    matrix[i][j - 1] + 1,
+                    matrix[i - 1][j - 1] + 1
+                );
+            }
+        }
     }
-
-    // Check DKIM
-    if (email.security.dkim) {
-        score.score += 25;
-        score.details.push({ label: 'DKIM', value: 'Pass', status: 'safe' });
-    } else {
-        score.details.push({ label: 'DKIM', value: 'Fail', status: 'danger' });
-    }
-
-    // Check DMARC
-    if (email.security.dmarc) {
-        score.score += 25;
-        score.details.push({ label: 'DMARC', value: 'Pass', status: 'safe' });
-    } else {
-        score.details.push({ label: 'DMARC', value: 'Fail', status: 'danger' });
-    }
-
-    // Check for suspicious headers
-    if (email.headers['X-Mailer']?.toLowerCase().includes('phishing')) {
-        score.score -= 10;
-        score.details.push({ label: 'Suspicious X-Mailer', value: email.headers['X-Mailer'], status: 'danger' });
-    }
-
-    return score;
+    return matrix[a.length][b.length];
 }
 
-// Analyze email content
-async function analyzeContent(email) {
-    const score = {
-        score: 0,
-        details: []
-    };
+// Helper: Homoglyph map
+const homoglyphs = {
+    'a': ['à', 'á', 'â', 'ã', 'ä', 'å', 'ɑ', 'а'],
+    'c': ['с'],
+    'e': ['è', 'é', 'ê', 'ë', 'е'],
+    'i': ['ì', 'í', 'î', 'ï', 'і', 'í'],
+    'o': ['ò', 'ó', 'ô', 'õ', 'ö', 'о', '0'],
+    'u': ['ù', 'ú', 'û', 'ü'],
+    'y': ['у'],
+    's': ['ѕ'],
+    'l': ['ӏ', 'ⅼ', 'ӏ'],
+    'd': ['ԁ'],
+    'm': ['м'],
+    'n': ['п'],
+    'r': ['г'],
+    'h': ['һ'],
+    'b': ['Ь', 'в'],
+    'g': ['ɡ'],
+    'p': ['р'],
+    't': ['т'],
+    'x': ['х'],
+    'z': ['ᴢ'],
+    'q': ['ԛ'],
+    'w': ['ѡ'],
+    'f': ['ғ'],
+    'k': ['κ'],
+    'v': ['ѵ'],
+};
 
-    // Check for common phishing phrases
+function hasHomoglyph(domain, brandDomain) {
+    for (let i = 0; i < domain.length; i++) {
+        const char = domain[i].toLowerCase();
+        if (homoglyphs[char]) {
+            for (const glyph of homoglyphs[char]) {
+                if (brandDomain.includes(glyph)) return true;
+            }
+        }
+    }
+    return false;
+}
+
+// Analyze email content and return findings
+async function analyzeEmailContent(email) {
+    const findings = [];
+
+    // Suspicious content
     const phishingPhrases = rules.phishingPhrases || [];
     const foundPhrases = phishingPhrases.filter(phrase => 
         email.body.toLowerCase().includes(phrase.toLowerCase())
     );
 
+    // Suspicious links, TLDs, shorteners, file hosts, subdomain hosts
+    const linkRegex = /<a[^>]+href="([^"]+)"[^>]*>/g;
+    const links = [];
+    let match;
+    while ((match = linkRegex.exec(email.body)) !== null) {
+        links.push(match[1]);
+    }
+    const suspiciousDomains = rules.suspiciousDomains || [];
+    const suspiciousTLDs = rules.suspiciousTLDs || [];
+    const urlShorteners = rules.urlShorteners || [];
+    const suspiciousLinks = [];
+    const tldLinks = [];
+    const shortenerLinks = [];
+    const fileHostLinks = [];
+    const subdomainLinks = [];
+    links.forEach(link => {
+        try {
+            const url = new URL(link);
+            if (suspiciousDomains.some(domain => url.hostname.includes(domain))) {
+                suspiciousLinks.push(link);
+            }
+            if (suspiciousTLDs.some(tld => url.hostname.endsWith('.' + tld))) {
+                tldLinks.push(link);
+            }
+            if (urlShorteners.some(short => url.hostname.includes(short))) {
+                shortenerLinks.push(link);
+            }
+            if (freeFileHosts.length > 0 && freeFileHosts.some(host => url.hostname.includes(host))) {
+                fileHostLinks.push(link);
+            }
+            if (freeSubdomainHosts.length > 0 && freeSubdomainHosts.some(host => url.hostname.endsWith(host))) {
+                subdomainLinks.push(link);
+            }
+        } catch {}
+    });
+
+    // Check security headers
+    if (email.headers['Received-SPF']) {
+        findings.push({
+            type: 'security',
+            severity: 'good',
+            title: 'SPF Record Found',
+            description: 'Email has SPF authentication',
+            details: email.headers['Received-SPF']
+        });
+    } else {
+        findings.push({
+            type: 'security',
+            severity: 'danger',
+            title: 'No SPF Record',
+            description: 'Email lacks SPF authentication',
+            details: 'This could indicate a spoofed sender'
+        });
+    }
+
+    if (email.headers['DKIM-Signature']) {
+        findings.push({
+            type: 'security',
+            severity: 'good',
+            title: 'DKIM Signature Found',
+            description: 'Email has DKIM authentication',
+            details: email.headers['DKIM-Signature']
+        });
+    } else {
+        findings.push({
+            type: 'security',
+            severity: 'danger',
+            title: 'No DKIM Signature',
+            description: 'Email lacks DKIM authentication',
+            details: 'This could indicate a spoofed sender'
+        });
+    }
+
+    // Suspicious subject
+    if (email.headers['Subject']) {
+        const suspiciousSubjects = (rules.suspiciousSubjects || []);
+        const foundSubjects = suspiciousSubjects.filter(subj => email.headers['Subject'].toLowerCase().includes(subj.toLowerCase()));
+        if (foundSubjects.length > 0) {
+            findings.push({
+                type: 'content',
+                severity: 'danger',
+                title: 'Suspicious Subject',
+                description: 'Email subject contains suspicious words',
+                details: foundSubjects.join(', ')
+            });
+        }
+    }
+
+    // Check for suspicious content
     if (foundPhrases.length > 0) {
-        score.score -= foundPhrases.length * 10;
-        score.details.push({
-            label: 'Phishing Phrases',
-            value: foundPhrases.join(', '),
-            status: 'danger'
+        findings.push({
+            type: 'content',
+            severity: 'high',
+            title: 'Suspicious Phrases Found',
+            description: 'Email contains known phishing phrases',
+            details: foundPhrases.join(', ')
         });
     }
 
@@ -284,196 +391,465 @@ async function analyzeContent(email) {
     const foundUrgency = urgencyWords.filter(word => 
         email.body.toLowerCase().includes(word.toLowerCase())
     );
-
     if (foundUrgency.length > 0) {
-        score.score -= foundUrgency.length * 5;
-        score.details.push({
-            label: 'Urgency Indicators',
-            value: foundUrgency.join(', '),
-            status: 'warning'
+        findings.push({
+            type: 'content',
+            severity: 'warning',
+            title: 'Urgency Indicators Found',
+            description: 'Email contains urgency-inducing language',
+            details: foundUrgency.join(', ')
         });
     }
 
-    // Analyze content toxicity
-    if (toxicityModel) {
-        try {
-            const predictions = await toxicityModel.classify(email.body);
-            const toxicPredictions = predictions.filter(p => p.results[0].match);
-            
-            if (toxicPredictions.length > 0) {
-                score.score -= toxicPredictions.length * 15;
-                score.details.push({
-                    label: 'Toxic Content',
-                    value: toxicPredictions.map(p => p.label).join(', '),
-                    status: 'danger'
+    // Check for suspicious links, TLDs, and shorteners
+    if (suspiciousLinks.length > 0) {
+        findings.push({
+            type: 'links',
+            severity: 'danger',
+            title: 'Suspicious Links Found',
+            description: 'Email contains links to suspicious domains',
+            details: suspiciousLinks.join(', ')
+        });
+    }
+
+    // Check for links to free file hosts
+    if (fileHostLinks.length > 0) {
+        findings.push({
+            type: 'links',
+            severity: 'warning',
+            title: 'Links to Free File Hosts',
+            description: 'Email contains links to free file hosting services.',
+            details: fileHostLinks.join(', ')
+        });
+    }
+
+    // Check for links to free subdomain hosts
+    if (subdomainLinks.length > 0) {
+        findings.push({
+            type: 'links',
+            severity: 'warning',
+            title: 'Links to Free Subdomain Hosts',
+            description: 'Email contains links to free subdomain hosting services.',
+            details: subdomainLinks.join(', ')
+        });
+    }
+
+    // Use brandsList and spoofedDisplayNames
+    const knownBrands = brandsList.length ? brandsList : (rules.knownBrands || []);
+    const senderDomain = email.headers['From']?.split('@')[1]?.toLowerCase();
+    const displayName = email.headers['From']?.match(/"([^"]+)"/)?.[1];
+
+    // 1. Display Name Brand Spoofing (High)
+    if (displayName && senderDomain) {
+        for (const brand of knownBrands) {
+            if (displayName.toLowerCase().includes(brand.name.toLowerCase()) && !senderDomain.endsWith(brand.domain)) {
+                findings.push({
+                    type: 'impersonation',
+                    severity: 'high',
+                    title: 'Display Name Brand Spoofing',
+                    description: `Display name contains brand "${brand.name}" but sender domain is not ${brand.domain}.`,
+                    details: `Display: ${displayName}, Domain: ${senderDomain}`
                 });
             }
-        } catch (error) {
-            console.error('Error analyzing toxicity:', error);
+        }
+        // Spoofed display name from file (Medium)
+        for (const spoofed of spoofedDisplayNames) {
+            if (displayName.toLowerCase().includes(spoofed.toLowerCase())) {
+                findings.push({
+                    type: 'impersonation',
+                    severity: 'medium',
+                    title: 'Spoofed Display Name',
+                    description: `Display name matches a known spoofed name: ${spoofed}`,
+                    details: `Display: ${displayName}`
+                });
+            }
         }
     }
 
-    return score;
-}
-
-// Analyze links in email
-async function analyzeLinks(email) {
-    const score = {
-        score: 0,
-        details: []
-    };
-
-    // Extract links from HTML content
-    const linkRegex = /<a[^>]+href="([^"]+)"[^>]*>/g;
-    const links = [];
-    let match;
-
-    while ((match = linkRegex.exec(email.body)) !== null) {
-        links.push(match[1]);
-    }
-
-    if (links.length === 0) {
-        score.details.push({ label: 'Links', value: 'No links found', status: 'safe' });
-        return score;
-    }
-
-    // Check for suspicious domains
-    const suspiciousDomains = rules.suspiciousDomains || [];
-    const suspiciousLinks = links.filter(link => {
-        try {
-            const url = new URL(link);
-            return suspiciousDomains.some(domain => url.hostname.includes(domain));
-        } catch {
-            return false;
-        }
-    });
-
-    if (suspiciousLinks.length > 0) {
-        score.score -= suspiciousLinks.length * 20;
-        score.details.push({
-            label: 'Suspicious Links',
-            value: suspiciousLinks.join(', '),
-            status: 'danger'
-        });
-    }
-
-    // Check for URL shorteners
-    const shorteners = rules.urlShorteners || [];
-    const shortenedLinks = links.filter(link => {
-        try {
-            const url = new URL(link);
-            return shorteners.some(shortener => url.hostname.includes(shortener));
-        } catch {
-            return false;
-        }
-    });
-
-    if (shortenedLinks.length > 0) {
-        score.score -= shortenedLinks.length * 10;
-        score.details.push({
-            label: 'URL Shorteners',
-            value: shortenedLinks.join(', '),
-            status: 'warning'
-        });
-    }
-
-    return score;
-}
-
-// Check for impersonation
-async function checkImpersonation(email) {
-    const score = {
-        score: 0,
-        details: []
-    };
-
-    // Check sender domain against known brands
-    const knownBrands = rules.knownBrands || [];
-    const senderDomain = email.headers['From']?.split('@')[1]?.toLowerCase();
-
+    // 2. From Domain Typosquatting (High)
     if (senderDomain) {
-        const matchingBrand = knownBrands.find(brand => 
-            senderDomain.includes(brand.domain) && senderDomain !== brand.domain
-        );
+        for (const brand of knownBrands) {
+            const dist = levenshtein(senderDomain, brand.domain);
+            if (dist > 0 && dist <= 2 && !senderDomain.endsWith(brand.domain)) {
+                findings.push({
+                    type: 'impersonation',
+                    severity: 'high',
+                    title: 'From Domain Typosquatting',
+                    description: `Sender domain is a close misspelling of brand domain (${brand.domain}).`,
+                    details: `Sender: ${senderDomain}, Brand: ${brand.domain}`
+                });
+            }
+        }
+    }
 
-        if (matchingBrand) {
-            score.score -= 30;
-            score.details.push({
-                label: 'Domain Impersonation',
-                value: `Possible impersonation of ${matchingBrand.name}`,
-                status: 'danger'
+    // 3. Homoglyph Domain Attack (High)
+    if (senderDomain) {
+        for (const brand of knownBrands) {
+            if (hasHomoglyph(senderDomain, brand.domain) && !senderDomain.endsWith(brand.domain)) {
+                findings.push({
+                    type: 'impersonation',
+                    severity: 'high',
+                    title: 'Homoglyph Domain Attack',
+                    description: `Sender domain uses visually similar characters to mimic brand domain (${brand.domain}).`,
+                    details: `Sender: ${senderDomain}, Brand: ${brand.domain}`
+                });
+            }
+        }
+    }
+
+    // 4. Phishing Phrases (High)
+    if (foundPhrases.length > 0) {
+        findings.push({
+            type: 'content',
+            severity: 'high',
+            title: 'Suspicious Phrases Found',
+            description: 'Email contains known phishing phrases',
+            details: foundPhrases.join(', ')
+        });
+    }
+
+    // 5. Suspicious Links (High)
+    if (suspiciousLinks.length > 0) {
+        findings.push({
+            type: 'links',
+            severity: 'high',
+            title: 'Suspicious Links Found',
+            description: 'Email contains links to suspicious domains',
+            details: suspiciousLinks.join(', ')
+        });
+    }
+
+    // 6. Suspicious TLDs (Medium)
+    if (tldLinks.length > 0) {
+        findings.push({
+            type: 'links',
+            severity: 'medium',
+            title: 'Suspicious TLDs Found',
+            description: 'Email contains links with suspicious top-level domains',
+            details: tldLinks.join(', ')
+        });
+    }
+
+    // 7. URL Shorteners (Medium)
+    if (shortenerLinks.length > 0) {
+        findings.push({
+            type: 'links',
+            severity: 'medium',
+            title: 'URL Shorteners Found',
+            description: 'Email contains links using URL shorteners',
+            details: shortenerLinks.join(', ')
+        });
+    }
+
+    // 8. Reply-To Mismatch (Medium)
+    if (email.headers['Reply-To'] && email.headers['From']) {
+        const replyTo = email.headers['Reply-To'].toLowerCase();
+        const from = email.headers['From'].toLowerCase();
+        if (replyTo !== from && !replyTo.includes(from.split('@')[1])) {
+            findings.push({
+                type: 'headers',
+                severity: 'medium',
+                title: 'Reply-To Mismatch',
+                description: 'Reply-To address is different from From address, which is a common phishing tactic.',
+                details: `From: ${email.headers['From']} | Reply-To: ${email.headers['Reply-To']}`
             });
         }
     }
 
-    // Check for display name spoofing
-    const displayName = email.headers['From']?.match(/"([^"]+)"/)?.[1];
-    if (displayName) {
-        const spoofedNames = rules.spoofedNames || [];
-        const isSpoofed = spoofedNames.some(name => 
-            displayName.toLowerCase().includes(name.toLowerCase())
-        );
-
-        if (isSpoofed) {
-            score.score -= 20;
-            score.details.push({
-                label: 'Display Name Spoofing',
-                value: displayName,
-                status: 'danger'
+    // 9. Suspicious Return-Path (Medium)
+    if (email.headers['Return-Path'] && email.headers['From']) {
+        const returnPath = email.headers['Return-Path'].toLowerCase();
+        const from = email.headers['From'].toLowerCase();
+        if (returnPath !== from && /@(gmail|yahoo|hotmail|outlook|aol)\./.test(returnPath)) {
+            findings.push({
+                type: 'headers',
+                severity: 'medium',
+                title: 'Suspicious Return-Path',
+                description: 'Return-Path is different from From and uses a free email provider.',
+                details: `From: ${email.headers['From']} | Return-Path: ${email.headers['Return-Path']}`
             });
         }
     }
 
-    return score;
+    // 10. Excessive External Links (Medium)
+    if (links.length > 5) {
+        findings.push({
+            type: 'links',
+            severity: 'medium',
+            title: 'Excessive External Links',
+            description: 'Email contains an unusually high number of external links.',
+            details: `Number of links: ${links.length}`
+        });
+    }
+
+    // 11. Generic Greeting (Medium)
+    if (email.body) {
+        const genericGreetings = [/dear customer/i, /dear user/i, /dear client/i, /hello/i, /hi there/i];
+        const hasGreeting = genericGreetings.some(rgx => rgx.test(email.body));
+        if (!hasGreeting) {
+            findings.push({
+                type: 'content',
+                severity: 'medium',
+                title: 'No or Generic Greeting',
+                description: 'Email does not address the recipient by name or uses a generic greeting.',
+                details: 'No personalized greeting found.'
+            });
+        }
+    }
+
+    // 12. Suspicious Language Patterns (Medium)
+    if (email.body) {
+        const poorGrammar = /\b(?:your|youre|u|pls|plz|thx|ur)\b/i;
+        const excessiveExclam = /!{3,}/;
+        const allCaps = /\b[A-Z]{4,}\b/;
+        if (poorGrammar.test(email.body) || excessiveExclam.test(email.body) || allCaps.test(email.body)) {
+            findings.push({
+                type: 'content',
+                severity: 'medium',
+                title: 'Suspicious Language Patterns',
+                description: 'Email contains poor grammar, excessive exclamation marks, or all-caps words.',
+                details: 'Suspicious language detected.'
+            });
+        }
+    }
+
+    // 13. No Unsubscribe Link (Low)
+    if (email.body && /unsubscribe/i.test(email.body) === false && /marketing|newsletter|promotion/i.test(email.body)) {
+        findings.push({
+            type: 'content',
+            severity: 'low',
+            title: 'No Unsubscribe Link',
+            description: 'Marketing-like email lacks an unsubscribe link.',
+            details: 'No "unsubscribe" found in body.'
+        });
+    }
+
+    // 14. No Contact Information (Low)
+    if (email.body && !/(\+\d{1,3}[\s-]?)?(\(\d{1,4}\)[\s-]?)?\d{1,4}[\s-]?\d{1,4}[\s-]?\d{1,9}/.test(email.body) && !/@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/.test(email.body)) {
+        findings.push({
+            type: 'content',
+            severity: 'low',
+            title: 'No Contact Information',
+            description: 'Email does not provide any legitimate contact information.',
+            details: 'No phone, address, or email found.'
+        });
+    }
+
+    // 15. No Plaintext Body (Low)
+    if (email.headers['Content-Type'] && email.headers['Content-Type'].includes('text/html') && !email.headers['Content-Type'].includes('text/plain')) {
+        findings.push({
+            type: 'content',
+            severity: 'low',
+            title: 'No Plaintext Body',
+            description: 'Email only contains HTML and no plaintext version, which is suspicious.',
+            details: email.headers['Content-Type']
+        });
+    }
+
+    // 16. Sent at Odd Hour (Low)
+    if (email.headers['Date']) {
+        const date = new Date(email.headers['Date']);
+        const hour = date.getUTCHours();
+        if (hour >= 2 && hour <= 5) {
+            findings.push({
+                type: 'headers',
+                severity: 'low',
+                title: 'Suspicious Time of Sending',
+                description: 'Email was sent at an unusual hour (2am–5am UTC).',
+                details: email.headers['Date']
+            });
+        }
+    }
+
+    // 17. Free Email Provider (Low)
+    const freeProviders = rules.freeEmailProviders || [];
+    if (senderDomain && freeProviders.some(provider => senderDomain.endsWith(provider))) {
+        findings.push({
+            type: 'impersonation',
+            severity: 'low',
+            title: 'Free Email Provider',
+            description: 'Sender uses a free email provider',
+            details: senderDomain
+        });
+    }
+
+    // 18. Image-Only Email (Informational)
+    if (email.body && /<img\s/i.test(email.body) && email.body.replace(/<img[\s\S]*?>/gi, '').trim().length < 30) {
+        findings.push({
+            type: 'content',
+            severity: 'info',
+            title: 'Image-Only Email',
+            description: 'Email body is mostly or entirely an image.',
+            details: 'Body contains only images.'
+        });
+    }
+
+    // 19. Short URL in Display Text (Informational)
+    if (email.body) {
+        const shortUrlDisplay = /<a[^>]*>(https?:\/\/(bit\.ly|tinyurl\.com|goo\.gl|t\.co|ow\.ly|is\.gd|buff\.ly|adf\.ly|shorte\.st|bc\.vc|adfoc\.us)[^<]*)<\/a>/i;
+        if (shortUrlDisplay.test(email.body)) {
+            findings.push({
+                type: 'links',
+                severity: 'info',
+                title: 'Short URL in Display Text',
+                description: 'A link display text is a short URL.',
+                details: 'Short URL found in link text.'
+            });
+        }
+    }
+
+    return findings;
 }
 
-// Display analysis results
-function displayResults(results) {
-    // Update overall score
-    const overallScore = Math.max(0, Math.min(100, 
-        (results.security.score + results.content.score + 
-         results.links.score + results.impersonation.score) / 4
-    ));
-
-    document.querySelector('.score-value').textContent = `${overallScore}%`;
-    document.querySelector('.score-value').className = `score-value ${getScoreClass(overallScore)}`;
-
-    // Update individual scores
-    document.querySelector('.detail-item:nth-child(1) .value').textContent = `${results.security.score}%`;
-    document.querySelector('.detail-item:nth-child(2) .value').textContent = `${results.content.score}%`;
-    document.querySelector('.detail-item:nth-child(3) .value').textContent = `${results.links.score}%`;
-    document.querySelector('.detail-item:nth-child(4) .value').textContent = `${results.impersonation.score}%`;
-
-    // Update detail cards
-    updateDetailCard('headers-card', 'Security Headers', results.security);
-    updateDetailCard('content-card', 'Content Analysis', results.content);
-    updateDetailCard('links-card', 'Link Analysis', results.links);
-    updateDetailCard('impersonation-card', 'Impersonation Check', results.impersonation);
+// Calculate overall risk level
+function calculateRiskLevel(findings) {
+    if (findings.some(f => f.severity === 'high')) return 'high';
+    if (findings.some(f => f.severity === 'medium')) return 'medium';
+    if (findings.some(f => f.severity === 'low')) return 'low';
+    return 'info';
 }
 
-// Update detail card content
-function updateDetailCard(cardId, title, result) {
-    const card = document.getElementById(cardId);
-    const content = card.querySelector('.detail-content');
-    
-    let html = '';
-    result.details.forEach(detail => {
-        html += `
-            <div class="detail-item ${detail.status}">
-                <span class="label">${detail.label}</span>
-                <span class="value">${detail.value}</span>
+// Calculate risk score
+function calculateRiskScore(findings) {
+    let score = 0;
+    findings.forEach(f => {
+        if (f.severity === 'high') score += 40;
+        else if (f.severity === 'medium') score += 20;
+        else if (f.severity === 'low') score += 10;
+        // info does not add to risk
+    });
+    return Math.min(100, score);
+}
+
+function extractArtifacts(email) {
+    // Extract sender name and email
+    let senderName = '';
+    let senderEmail = '';
+    if (email.headers['From']) {
+        const match = email.headers['From'].match(/"?([^"<]*)"?\s*<([^>]+)>/);
+        if (match) {
+            senderName = match[1].trim();
+            senderEmail = match[2].trim();
+        } else {
+            senderEmail = email.headers['From'].trim();
+        }
+    }
+    // Recipients
+    let recipients = email.headers['To'] || '';
+    // Sender IP (from Received header)
+    let senderIP = '';
+    if (email.headers['Received']) {
+        const ipMatch = email.headers['Received'].match(/\[([0-9a-fA-F\.:]+)\]/);
+        if (ipMatch) senderIP = ipMatch[1];
+    }
+    // Date
+    let date = email.headers['Date'] || '';
+    // Subject
+    let subject = email.headers['Subject'] || '';
+    // Message-ID
+    let messageId = email.headers['Message-ID'] || '';
+    // Reply-To
+    let replyTo = email.headers['Reply-To'] || '';
+    // Return-Path
+    let returnPath = email.headers['Return-Path'] || '';
+    return {
+        senderName,
+        senderEmail,
+        recipients,
+        senderIP,
+        date,
+        subject,
+        messageId,
+        replyTo,
+        returnPath
+    };
+}
+
+// Display findings
+function displayFindings(findings, email) {
+    const resultsSection = document.getElementById('results');
+    const findingsContainer = document.createElement('div');
+    findingsContainer.className = 'findings-container';
+
+    // Calculate overall risk level
+    const riskLevel = calculateRiskLevel(findings);
+    const riskScore = calculateRiskScore(findings);
+
+    // Extract artifacts
+    const artifacts = extractArtifacts(email);
+
+    // Create artifacts overview
+    const artifactsOverview = document.createElement('div');
+    artifactsOverview.className = 'artifacts-overview';
+    artifactsOverview.innerHTML = `
+      <div class="artifacts-table">
+        <div><strong>Sender Name:</strong> ${artifacts.senderName || '-'}</div>
+        <div><strong>Sender Email:</strong> ${artifacts.senderEmail || '-'}</div>
+        <div><strong>Recipient(s):</strong> ${artifacts.recipients || '-'}</div>
+        <div><strong>Sender IP:</strong> ${artifacts.senderIP || '-'}</div>
+        <div><strong>Date:</strong> ${artifacts.date || '-'}</div>
+        <div><strong>Subject:</strong> ${artifacts.subject || '-'}</div>
+        <div><strong>Message-ID:</strong> ${artifacts.messageId || '-'}</div>
+        <div><strong>Reply-To:</strong> ${artifacts.replyTo || '-'}</div>
+        <div><strong>Return-Path:</strong> ${artifacts.returnPath || '-'}</div>
+      </div>
+      <div class="risk-score-box risk-level-${riskLevel}">
+        <div class="risk-score-main">${riskScore}%</div>
+        <div class="risk-label">${riskLevel.charAt(0).toUpperCase() + riskLevel.slice(1)} Risk</div>
+      </div>
+    `;
+    findingsContainer.appendChild(artifactsOverview);
+
+    // Group findings by type
+    const groupedFindings = groupFindingsByType(findings);
+
+    // Create findings cards
+    Object.entries(groupedFindings).forEach(([type, typeFindings]) => {
+        const typeCard = document.createElement('div');
+        typeCard.className = 'findings-card';
+        typeCard.innerHTML = `
+            <h3><i class="fas fa-${getIconForType(type)}"></i> ${type.charAt(0).toUpperCase() + type.slice(1)}</h3>
+            <div class="findings-list">
+                ${typeFindings.map(finding => `
+                    <div class="finding-item ${finding.severity}">
+                        <div class="finding-header">
+                            <span class="severity-indicator"></span>
+                            <span class="finding-title">${finding.title}</span>
+                        </div>
+                        <div class="finding-description">${finding.description}</div>
+                        <div class="finding-details">${finding.details}</div>
+                    </div>
+                `).join('')}
             </div>
         `;
+        findingsContainer.appendChild(typeCard);
     });
 
-    content.innerHTML = html;
+    // Clear previous results and add new ones
+    resultsSection.innerHTML = '';
+    resultsSection.appendChild(findingsContainer);
 }
 
-// Get score class based on value
-function getScoreClass(score) {
-    if (score >= 80) return 'good';
-    if (score >= 50) return 'warning';
-    return 'bad';
+// Group findings by type
+function groupFindingsByType(findings) {
+    return findings.reduce((groups, finding) => {
+        if (!groups[finding.type]) {
+            groups[finding.type] = [];
+        }
+        groups[finding.type].push(finding);
+        return groups;
+    }, {});
+}
+
+// Get icon for finding type
+function getIconForType(type) {
+    const icons = {
+        security: 'shield-alt',
+        content: 'file-alt',
+        links: 'link',
+        impersonation: 'user-shield'
+    };
+    return icons[type] || 'info-circle';
 }
 
 // Initialize particles
@@ -485,15 +861,34 @@ particlesJS.load('particles-js', 'particles-config.json', function() {
 document.addEventListener("DOMContentLoaded", function () {
     // Theme toggle
     const toggleButton = document.querySelector('.theme-toggle');
-    toggleButton.addEventListener("click", function () {
-        const html = document.documentElement;
-        const currentTheme = html.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        html.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-    });
-
+    const themeIcon = toggleButton ? toggleButton.querySelector('i') : null;
+    function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        if (themeIcon) {
+            themeIcon.className = theme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+        }
+    }
     // Set initial theme
     const savedTheme = localStorage.getItem('theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', savedTheme);
+    setTheme(savedTheme);
+    if (toggleButton) {
+        toggleButton.addEventListener("click", function () {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        });
+    }
+
+    // File upload feedback
+    const emlFileInput = document.getElementById('emlFile');
+    const fileNameDisplay = document.getElementById('fileNameDisplay');
+    if (emlFileInput && fileNameDisplay) {
+        emlFileInput.addEventListener('change', function() {
+            if (emlFileInput.files.length > 0) {
+                fileNameDisplay.textContent = `Selected: ${emlFileInput.files[0].name}`;
+            } else {
+                fileNameDisplay.textContent = '';
+            }
+        });
+    }
 });

@@ -1,0 +1,17 @@
+[
+  { "name": "Amazon", "domain": "amazon.com" },
+  { "name": "PayPal", "domain": "paypal.com" },
+  { "name": "Microsoft", "domain": "microsoft.com" },
+  { "name": "Google", "domain": "google.com" },
+  { "name": "Apple", "domain": "apple.com" },
+  { "name": "Netflix", "domain": "netflix.com" },
+  { "name": "Facebook", "domain": "facebook.com" },
+  { "name": "Twitter", "domain": "twitter.com" },
+  { "name": "LinkedIn", "domain": "linkedin.com" },
+  { "name": "Instagram", "domain": "instagram.com" },
+  { "name": "Bank of America", "domain": "bankofamerica.com" },
+  { "name": "Chase", "domain": "chase.com" },
+  { "name": "Wells Fargo", "domain": "wellsfargo.com" },
+  { "name": "Dropbox", "domain": "dropbox.com" },
+  { "name": "DocuSign", "domain": "docusign.com" }
+] 

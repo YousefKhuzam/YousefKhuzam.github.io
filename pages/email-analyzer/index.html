@@ -3,113 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Analyzer - Yousef Khuzam</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Email Analyzer</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/toxicity"></script>
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-    <script src="script.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <a href="/index.html" class="home-btn" title="Home"><i class="fas fa-home"></i></a>
+    <button class="theme-toggle" title="Toggle dark mode"><i class="fas fa-moon"></i></button>
     <div id="particles-js"></div>
     <div class="container">
         <header>
             <h1><i class="fas fa-envelope-open-text"></i> Email Analyzer</h1>
-            <p>Analyze email headers and content for potential threats</p>
+            <p>A basic Email analyzer tool.. Contact me for a way deeper one</p>
         </header>
 
-        <div class="input-section">
-            <div class="tab-buttons">
-                <button class="tab-btn active" onclick="switchTab('paste')">
-                    <i class="fas fa-paste"></i> Paste Email
-                </button>
-                <button class="tab-btn" onclick="switchTab('file')">
-                    <i class="fas fa-file-upload"></i> Upload .eml
-                </button>
-                <button class="tab-btn" onclick="loadSampleEmail()">
-                    <i class="fas fa-file-code"></i> Sample Email
-                </button>
-            </div>
+        <main>
+            <div class="input-section">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="switchTab('paste')">
+                        <i class="fas fa-paste"></i> Paste Email
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('file')">
+                        <i class="fas fa-file-upload"></i> Upload .eml
+                    </button>
+                </div>
 
-            <div id="paste-input">
-                <textarea id="emailInput" placeholder="Paste email headers and content here..."></textarea>
-            </div>
+                <div id="paste-input" class="input-container">
+                    <textarea id="emailInput" placeholder="Paste your email content here..."></textarea>
+                </div>
 
-            <div id="file-input" style="display: none;">
-                <div class="file-upload">
-                    <input type="file" id="emlFile" accept=".eml">
-                    <label for="emlFile" class="file-label">
+                <div id="file-input" class="input-container" style="display: none;">
+                    <label for="emlFile" class="file-upload-label">
                         <i class="fas fa-cloud-upload-alt"></i>
                         <span>Choose .eml file or drag and drop</span>
+                        <input type="file" id="emlFile" accept=".eml">
                     </label>
+                    <span id="fileNameDisplay" style="display:block;margin-top:8px;color:#4a90e2;"></span>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn" onclick="loadSampleEmail()">
+                        <i class="fas fa-file-alt"></i> Load Sample
+                    </button>
+                    <button class="btn primary" onclick="analyzeEmail()">
+                        <span class="btn-text">Analyze Email</span>
+                        <div class="loading-spinner">
+                            <div class="spinner"></div>
+                        </div>
+                    </button>
                 </div>
             </div>
 
-            <div class="analysis-options">
-                <div class="option-group">
-                    <h3><i class="fas fa-shield-alt"></i> Security Analysis</h3>
-                    <label><input type="checkbox" id="checkHeaders" checked> Analyze Security Headers</label>
-                    <label><input type="checkbox" id="checkContent" checked> Analyze Content</label>
-                    <label><input type="checkbox" id="checkLinks" checked> Analyze Links</label>
-                    <label><input type="checkbox" id="checkImpersonation" checked> Check Impersonation</label>
-                </div>
+            <div id="results" class="results-section">
+                <!-- Results will be dynamically inserted here -->
             </div>
-
-            <button class="analyze-btn" onclick="analyzeEmail()">
-                <span class="btn-text"><i class="fas fa-search"></i> Analyze Email</span>
-                <div class="loading-spinner" style="display: none;">
-                    <div class="spinner"></div>
-                    <span>Analyzing...</span>
-                </div>
-            </button>
-        </div>
-
-        <div id="results" class="results-section">
-            <div class="overall-score">
-                <div class="score-circle">
-                    <div class="score-value">0%</div>
-                    <div class="score-label">Overall Security</div>
-                </div>
-                <div class="score-details">
-                    <div class="detail-item">
-                        <span class="label">Headers</span>
-                        <span class="value">0%</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="label">Content</span>
-                        <span class="value">0%</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="label">Links</span>
-                        <span class="value">0%</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="label">Impersonation</span>
-                        <span class="value">0%</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="analysis-details">
-                <div class="detail-card" id="headers-card">
-                    <h3><i class="fas fa-lock"></i> Security Headers</h3>
-                    <div class="detail-content"></div>
-                </div>
-                <div class="detail-card" id="content-card">
-                    <h3><i class="fas fa-file-alt"></i> Content Analysis</h3>
-                    <div class="detail-content"></div>
-                </div>
-                <div class="detail-card" id="links-card">
-                    <h3><i class="fas fa-link"></i> Link Analysis</h3>
-                    <div class="detail-content"></div>
-                </div>
-                <div class="detail-card" id="impersonation-card">
-                    <h3><i class="fas fa-user-shield"></i> Impersonation Check</h3>
-                    <div class="detail-content"></div>
-                </div>
-            </div>
-        </div>
+        </main>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/toxicity"></script>
+    <script src="script.js"></script>
 </body>
 </html> 
