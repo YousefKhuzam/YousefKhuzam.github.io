@@ -25,99 +25,127 @@
         .blog-widget {
             background: var(--secondary);
             border-radius: 15px;
-            padding: 20px;
+            padding: 24px 22px 22px 22px;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid var(--accent);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s cubic-bezier(.68,-0.55,.27,1.55), box-shadow 0.3s, border 0.2s;
+            border: 1.5px solid var(--accent);
+            box-shadow: 0 2px 12px 0 #62b1ff22;
+            position: relative;
+            min-height: 260px;
+            display: flex;
+            flex-direction: column;
         }
 
         .blog-widget:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transform: translateY(-7px) scale(1.025) rotate(-1deg);
+            box-shadow: 0 8px 32px 0 #62b1ff55;
+            border: 1.5px solid #62b1ff;
         }
 
         .blog-widget h2 {
             color: var(--text);
-            margin-bottom: 10px;
-            font-size: 1.5em;
+            margin-bottom: 6px;
+            font-size: 1.25em;
             font-family: inherit;
+            font-weight: 700;
         }
 
         .blog-widget .date {
             color: var(--accent);
-            font-size: 0.9em;
+            font-size: 0.98em;
             margin-bottom: 10px;
             font-family: inherit;
         }
 
         .blog-widget .excerpt {
             color: var(--text);
-            opacity: 0.8;
+            opacity: 0.88;
             margin-bottom: 15px;
-            line-height: 1.5;
+            line-height: 1.6;
             font-family: inherit;
+            font-size: 1em;
         }
 
         .blog-widget .read-more {
-            color: var(--button-hover);
+            color: #62b1ff;
             text-decoration: none;
             font-weight: bold;
             display: inline-block;
             margin-top: 10px;
             font-family: inherit;
+            font-size: 1.05em;
+            transition: color 0.2s;
         }
 
         .blog-widget .read-more:hover {
+            color: #fff;
             text-decoration: underline;
         }
 
-        .blog-header {
-            text-align: center;
-            padding: 40px 20px;
-            background: var(--secondary);
-            margin-bottom: 30px;
-            border-radius: 15px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            border: 1px solid var(--accent);
+        .blog-header { display: none; }
+        .hekayat-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            padding: 48px 0 24px 0;
+            margin-bottom: 18px;
+            background: none;
+            position: relative;
         }
-
-        .blog-header h1 {
+        .hekayat-logo {
+            font-size: 3.2em;
+            filter: drop-shadow(0 0 8px #62b1ffcc);
+            margin-right: 8px;
+        }
+        .hekayat-title-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .hekayat-title {
+            font-family: 'Press Start 2P', 'Fredoka One', 'Baloo 2', cursive, sans-serif;
             font-size: 2.5em;
+            color: #e0eaff;
+            letter-spacing: 2px;
+            margin: 0 0 6px 0;
+            text-shadow: 0 0 12px #62b1ff, 0 0 2px #fff;
+        }
+        .hekayat-subtitle {
+            font-size: 1.1em;
+            color: #62b1ff;
+            opacity: 0.85;
+            font-family: 'Fredoka One', 'Baloo 2', sans-serif;
+            text-shadow: 0 0 6px #62b1ff99;
+        }
+        .blog-home-btn {
+            position: fixed !important;
+            top: 16px !important;
+            right: 16px !important;
+            left: auto !important;
+            width: 28px;
+            height: 28px;
+            background: var(--primary);
             color: var(--text);
-            margin-bottom: 10px;
-            font-family: inherit;
-        }
-
-        .blog-header p {
-            color: var(--accent);
-            font-size: 1.2em;
-            font-family: inherit;
-        }
-
-        .back-btn {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: var(--accent);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
+            border-radius: 50%;
+            text-align: center;
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
+            font-size: 1.1em;
+            border: 1.5px solid var(--border);
+            z-index: 9999 !important;
+            box-shadow: 0 4px 24px 0 rgba(0,0,0,0.18);
             font-family: inherit;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            pointer-events: all;
         }
-
-        .back-btn:hover {
+        .blog-home-btn:hover {
             background: var(--button-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .linkedin-icon {
-            color: #0077b5;
-            margin-right: 5px;
+            box-shadow: 0 0 10px #62b1ff;
         }
 
         #particles-js {
@@ -129,54 +157,151 @@
             z-index: -1;
             opacity: 0.5;
         }
+
+        .blog-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        .blog-emoji {
+            font-size: 2.1em;
+            margin-right: 2px;
+            filter: drop-shadow(0 0 4px #62b1ff99);
+        }
+        .blog-badge {
+            font-size: 0.85em;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(90deg, #62b1ff 60%, #3e8ed0 100%);
+            border-radius: 7px;
+            padding: 2px 10px;
+            margin-left: 2px;
+            letter-spacing: 1px;
+            box-shadow: 0 0 8px #62b1ff55;
+            text-shadow: 0 1px 2px #222;
+            animation: badge-pop 0.7s cubic-bezier(.68,-0.55,.27,1.55);
+        }
+        .blog-badge.featured {
+            background: linear-gradient(90deg, #ffb347 60%, #ffcc80 100%);
+            color: #222;
+        }
+        @keyframes badge-pop {
+            0% { transform: scale(0.7); opacity: 0; }
+            80% { transform: scale(1.15); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        .blog-like-btn {
+            background: none;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            margin-left: auto;
+            font-size: 1.5em;
+            color: #aaa;
+            transition: color 0.2s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 2px;
+        }
+        .blog-like-btn.liked .like-heart {
+            color: #ff4b7d;
+            text-shadow: 0 0 8px #ff4b7d99, 0 0 2px #fff;
+            animation: heart-pop 0.4s cubic-bezier(.68,-0.55,.27,1.55);
+        }
+        .like-heart {
+            display: inline-block;
+            transition: color 0.2s, transform 0.2s;
+        }
+        @keyframes heart-pop {
+            0% { transform: scale(0.7); }
+            80% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        .blog-tags {
+            margin-bottom: 10px;
+        }
+        .tag {
+            display: inline-block;
+            background: #222c;
+            color: #62b1ff;
+            border-radius: 6px;
+            font-size: 0.85em;
+            padding: 2px 10px;
+            margin-right: 6px;
+            margin-bottom: 2px;
+            letter-spacing: 0.5px;
+            opacity: 0.8;
+        }
     </style>
 </head>
 <body>
     <button class="theme-toggle">🌓</button>
     <div id="particles-js"></div>
+    <a href="../../index.html" class="blog-home-btn" title="Home">←</a>
 
-    <a href="../../index.html" class="back-btn" onclick="event.preventDefault(); window.location.href='../../index.html'">← Back to Home</a>
-
-    <div class="blog-header">
-        <h1>📝 Cyber Security Blog</h1>
-        <p>Insights, Analysis, and Updates from the Cyber World</p>
-    </div>
+    <header class="hekayat-header">
+        <div class="hekayat-logo">🧑‍💻</div>
+        <div class="hekayat-title-group">
+            <h1 class="hekayat-title">Hekayat Cyber</h1>
+            <div class="hekayat-subtitle">Stories & Insights from the Cyber World</div>
+        </div>
+    </header>
 
     <div class="blog-container">
         <div class="blog-grid">
             <!-- Blog Widget 1 -->
-            <div class="blog-widget" onclick="window.location.href='https://www.linkedin.com/pulse/rise-dns-over-https-doh-scams-what-you-need-know-yousef-alkhuzam-usqef/'">
-                <h2>🚨 The Rise of DNS over HTTPS (DoH) in Scams</h2>
+            <div class="blog-widget" data-id="doh-scams">
+                <div class="blog-card-top">
+                    <span class="blog-emoji">🚨</span>
+                    <span class="blog-badge new">NEW</span>
+                    <button class="blog-like-btn" title="Like" onclick="toggleLike(event, 'doh-scams')"><span class="like-heart">❤</span></button>
+                </div>
+                <h2>The Rise of DNS over HTTPS (DoH) in Scams</h2>
                 <div class="date">April 2, 2025</div>
                 <div class="excerpt">
                     DNS over HTTPS (DoH) is a privacy-enhancing technology that encrypts DNS requests. While great for privacy, it's also being used by scammers and cybercriminals to avoid detection...
                 </div>
-                <a href="https://www.linkedin.com/pulse/rise-dns-over-https-doh-scams-what-you-need-know-yousef-alkhuzam-usqef/" class="read-more">
-                    <i class="fab fa-linkedin linkedin-icon"></i>Read on LinkedIn →
+                <div class="blog-tags"><span class="tag">DNS</span><span class="tag">Privacy</span><span class="tag">Scams</span></div>
+                <a href="https://www.linkedin.com/pulse/rise-dns-over-https-doh-scams-what-you-need-know-yousef-alkhuzam-usqef/" class="read-more" target="_blank">
+                    <i class="fab fa-linkedin linkedin-icon"></i>Read more on my LinkedIn →
                 </a>
             </div>
 
             <!-- Blog Widget 2 -->
-            <div class="blog-widget" onclick="window.location.href='https://www.linkedin.com/posts/yousefalkhuzam_cybersecurity-threats-2024-activity-7171234567891'">
-                <h2>🔍 Emerging Cyber Threats in 2024</h2>
+            <div class="blog-widget" data-id="cyber-threats-2024">
+                <div class="blog-card-top">
+                    <span class="blog-emoji">🔍</span>
+                    <span class="blog-badge featured">FEATURED</span>
+                    <button class="blog-like-btn" title="Like" onclick="toggleLike(event, 'cyber-threats-2024')"><span class="like-heart">❤</span></button>
+                </div>
+                <h2>Emerging Cyber Threats in 2024</h2>
                 <div class="date">April 28, 2024</div>
                 <div class="excerpt">
                     An analysis of the latest cyber threats and attack vectors that organizations should be aware of in 2024...
                 </div>
-                <a href="https://www.linkedin.com/posts/yousefalkhuzam_cybersecurity-threats-2024-activity-7171234567891" class="read-more">
-                    <i class="fab fa-linkedin linkedin-icon"></i>Read on LinkedIn →
+                <div class="blog-tags"><span class="tag">Threats</span><span class="tag">2024</span><span class="tag">Analysis</span></div>
+                <a href="https://www.linkedin.com/posts/yousefalkhuzam_cybersecurity-threats-2024-activity-7171234567891" class="read-more" target="_blank">
+                    <i class="fab fa-linkedin linkedin-icon"></i>Read more on my LinkedIn →
                 </a>
             </div>
 
             <!-- Blog Widget 3 -->
-            <div class="blog-widget" onclick="window.location.href='https://www.linkedin.com/posts/yousefalkhuzam_secure-coding-best-practices-activity-7171234567892'">
-                <h2>💻 Secure Coding Best Practices</h2>
+            <div class="blog-widget" data-id="secure-coding">
+                <div class="blog-card-top">
+                    <span class="blog-emoji">💻</span>
+                    <button class="blog-like-btn" title="Like" onclick="toggleLike(event, 'secure-coding')"><span class="like-heart">❤</span></button>
+                </div>
+                <h2>Secure Coding Best Practices</h2>
                 <div class="date">April 27, 2024</div>
                 <div class="excerpt">
                     Essential secure coding practices that every developer should implement to prevent common vulnerabilities...
                 </div>
-                <a href="https://www.linkedin.com/posts/yousefalkhuzam_secure-coding-best-practices-activity-7171234567892" class="read-more">
-                    <i class="fab fa-linkedin linkedin-icon"></i>Read on LinkedIn →
+                <div class="blog-tags"><span class="tag">Coding</span><span class="tag">Security</span><span class="tag">Best Practices</span></div>
+                <a href="https://www.linkedin.com/posts/yousefalkhuzam_secure-coding-best-practices-activity-7171234567892" class="read-more" target="_blank">
+                    <i class="fab fa-linkedin linkedin-icon"></i>Read more on my LinkedIn →
                 </a>
             </div>
         </div>
@@ -185,6 +310,26 @@
     <script>
         particlesJS.load('particles-js', '../../assets/config/particles-config.json', function() {
             console.log('Particles.js loaded!');
+        });
+
+        // Like button logic
+        function toggleLike(event, id) {
+            event.stopPropagation();
+            const btn = event.currentTarget;
+            let liked = localStorage.getItem('hekayat_like_' + id) === '1';
+            liked = !liked;
+            localStorage.setItem('hekayat_like_' + id, liked ? '1' : '0');
+            btn.classList.toggle('liked', liked);
+        }
+        // On load, set like state
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.blog-widget').forEach(function(card) {
+                const id = card.getAttribute('data-id');
+                const btn = card.querySelector('.blog-like-btn');
+                if (btn && localStorage.getItem('hekayat_like_' + id) === '1') {
+                    btn.classList.add('liked');
+                }
+            });
         });
     </script>
 </body>
