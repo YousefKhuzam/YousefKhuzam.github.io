@@ -177,7 +177,7 @@
 <body>
     <div id="particles-js"></div>
     <div class="arcade-bg-grid"></div>
-    <a href="../../index.html" class="back-btn">← Home</a>
+    <a href="../../index.html" class="back-btn" title="Home">←</a>
 
     <div class="lab-container">
         <div class="lab-main">
@@ -222,6 +222,14 @@
                         <i class="fas fa-code"></i>
                         <span>Base64 Decode</span>
                     </button>
+                    <button class="arcade-btn operation-btn" onclick="base32Encode()">
+                        <i class="fas fa-code"></i>
+                        <span>Base32 Encode</span>
+                    </button>
+                    <button class="arcade-btn operation-btn" onclick="base32Decode()">
+                        <i class="fas fa-code"></i>
+                        <span>Base32 Decode</span>
+                    </button>
                     <button class="arcade-btn operation-btn" onclick="hexEncode()">
                         <i class="fas fa-hashtag"></i>
                         <span>Hex Encode</span>
@@ -239,7 +247,7 @@
                         <span>Binary Decode</span>
                     </button>
 
-                    <!-- Hashing -->
+                    <!-- Hashing & Identification -->
                     <button class="arcade-btn operation-btn" onclick="generateMD5()">
                         <i class="fas fa-fingerprint"></i>
                         <span>MD5 Hash</span>
@@ -255,6 +263,54 @@
                     <button class="arcade-btn operation-btn" onclick="generateSHA512()">
                         <i class="fas fa-fingerprint"></i>
                         <span>SHA-512 Hash</span>
+                    </button>
+                    <button class="arcade-btn operation-btn" onclick="identifyHash()">
+                        <i class="fas fa-search"></i>
+                        <span>Hash Identifier</span>
+                    </button>
+
+                    <!-- JWT, UUID, Timestamp -->
+                    <button class="arcade-btn operation-btn" onclick="decodeJWT()">
+                        <i class="fas fa-key"></i>
+                        <span>JWT Decoder</span>
+                    </button>
+                    <button class="arcade-btn operation-btn" onclick="generateUUID()">
+                        <i class="fas fa-random"></i>
+                        <span>UUID Generator</span>
+                    </button>
+                    <button class="arcade-btn operation-btn" onclick="timestampConvert()">
+                        <i class="fas fa-clock"></i>
+                        <span>Timestamp Converter</span>
+                    </button>
+
+                    <!-- HTML/Entities -->
+                    <button class="arcade-btn operation-btn" onclick="htmlEntityEncode()">
+                        <i class="fas fa-code"></i>
+                        <span>HTML Entity Encode</span>
+                    </button>
+                    <button class="arcade-btn operation-btn" onclick="htmlEntityDecode()">
+                        <i class="fas fa-code"></i>
+                        <span>HTML Entity Decode</span>
+                    </button>
+
+                    <!-- Regex & String Tools -->
+                    <button class="arcade-btn operation-btn" onclick="regexTest()">
+                        <i class="fas fa-search"></i>
+                        <span>Regex Tester</span>
+                    </button>
+                    <button class="arcade-btn operation-btn" onclick="escapeString()">
+                        <i class="fas fa-quote-right"></i>
+                        <span>String Escape</span>
+                    </button>
+                    <button class="arcade-btn operation-btn" onclick="unescapeString()">
+                        <i class="fas fa-quote-left"></i>
+                        <span>String Unescape</span>
+                    </button>
+
+                    <!-- Passwords -->
+                    <button class="arcade-btn operation-btn" onclick="generatePassword()">
+                        <i class="fas fa-lock"></i>
+                        <span>Password Generator</span>
                     </button>
 
                     <!-- Encryption -->

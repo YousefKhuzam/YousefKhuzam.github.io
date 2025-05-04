@@ -287,4 +287,154 @@ function findIPs() {
     const ips = input.match(ipRegex) || [];
     const output = ips.length > 0 ? ips.join('\n') : 'No IP addresses found';
     document.getElementById('outputText').value = output;
+}
+
+// Base32 Encode/Decode
+function base32Encode() {
+    const input = document.getElementById('inputText').value;
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+    let bits = '', output = '';
+    for (let i = 0; i < input.length; i++) {
+        bits += input.charCodeAt(i).toString(2).padStart(8, '0');
+    }
+    for (let i = 0; i < bits.length; i += 5) {
+        const chunk = bits.substr(i, 5);
+        if (chunk.length < 5) output += alphabet[parseInt(chunk.padEnd(5, '0'), 2)];
+        else output += alphabet[parseInt(chunk, 2)];
+    }
+    document.getElementById('outputText').value = output;
+}
+
+function base32Decode() {
+    const input = document.getElementById('inputText').value.replace(/=+$/, '');
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+    let bits = '', output = '';
+    for (let i = 0; i < input.length; i++) {
+        const val = alphabet.indexOf(input[i].toUpperCase());
+        if (val === -1) continue;
+        bits += val.toString(2).padStart(5, '0');
+    }
+    for (let i = 0; i + 8 <= bits.length; i += 8) {
+        output += String.fromCharCode(parseInt(bits.substr(i, 8), 2));
+    }
+    document.getElementById('outputText').value = output;
+}
+
+// Hash Identifier (simple heuristic)
+function identifyHash() {
+    const input = document.getElementById('inputText').value.trim();
+    let type = 'Unknown';
+    if (/^[a-f0-9]{32}$/i.test(input)) type = 'MD5';
+    else if (/^[a-f0-9]{40}$/i.test(input)) type = 'SHA-1';
+    else if (/^[a-f0-9]{64}$/i.test(input)) type = 'SHA-256';
+    else if (/^[a-f0-9]{128}$/i.test(input)) type = 'SHA-512';
+    else if (/^[A-Za-z0-9\/\.]{22}==$/.test(input)) type = 'bcrypt';
+    else if (/^\$2[aby]\$\d{2}\$[A-Za-z0-9\/\.]{53}$/.test(input)) type = 'bcrypt';
+    document.getElementById('outputText').value = 'Possible hash type: ' + type;
+}
+
+// JWT Decoder
+function decodeJWT() {
+    const input = document.getElementById('inputText').value.trim();
+    const parts = input.split('.');
+    if (parts.length !== 3) {
+        document.getElementById('outputText').value = 'Invalid JWT format';
+        return;
+    }
+    try {
+        const header = JSON.parse(atob(parts[0].replace(/-/g, '+').replace(/_/g, '/')));
+        const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+        document.getElementById('outputText').value =
+            'Header:\n' + JSON.stringify(header, null, 2) +
+            '\n\nPayload:\n' + JSON.stringify(payload, null, 2) +
+            '\n\nSignature:\n' + parts[2];
+    } catch (e) {
+        document.getElementById('outputText').value = 'Error decoding JWT';
+    }
+}
+
+// UUID Generator
+function generateUUID() {
+    const uuid = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    );
+    document.getElementById('outputText').value = uuid;
+}
+
+// Timestamp Converter
+function timestampConvert() {
+    const input = document.getElementById('inputText').value.trim();
+    if (/^\d{10,13}$/.test(input)) {
+        // Unix timestamp to date
+        const ts = input.length === 13 ? parseInt(input) : parseInt(input) * 1000;
+        const date = new Date(ts);
+        document.getElementById('outputText').value = date.toISOString();
+    } else {
+        // Date to Unix timestamp
+        const date = new Date(input);
+        if (isNaN(date.getTime())) {
+            document.getElementById('outputText').value = 'Invalid date or timestamp';
+        } else {
+            document.getElementById('outputText').value = Math.floor(date.getTime() / 1000);
+        }
+    }
+}
+
+// HTML Entity Encode/Decode
+function htmlEntityEncode() {
+    const input = document.getElementById('inputText').value;
+    const div = document.createElement('div');
+    div.textContent = input;
+    document.getElementById('outputText').value = div.innerHTML;
+}
+
+function htmlEntityDecode() {
+    const input = document.getElementById('inputText').value;
+    const div = document.createElement('div');
+    div.innerHTML = input;
+    document.getElementById('outputText').value = div.textContent;
+}
+
+// Regex Tester
+function regexTest() {
+    const input = document.getElementById('inputText').value;
+    const pattern = prompt('Enter regex pattern (e.g. \\d+):');
+    if (!pattern) return;
+    try {
+        const re = new RegExp(pattern, 'g');
+        const matches = input.match(re);
+        document.getElementById('outputText').value = matches ? matches.join('\n') : 'No matches found.';
+    } catch (e) {
+        document.getElementById('outputText').value = 'Invalid regex pattern.';
+    }
+}
+
+// String Escape/Unescape
+function escapeString() {
+    const input = document.getElementById('inputText').value;
+    document.getElementById('outputText').value = JSON.stringify(input);
+}
+
+function unescapeString() {
+    const input = document.getElementById('inputText').value;
+    try {
+        document.getElementById('outputText').value = JSON.parse(input);
+    } catch (e) {
+        document.getElementById('outputText').value = 'Invalid escaped string.';
+    }
+}
+
+// Password Generator
+function generatePassword() {
+    const length = parseInt(prompt('Password length (8-64):', '16'));
+    if (isNaN(length) || length < 8 || length > 64) {
+        document.getElementById('outputText').value = 'Invalid length.';
+        return;
+    }
+    const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
+    let password = '';
+    for (let i = 0; i < length; i++) {
+        password += charset.charAt(Math.floor(Math.random() * charset.length));
+    }
+    document.getElementById('outputText').value = password;
 } 
