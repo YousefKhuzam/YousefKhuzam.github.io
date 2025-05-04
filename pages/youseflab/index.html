@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YousefLab | Yousef Alkhuzam</title>
+    <title>YousefLab | CyberChef-style Tools</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="style.css">
@@ -174,38 +175,178 @@
     </style>
 </head>
 <body>
-    <button class="theme-toggle">🌓</button>
     <div id="particles-js"></div>
+    <div class="arcade-bg-grid"></div>
+    <a href="../../index.html" class="back-btn">← Home</a>
 
-    <a href="../../index.html" class="back-btn">← Back to Home</a>
+    <div class="lab-container">
+        <div class="lab-main">
+            <div class="lab-io">
+                <div class="lab-pane input-pane">
+                    <div class="pane-header">
+                        <h2>Input</h2>
+                        <div class="pane-controls">
+                            <button class="arcade-btn" onclick="clearInput()"><i class="fas fa-trash"></i></button>
+                            <button class="arcade-btn" onclick="pasteInput()"><i class="fas fa-paste"></i></button>
+                        </div>
+                    </div>
+                    <textarea id="inputText" placeholder="Enter your data here..." spellcheck="false"></textarea>
+                </div>
 
-    <header>
-        <h1>🔧 YousefLab</h1>
-        <p>Encrypt, decode, and analyze data with ease.</p>
-    </header>
-
-    <div class="container">
-        <div class="tool-container">
-            <textarea id="inputText" placeholder="Enter text here..."></textarea>
-
-            <div class="buttons">
-                <button onclick="base64Encode()">Base64 Encode</button>
-                <button onclick="base64Decode()">Base64 Decode</button>
-                <button onclick="generateSHA256()">SHA-256 Hash</button>
-                <button onclick="caesarCipherEncrypt()">Caesar Cipher Encrypt</button>
-                <button onclick="caesarCipherDecrypt()">Caesar Cipher Decrypt</button>
-                <button onclick="defangURL()">Defang URL</button>
-                <button onclick="fangURL()">Fang URL</button>
-                <button onclick="decodeURL()">URL Decode</button>
+                <div class="lab-pane output-pane">
+                    <div class="pane-header">
+                        <h2>Output</h2>
+                        <div class="pane-controls">
+                            <button class="arcade-btn" onclick="copyOutput()"><i class="fas fa-copy"></i></button>
+                            <button class="arcade-btn" onclick="clearOutput()"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <textarea id="outputText" placeholder="Results will appear here..." readonly spellcheck="false"></textarea>
+                </div>
             </div>
 
-            <textarea id="outputText" placeholder="Output..." readonly></textarea>
+            <div class="lab-operations">
+                <div class="operations-header">
+                    <div class="operations-search">
+                        <input type="text" placeholder="Search operations..." id="operationSearch">
+                    </div>
+                </div>
+                
+                <div class="operations-grid">
+                    <!-- Encoding/Decoding -->
+                    <button class="arcade-btn operation-btn" onclick="base64Encode()">
+                        <i class="fas fa-code"></i>
+                        <span>Base64 Encode</span>
+                    </button>
+                    <button class="arcade-btn operation-btn" onclick="base64Decode()">
+                        <i class="fas fa-code"></i>
+                        <span>Base64 Decode</span>
+                    </button>
+                    <button class="arcade-btn operation-btn" onclick="hexEncode()">
+                        <i class="fas fa-hashtag"></i>
+                        <span>Hex Encode</span>
+                    </button>
+                    <button class="arcade-btn operation-btn" onclick="hexDecode()">
+                        <i class="fas fa-hashtag"></i>
+                        <span>Hex Decode</span>
+                    </button>
+                    <button class="arcade-btn operation-btn" onclick="binaryEncode()">
+                        <i class="fas fa-1"></i>
+                        <span>Binary Encode</span>
+                    </button>
+                    <button class="arcade-btn operation-btn" onclick="binaryDecode()">
+                        <i class="fas fa-1"></i>
+                        <span>Binary Decode</span>
+                    </button>
+
+                    <!-- Hashing -->
+                    <button class="arcade-btn operation-btn" onclick="generateMD5()">
+                        <i class="fas fa-fingerprint"></i>
+                        <span>MD5 Hash</span>
+                    </button>
+                    <button class="arcade-btn operation-btn" onclick="generateSHA1()">
+                        <i class="fas fa-fingerprint"></i>
+                        <span>SHA-1 Hash</span>
+                    </button>
+                    <button class="arcade-btn operation-btn" onclick="generateSHA256()">
+                        <i class="fas fa-fingerprint"></i>
+                        <span>SHA-256 Hash</span>
+                    </button>
+                    <button class="arcade-btn operation-btn" onclick="generateSHA512()">
+                        <i class="fas fa-fingerprint"></i>
+                        <span>SHA-512 Hash</span>
+                    </button>
+
+                    <!-- Encryption -->
+                    <button class="arcade-btn operation-btn" onclick="caesarCipherEncrypt()">
+                        <i class="fas fa-lock"></i>
+                        <span>Caesar Encrypt</span>
+                    </button>
+                    <button class="arcade-btn operation-btn" onclick="caesarCipherDecrypt()">
+                        <i class="fas fa-unlock"></i>
+                        <span>Caesar Decrypt</span>
+                    </button>
+                    <button class="arcade-btn operation-btn" onclick="xorEncrypt()">
+                        <i class="fas fa-key"></i>
+                        <span>XOR Encrypt</span>
+                    </button>
+                    <button class="arcade-btn operation-btn" onclick="xorDecrypt()">
+                        <i class="fas fa-key"></i>
+                        <span>XOR Decrypt</span>
+                    </button>
+
+                    <!-- URL Manipulation -->
+                    <button class="arcade-btn operation-btn" onclick="defangURL()">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Defang URL</span>
+                    </button>
+                    <button class="arcade-btn operation-btn" onclick="fangURL()">
+                        <i class="fas fa-link"></i>
+                        <span>Fang URL</span>
+                    </button>
+                    <button class="arcade-btn operation-btn" onclick="encodeURL()">
+                        <i class="fas fa-link"></i>
+                        <span>URL Encode</span>
+                    </button>
+                    <button class="arcade-btn operation-btn" onclick="decodeURL()">
+                        <i class="fas fa-link"></i>
+                        <span>URL Decode</span>
+                    </button>
+
+                    <!-- Text Manipulation -->
+                    <button class="arcade-btn operation-btn" onclick="reverseText()">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Reverse Text</span>
+                    </button>
+                    <button class="arcade-btn operation-btn" onclick="toUpperCase()">
+                        <i class="fas fa-text-height"></i>
+                        <span>To Uppercase</span>
+                    </button>
+                    <button class="arcade-btn operation-btn" onclick="toLowerCase()">
+                        <i class="fas fa-text-height"></i>
+                        <span>To Lowercase</span>
+                    </button>
+                    <button class="arcade-btn operation-btn" onclick="removeWhitespace()">
+                        <i class="fas fa-cut"></i>
+                        <span>Remove Whitespace</span>
+                    </button>
+
+                    <!-- Analysis -->
+                    <button class="arcade-btn operation-btn" onclick="countCharacters()">
+                        <i class="fas fa-calculator"></i>
+                        <span>Count Characters</span>
+                    </button>
+                    <button class="arcade-btn operation-btn" onclick="countWords()">
+                        <i class="fas fa-calculator"></i>
+                        <span>Count Words</span>
+                    </button>
+                    <button class="arcade-btn operation-btn" onclick="countLines()">
+                        <i class="fas fa-calculator"></i>
+                        <span>Count Lines</span>
+                    </button>
+                    <button class="arcade-btn operation-btn" onclick="findIPs()">
+                        <i class="fas fa-network-wired"></i>
+                        <span>Find IPs</span>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
         particlesJS.load('particles-js', '../../assets/config/particles-config.json', function() {
             console.log('Particles.js loaded!');
+        });
+
+        // Operation search functionality
+        document.getElementById('operationSearch').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const buttons = document.querySelectorAll('.operation-btn');
+            
+            buttons.forEach(button => {
+                const text = button.textContent.toLowerCase();
+                button.style.display = text.includes(searchTerm) ? 'flex' : 'none';
+            });
         });
     </script>
 </body>

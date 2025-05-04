@@ -1,72 +1,284 @@
-/* YousefLab specific styling */
-.tool-container {
-    background: var(--secondary);
-    border-radius: 15px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    border: 1px solid var(--accent);
+/* YousefLab CyberChef-style Styling */
+:root {
+    --primary: rgba(255, 251, 251, 0.1);
+    --secondary: rgba(107, 106, 106, 0.22);
+    --accent: #6c6c6c;
+    --background: #1a1a1a;
+    --text: #e0e0e0;
+    --button-hover: #62b1ff;
+    --border: #555;
+    --neon-glow: 0 0 10px rgba(98, 177, 255, 0.5);
+    --widget-shadow: 0 4px 24px 0 rgba(0,0,0,0.18);
 }
 
-textarea {
-    width: 97%;
-    height: 130px;
-    background: var(--primary);
+body {
+    font-family: 'Press Start 2P', 'Courier New', monospace;
+    background-color: var(--background);
     color: var(--text);
-    border: 1px solid var(--border);
-    padding: 14px;
-    margin-top: 10px;
-    border-radius: 8px;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+/* Arcade Header */
+.arcade-header {
+    text-align: center;
+    padding: 20px;
+    margin-bottom: 30px;
+    text-shadow: var(--neon-glow);
+}
+
+.arcade-title {
+    font-size: 2em;
+    margin-bottom: 10px;
+    color: var(--text);
+}
+
+.arcade-subtitle {
+    color: var(--accent);
+    font-size: 0.8em;
+}
+
+/* Lab Container */
+.lab-container {
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.lab-main {
+    display: grid;
+    grid-template-columns: 1.2fr 0.9fr;
+    gap: 0;
+    height: 100vh;
+    width: 100vw;
+    box-sizing: border-box;
+}
+
+/* Input/Output Section */
+.lab-io {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    height: 100vh;
+    padding: 32px 18px 32px 90px;
+    box-sizing: border-box;
+}
+
+.lab-pane {
+    background: var(--secondary);
+    border-radius: 14px;
+    border: 1.5px solid var(--border);
+    overflow: hidden;
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--widget-shadow);
+    margin-bottom: 0;
+    min-height: 0;
+}
+
+.pane-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 18px;
+    background: var(--primary);
+    border-bottom: 1.5px solid var(--border);
+}
+
+.pane-header h2 {
+    margin: 0;
+    font-size: 0.9em;
+    color: var(--text);
+}
+
+.pane-controls {
+    display: flex;
+    gap: 7px;
+}
+
+/* Textareas */
+textarea {
+    width: 100%;
+    height: 100%;
+    min-height: 180px;
+    background: var(--background);
+    color: var(--text);
+    border: none;
+    padding: 18px 18px 18px 18px;
+    font-family: 'Courier New', monospace;
     font-size: 1em;
     resize: none;
     outline: none;
-    font-family: inherit;
-    transition: all 0.3s ease;
+    box-sizing: border-box;
+    flex: 1 1 0;
+    border-radius: 0 0 14px 14px;
 }
 
 textarea:focus {
-    border-color: var(--button-hover);
-    box-shadow: 0 0 5px rgba(98, 177, 255, 0.3);
+    box-shadow: var(--neon-glow);
 }
 
-.buttons {
+/* Operations Section */
+.lab-operations {
+    background: var(--secondary);
+    border-radius: 14px 0 0 14px;
+    border: 1.5px solid var(--border);
+    padding: 32px 32px 32px 18px;
+    overflow-y: auto;
+    height: 100vh;
+    box-sizing: border-box;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-    margin: 15px 0;
+    flex-direction: column;
+    justify-content: flex-start;
+    box-shadow: var(--widget-shadow);
+    min-width: 320px;
+    max-width: 480px;
 }
 
-button {
-    background: var(--accent);
+.operations-header {
+    margin-bottom: 18px;
+}
+
+.operations-search input {
+    width: 100%;
+    background: var(--background);
     color: var(--text);
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    border: 1.5px solid var(--border);
+    padding: 12px 16px;
+    border-radius: 7px;
     font-family: inherit;
-    font-weight: normal;
+    font-size: 0.9em;
 }
 
-button:hover {
+.operations-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    width: 100%;
+}
+
+@media (min-width: 900px) {
+    .operations-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+@media (min-width: 1400px) {
+    .operations-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+/* Operation Buttons */
+.operation-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 15px;
+    background: var(--primary);
+    border: 1.5px solid var(--border);
+    color: var(--text);
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 8px;
+    font-family: inherit;
+    font-weight: 500;
+}
+
+.operation-btn:hover {
     background: var(--button-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: var(--neon-glow);
+}
+
+.operation-btn i {
+    font-size: 1.2em;
+}
+
+/* Arcade Buttons */
+.arcade-btn {
+    background: var(--primary);
+    border: 1.5px solid var(--border);
+    color: var(--text);
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9em;
+}
+
+.arcade-btn:hover {
+    background: var(--button-hover);
+    box-shadow: var(--neon-glow);
+}
+
+/* Back Button */
+.back-btn {
+    position: fixed;
+    top: 24px;
+    left: 24px;
+    background: var(--primary);
+    color: var(--text);
+    padding: 13px 28px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    font-size: 1em;
+    border: 1.5px solid var(--border);
+    z-index: 1002;
+    box-shadow: var(--widget-shadow);
+    font-family: inherit;
+    font-weight: 600;
+}
+
+.back-btn:hover {
+    background: var(--button-hover);
+    box-shadow: var(--neon-glow);
 }
 
 /* Mobile Responsiveness */
+@media (max-width: 1200px) {
+    .lab-main {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+    .lab-io {
+        min-height: 400px;
+        padding: 16px;
+    }
+    .lab-operations {
+        max-height: 500px;
+        padding: 16px;
+        border-radius: 14px;
+        margin-top: 18px;
+        min-width: 0;
+        max-width: 100vw;
+    }
+}
+
 @media (max-width: 768px) {
-    .buttons {
-        flex-direction: column;
+    .operations-grid {
+        grid-template-columns: 1fr;
     }
-
-    button {
-        width: 100%;
-    }
-
     textarea {
-        height: 100px;
+        min-height: 120px;
+        font-size: 0.9em;
+    }
+    .lab-io, .lab-operations {
+        padding: 7px;
+    }
+    .back-btn {
+        top: 10px;
+        left: 10px;
+        padding: 10px 16px;
         font-size: 0.9em;
     }
 } 
