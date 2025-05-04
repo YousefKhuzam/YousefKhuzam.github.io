@@ -235,6 +235,26 @@
             letter-spacing: 0.5px;
             opacity: 0.8;
         }
+        .linkedin-btn {
+            background: #0077b5;
+            color: #fff !important;
+            border-radius: 3px;
+            padding: 1px 1px;
+            font-weight: 300;
+            font-size: 0.15em;
+            margin-top: 8px;
+            box-shadow: 0 2px 8px #0077b555;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .linkedin-btn:hover {
+            background: #005983;
+            color: #fff;
+            box-shadow: 0 4px 16px #0077b599;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -253,7 +273,7 @@
     <div class="blog-container">
         <div class="blog-grid">
             <!-- Blog Widget 1 -->
-            <div class="blog-widget" data-id="doh-scams">
+            <div class="blog-widget" data-id="doh-scams" data-link="https://www.linkedin.com/pulse/rise-dns-over-https-doh-scams-what-you-need-know-yousef-alkhuzam-usqef/">
                 <div class="blog-card-top">
                     <span class="blog-emoji">🚨</span>
                     <span class="blog-badge new">NEW</span>
@@ -265,13 +285,13 @@
                     DNS over HTTPS (DoH) is a privacy-enhancing technology that encrypts DNS requests. While great for privacy, it's also being used by scammers and cybercriminals to avoid detection...
                 </div>
                 <div class="blog-tags"><span class="tag">DNS</span><span class="tag">Privacy</span><span class="tag">Scams</span></div>
-                <a href="https://www.linkedin.com/pulse/rise-dns-over-https-doh-scams-what-you-need-know-yousef-alkhuzam-usqef/" class="read-more" target="_blank">
-                    <i class="fab fa-linkedin linkedin-icon"></i>Read more on my LinkedIn →
+                <a href="https://www.linkedin.com/pulse/rise-dns-over-https-doh-scams-what-you-need-know-yousef-alkhuzam-usqef/" class="read-more linkedin-btn" target="_blank">
+                    <i class="fab fa-linkedin linkedin-icon"></i> View Full Article on LinkedIn
                 </a>
             </div>
 
             <!-- Blog Widget 2 -->
-            <div class="blog-widget" data-id="cyber-threats-2024">
+            <div class="blog-widget" data-id="cyber-threats-2024" data-link="https://www.linkedin.com/posts/yousefalkhuzam_cybersecurity-threats-2024-activity-7171234567891">
                 <div class="blog-card-top">
                     <span class="blog-emoji">🔍</span>
                     <span class="blog-badge featured">FEATURED</span>
@@ -283,13 +303,13 @@
                     An analysis of the latest cyber threats and attack vectors that organizations should be aware of in 2024...
                 </div>
                 <div class="blog-tags"><span class="tag">Threats</span><span class="tag">2024</span><span class="tag">Analysis</span></div>
-                <a href="https://www.linkedin.com/posts/yousefalkhuzam_cybersecurity-threats-2024-activity-7171234567891" class="read-more" target="_blank">
-                    <i class="fab fa-linkedin linkedin-icon"></i>Read more on my LinkedIn →
+                <a href="https://www.linkedin.com/posts/yousefalkhuzam_cybersecurity-threats-2024-activity-7171234567891" class="read-more linkedin-btn" target="_blank">
+                    <i class="fab fa-linkedin linkedin-icon"></i> View Full Article on LinkedIn
                 </a>
             </div>
 
             <!-- Blog Widget 3 -->
-            <div class="blog-widget" data-id="secure-coding">
+            <div class="blog-widget" data-id="secure-coding" data-link="https://www.linkedin.com/posts/yousefalkhuzam_secure-coding-best-practices-activity-7171234567892">
                 <div class="blog-card-top">
                     <span class="blog-emoji">💻</span>
                     <button class="blog-like-btn" title="Like" onclick="toggleLike(event, 'secure-coding')"><span class="like-heart">❤</span></button>
@@ -300,8 +320,8 @@
                     Essential secure coding practices that every developer should implement to prevent common vulnerabilities...
                 </div>
                 <div class="blog-tags"><span class="tag">Coding</span><span class="tag">Security</span><span class="tag">Best Practices</span></div>
-                <a href="https://www.linkedin.com/posts/yousefalkhuzam_secure-coding-best-practices-activity-7171234567892" class="read-more" target="_blank">
-                    <i class="fab fa-linkedin linkedin-icon"></i>Read more on my LinkedIn →
+                <a href="https://www.linkedin.com/posts/yousefalkhuzam_secure-coding-best-practices-activity-7171234567892" class="read-more linkedin-btn" target="_blank">
+                    <i class="fab fa-linkedin linkedin-icon"></i> View Full Article on LinkedIn
                 </a>
             </div>
         </div>
@@ -321,7 +341,7 @@
             localStorage.setItem('hekayat_like_' + id, liked ? '1' : '0');
             btn.classList.toggle('liked', liked);
         }
-        // On load, set like state
+        // On load, set like state and card click
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.blog-widget').forEach(function(card) {
                 const id = card.getAttribute('data-id');
@@ -329,6 +349,11 @@
                 if (btn && localStorage.getItem('hekayat_like_' + id) === '1') {
                     btn.classList.add('liked');
                 }
+                card.addEventListener('click', function(e) {
+                    if (e.target.closest('.blog-like-btn')) return;
+                    const link = card.getAttribute('data-link');
+                    if (link) window.open(link, '_blank');
+                });
             });
         });
     </script>
