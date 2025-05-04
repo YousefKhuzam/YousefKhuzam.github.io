@@ -1,76 +1,292 @@
 /* Dark Theme Styling */
 body {
-    font-family: 'Courier New', monospace;
+    font-family: 'Baloo 2', 'Fredoka One', 'Segoe UI', 'Arial', 'sans-serif';
     background-color: #181818;
     color: white;
     margin: 0;
     padding: 0;
+    min-height: 100vh;
+    min-width: 100vw;
+    width: 100vw;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    height: 97vh;
-    overflow: hidden;
+    justify-content: flex-start;
 }
 
 #particles-js {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1; /* Behind the game content */
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
 }
 
-.game-container {
+.game-title-fun {
+    font-family: 'Fredoka One', 'Baloo 2', cursive, sans-serif;
+    font-size: 2.2em;
+    font-weight: 700;
+    color: #fff;
+    margin: 32px 0 18px 0;
     text-align: center;
-    background-color: var(--secondary);
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    border: 1px solid var(--accent);
+    letter-spacing: 1.5px;
+    text-shadow: 0 2px 2px #00ffe7, 0 1px 2px #000;
+}
+
+.fun-game-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    min-height: 70vh;
+}
+
+.fun-score-bar-outside {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    background: rgba(0,0,0,0.7);
+    border-radius: 32px;
+    box-shadow: 0 2px 2px #00ffe7, 0 1px 2px #000;
+    border: 2px solid #00ffe7;
+    padding: 12px 32px;
+    font-family: 'Baloo 2', 'Fredoka One', cursive, sans-serif;
+    font-size: 1.2em;
+    color: #fff;
+    margin-bottom: 24px;
+    animation: fun-bounce 0.7s;
+}
+
+@keyframes fun-bounce {
+    0% { transform: scale(0.9); }
+    60% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+}
+
+.fun-score-label {
+    color: #ffea00;
+    font-weight: 700;
+    text-shadow: 0 1px 2px #000;
+    margin-right: 4px;
+    font-size: 1.1em;
+}
+
+.fun-score-num {
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.2em;
+    margin-right: 8px;
+    margin-left: 2px;
+    text-shadow: 0 1px 2px #000;
+    transition: color 0.2s, transform 0.2s;
+}
+
+.fun-game-board {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(30,30,40,0.85);
+    border-radius: 40px;
+    box-shadow: 0 0 2px 0 #00ffe7, 0 2px 2px 0 #000;
+    border: 3.5px solid #00ffe7;
+    width: 90vw;
+    height: 90vw;
+    max-width: 480px;
+    max-height: 480px;
+    min-width: 320px;
+    min-height: 320px;
+    margin: 0 auto;
+    overflow: visible;
+    z-index: 1;
+    transition: box-shadow 0.2s;
 }
 
 canvas {
-    border: 3px solid var(--accent);
-    margin-top: -10px;
-    background-color: var(--background);
-    border-radius: 8px;
+    border-radius: 32px;
+    width: 100%;
+    height: 100%;
+    min-width: 320px;
+    min-height: 320px;
+    max-width: 480px;
+    max-height: 480px;
+    display: block;
+    margin: 0 auto;
+    background: #181818;
+    box-shadow: 0 2px 2px #00ffe7, 0 1px 2px #000;
 }
 
-#score {
-    font-size: 20px;
-    font-weight: bold;
-    margin-top: 10px;
-    color: var(--text);
+.fun-controls-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 24px;
+    margin-bottom: 12px;
 }
 
-.controls {
-    margin-top: 15px;
-    color: var(--text);
-}
-
-.game-over {
-    color: #ff4444;
-    font-size: 24px;
-    font-weight: bold;
-    margin-top: 20px;
-}
-
-.restart-btn {
-    background: var(--accent);
-    color: var(--text);
-    padding: 10px 20px;
+.fun-btn {
+    font-family: 'Baloo 2', 'Fredoka One', cursive, sans-serif;
+    font-size: 1.2em;
+    font-weight: 700;
     border: none;
-    border-radius: 5px;
+    outline: none;
+    border-radius: 50px;
+    background: linear-gradient(90deg, #00ffe7 0%, #ffea00 100%);
+    color: #181818;
+    box-shadow: 0 2px 2px #00ffe7, 0 1px 2px #000;
+    padding: 12px 32px;
     cursor: pointer;
-    font-size: 16px;
-    margin-top: 15px;
-    transition: all 0.3s ease;
+    margin: 0 4px;
+    transition: background 0.2s, transform 0.2s, color 0.2s;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.restart-btn:hover {
-    background: var(--button-hover);
-    transform: translateY(-2px);
+.fun-btn:hover {
+    background: linear-gradient(90deg, #ffea00 0%, #00ffe7 100%);
+    color: #181818;
+    transform: scale(1.08);
+}
+
+.fun-icon-btn {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    font-size: 1.5em;
+    background: linear-gradient(135deg, #00ffe7 60%, #ffea00 100%);
+    color: #181818;
+    box-shadow: 0 2px 2px #00ffe7, 0 1px 2px #000;
+    padding: 0;
+    margin: 0;
+    border: none;
+    transition: background 0.2s, transform 0.2s, color 0.2s;
+}
+
+.fun-icon-btn:hover {
+    background: linear-gradient(135deg, #ffea00 60%, #00ffe7 100%);
+    color: #181818;
+    transform: scale(1.13) rotate(-8deg);
+}
+
+.fun-start-btn-outside {
+    display: block;
+    margin: 32px auto 0 auto;
+    font-size: 2em;
+    border-radius: 50px;
+    padding: 22px 60px;
+    background: linear-gradient(90deg, #ffea00 0%, #00ffe7 100%);
+    color: #181818;
+    animation: fun-bounce-btn 1.2s infinite alternate;
+    box-shadow: 0 2px 24px #00ffe7, 0 1px 2px #000;
+    font-weight: 800;
+    border: none;
+}
+
+@keyframes fun-bounce-btn {
+    0% { transform: scale(1); }
+    60% { transform: scale(1.08); }
+    100% { transform: scale(1.13); }
+}
+
+.fun-gameover-card-outside {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.95);
+    border-radius: 32px;
+    box-shadow: 0 2px 2px #00ffe7, 0 1px 2px #000;
+    padding: 38px 44px 32px 44px;
+    min-width: 260px;
+    min-height: 220px;
+    margin: 32px auto 0 auto;
+    font-family: 'Baloo 2', 'Fredoka One', cursive, sans-serif;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s, display 0.3s;
+    position: absolute;
+    left: 50%;
+    top: 35%;
+    transform: translate(-50%, -50%);
+}
+
+.fun-gameover-card-outside.active {
+    display: flex;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.fun-gameover-emoji {
+    font-size: 3.2em;
+    margin-bottom: 10px;
+    animation: fun-wiggle 1.2s infinite alternate;
+}
+
+@keyframes fun-wiggle {
+    0% { transform: rotate(-8deg); }
+    100% { transform: rotate(8deg); }
+}
+
+.fun-gameover-title {
+    font-size: 2em;
+    color: #ffea00;
+    font-weight: 800;
+    margin-bottom: 10px;
+    text-shadow: 0 1px 2px #00ffe7;
+}
+
+.fun-final-score {
+    font-size: 1.2em;
+    color: #181818;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.fun-new-high {
+    color: #00b894;
+    font-size: 1.1em;
+    margin: 10px 0 18px 0;
+    animation: fun-bounce 1s infinite alternate;
+}
+
+.fun-playagain-btn {
+    font-size: 1.2em;
+    border-radius: 50px;
+    padding: 16px 44px;
+    background: linear-gradient(90deg, #00ffe7 0%, #ffea00 100%);
+    color: #181818;
+    font-weight: 800;
+    animation: fun-wiggle 1.2s infinite alternate;
+    box-shadow: 0 2px 2px #00ffe7, 0 1px 2px #000;
+    border: none;
+    margin-top: 12px;
+}
+
+@media (max-width: 700px) {
+    .fun-game-board, canvas {
+        max-width: 98vw;
+        max-height: 98vw;
+        min-width: 180px;
+        min-height: 180px;
+    }
+    .fun-score-bar-outside { padding: 8px 10px; font-size: 1em; gap: 10px; }
+    .fun-controls-bar { gap: 12px; }
+    .fun-gameover-card-outside { padding: 18px 8px 18px 8px; min-width: 120px; top: 38%; }
+    .fun-start-btn-outside { padding: 14px 24px; font-size: 1.2em; }
 }
 
 
