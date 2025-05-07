@@ -4,131 +4,196 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yousef Alkhuzam | Cyber Threat Intel</title>
+    <link rel="icon" type="image/png" href="assets/images/bitmoji.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="assets/css/main.css">
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="assets/js/main.js" defer></script>
 </head>
-<body>
-    <button class="theme-toggle">🌓</button>
+<body class="home-page">
     <div id="particles-js"></div>
+
+    <header class="global-header">
+        <button class="theme-toggle">🌓</button>
+    </header>
 
     <header>
         <h1>
             <img src="assets/images/bitmoji.png" alt="Your Bitmoji" class="profile-picture">
             Yousef Alkhuzam
         </h1>
+        <div class="contact-icons">
+            <div class="contact-icon-wrapper">
+                <a href="mailto:iam@yousefkhuzam.me" class="contact-icon-link">
+                    <i class="fas fa-envelope contact-icon"></i>
+                </a>
+            </div>
+            <div class="contact-icon-wrapper">
+                <a href="https://linkedin.com/in/yousefalkhuzam" target="_blank" class="contact-icon-link">
+                    <i class="fab fa-linkedin contact-icon"></i>
+                </a>
+            </div>
+            <div class="contact-icon-wrapper">
+                <div class="flag-icons">
+                    <span class="flag-tooltip" data-tooltip="Saudi National">🇸🇦</span>
+                    <span class="flag-tooltip" data-tooltip="Bahraini Blood">🇧🇭</span>
+                </div>
+            </div>
+        </div>
         <nav class="nav-grid">
-            <a href="pages/email-analyzer/index.html" class="tools-btn">🛠️ Email Analyzer</a>
-            <a href="pages/snakegame/index.html" class="tools-btn">🎮 Snake Game</a>
-            <a href="pages/youseflab/index.html" class="tools-btn">🔧 YousefLab</a>
-            <a href="pages/blog/index.html" class="tools-btn">📝 Blog</a>
-            <button class="cv-btn" onclick="openCVPopup()">📄 View My CV</button>
+            <a href="pages/email-analyzer/index.html" class="cyber-btn">
+                <span class="cyber-icon"><i class="fas fa-envelope-open-text"></i></span>
+                <span class="cyber-text">Email Analyzer</span>
+                <span class="cyber-glow"></span>
+            </a>
+            <a href="pages/snakegame/index.html" class="cyber-btn">
+                <span class="cyber-icon"><i class="fas fa-gamepad"></i></span>
+                <span class="cyber-text">Snake Game</span>
+                <span class="cyber-glow"></span>
+            </a>
+            <a href="pages/youseflab/index.html" class="cyber-btn">
+                <span class="cyber-icon"><i class="fas fa-flask"></i></span>
+                <span class="cyber-text">YousefLab</span>
+                <span class="cyber-glow"></span>
+            </a>
+            <a href="pages/blog/index.html" class="cyber-btn">
+                <span class="cyber-icon"><i class="fas fa-blog"></i></span>
+                <span class="cyber-text">Blog</span>
+                <span class="cyber-glow"></span>
+            </a>
+            <button class="cyber-btn" onclick="openCVPopup()">
+                <span class="cyber-icon"><i class="fas fa-file-alt"></i></span>
+                <span class="cyber-text">View CV</span>
+                <span class="cyber-glow"></span>
+            </button>
         </nav>
     </header>
     
     <div class="container">
-        <div class="widget">
-            <h2>🤔 Contact Me</h2>
-            <div class="contact-grid">
-                <div class="contact-item">
-                    📧 <span>Khuzam97@gmail.com | iam@yousefkhuzam.me</span>
+        <div class="widget cyber-widget">
+            <div class="widget-header">
+                <h2><i class="fas fa-user-shield"></i> About Me</h2>
+            </div>
+            <div class="widget-content">
+                <div class="profile-section">
+                    <p>Experienced cybersecurity professional with a proven track record in safeguarding digital assets and mitigating cyber threats. Specializing in threat analysis, incident response, and implementing robust security measures to protect organizations from cyber attacks.</p>
+                    <button class="cyber-btn read-more-btn" onclick="toggleReadMore()">
+                        <span class="cyber-icon"><i class="fas fa-book-open"></i></span>
+                        <span class="cyber-text">Read More About Yousef</span>
+                        <span class="cyber-glow"></span>
+                    </button>
                 </div>
-                <div class="contact-item">
-                    📱 <span>+966 531080685 | +973 32300932</span>
-                </div>
-                <div class="contact-item">
-                    🔗 <u><a href="https://linkedin.com/in/yousefalkhuzam" target="_blank">LinkedIn Profile</a></u>
-                </div>
-                <div class="contact-item">
-                    🇸🇦🇧🇭 <span>Saudi National with Bahraini Blood</span>
+                
+                <div class="read-more-content">
+                    <div class="cyber-section">
+                        <div class="section-header">
+                            <i class="fas fa-briefcase"></i>
+                            <h3>Experience</h3>
+                        </div>
+                        <div class="experience-entry">
+                            <h4><i class="fas fa-shield-alt"></i> CTM360 W.L.L.</h4>
+                            <div class="entry-details">
+                                <span class="detail-tag">Position: Cyber Threat Analyst</span>
+                                <span class="detail-tag">Duration: May 2022 - Present</span>
+                            </div>
+                            <ul class="cyber-list">
+                                <li>Proactively detect, analyze, and mitigate emerging cyber threats</li>
+                                <li>Monitor global cyber trends and develop threat intelligence reports</li>
+                                <li>Enhance cybersecurity response strategies through real-time threat analysis</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="cyber-section">
+                        <div class="section-header">
+                            <i class="fas fa-graduation-cap"></i>
+                            <h3>Education</h3>
+                        </div>
+                        <div class="education-entry">
+                            <h4><i class="fas fa-university"></i> University of Northern Iowa, USA</h4>
+                            <div class="entry-details">
+                                <span class="detail-tag">Degree: Bachelor of Management Information Systems</span>
+                                <span class="detail-tag">Duration: January 2017 - May 2021</span>
+                                <span class="detail-tag">GPA: 3.26/4.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cyber-section">
+                        <div class="section-header">
+                            <i class="fas fa-certificate"></i>
+                            <h3>Certifications</h3>
+                        </div>
+                        <div class="certification-grid">
+                            <div class="certification-card">
+                                <i class="fas fa-scroll"></i>
+                                <h4>Certified Threat Hunting Professional (eCTHPv2)</h4>
+                                <div class="entry-details">
+                                    <span class="detail-tag">Issued by: INE Security</span>
+                                    <span class="detail-tag">Obtained: July 2024</span>
+                                </div>
+                            </div>
+                            <div class="certification-card">
+                                <i class="fas fa-lock"></i>
+                                <h4>Fortinet Network Security Expert (NSE 1-3)</h4>
+                                <div class="entry-details">
+                                    <span class="detail-tag">Issued by: Fortinet NSE Training Institute</span>
+                                    <span class="detail-tag">Obtained: March 2022</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="widget">
-            <h2>🙋‍♂️ About Me</h2>
-            <p>Experienced cybersecurity professional with a proven track record in safeguarding digital assets and mitigating cyber threats. Specializing in threat analysis, incident response, and implementing robust security measures to protect organizations from cyber attacks. Passionate about staying updated on the latest cybersecurity trends and technologies to ensure proactive defense strategies.</p>
-            
-            <span class="read-more-btn" onclick="toggleReadMore(this)">Read More About Yousef</span>
-            
-            <div class="read-more-content">
-                <!-- Experience Section -->
-                <hr>
-                <h2>💼 Experience</h2>
-                <div class="experience-entry">
-                    <h3>🛡️ CTM360 W.L.L.</h3>
-                    <p><strong>Position:</strong> Cyber Threat Analyst</p>
-                    <p><strong>Duration:</strong> May 2022 - Present</p>
-                    <ul>
-                        <li>Proactively detect, analyze, and mitigate emerging cyber threats.</li>
-                        <li>Monitor global cyber trends and develop threat intelligence reports.</li>
-                        <li>Enhance cybersecurity response strategies through real-time threat analysis.</li>
-                    </ul>
-                </div>
-
-                <!-- Education Section -->
-                <hr>
-                <h2>🎓 Education</h2>
-                <div class="education-entry">
-                    <h3>📍 University of Northern Iowa, USA</h3>
-                    <p><strong>Degree:</strong> Bachelor of Management Information Systems</p>
-                    <p><strong>Duration:</strong> January 2017 - May 2021</p>
-                    <ul>
-                        <li>GPA: 3.26/4.00</li>
-                    </ul>
-                </div>
-
-                <!-- Certifications Section -->
-                <hr>
-                <h2>🏆 Certifications</h2>
-                <div class="certification-entry">
-                    <h3>📜 Certified Threat Hunting Professional (eCTHPv2)</h3>
-                    <p><strong>Issued by:</strong> INE Security (eLearnSecurity)</p>
-                    <p><strong>Obtained:</strong> July 2024</p>
-                </div>
-                <div class="certification-entry">
-                    <h3>🔐 Fortinet Network Security Expert (NSE 1-3)</h3>
-                    <p><strong>Issued by:</strong> Fortinet NSE Training Institute</p>
-                    <p><strong>Obtained:</strong> March 2022</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="widget">
-            <h2>🚀 Blog</h2>
-            <h3>🚨 A New Wave of Degree Mill Scams Targeting Professionals in the GCC 🚨</h3>
-            <p>Lately, I've noticed a rise in scams targeting professionals and job seekers in the GCC...</p>
-            <span class="read-more-btn" onclick="toggleBlogReadMore()">Read More</span>
-            <div class="read-more-content" id="full-blog">
-                <p><strong>Here's how it works:</strong></p>
-                <ul>
-                    <li>𝗙𝗮𝗸𝗲 𝗟𝗶𝗻𝗸𝗲𝗱𝗜𝗻 𝗣𝗿𝗼𝗳𝗶𝗹𝗲𝘀: The scammers create polished profiles, complete with fake work histories and certifications, and they actively post career tips to get people's attention. Also, They use AI-modified photos to make their profiles appear more authentic.</li>
-                    <li>𝗧𝗿𝗮𝗽𝗽𝗶𝗻𝗴 𝗩𝗶𝗰𝘁𝗶𝗺𝘀: They direct people to bogus educational websites, claiming to be accredited by well-known institutions but it's all fake.</li>
-                    <li>𝗖𝗼𝗹𝗹𝗲𝗰𝘁𝗶𝗻𝗴 𝗣𝗲𝗿𝘀𝗼𝗻𝗮𝗹 𝗜𝗻𝗳𝗼: Victims are asked to fill out forms with personal and financial information, which is later used for fraud.</li>
-                    <li>𝗦𝗺𝗮𝗹𝗹 𝗣𝗮𝘆𝗺𝗲𝗻𝘁 𝗥𝗲𝗾𝘂𝗲𝘀𝘁𝘀: Scammers start by asking for small amounts, like application fees or course deposits, which quickly add up.</li>
-                    <li>𝗪𝗼𝗿𝘁𝗵𝗹𝗲𝘀𝘀 𝗖𝗲𝗿𝘁𝗶𝗳𝗶𝗰𝗮𝘁𝗲𝘀: In the end, victims are left with unrecognized certificates that hold no value for career advancement.</li>
-                </ul>
-                <p><strong>My advice:</strong> Always verify LinkedIn profiles, avoid suspicious links, and never share personal details unless certain. Stay updated on scams—awareness is the best defense. Let's stay alert and protect our professional community.</p>
-            </div>
-        </div>
-
-        <div class="widget">
-            <h2>🔍 Threat Intelligence Updates</h2>
-            <div id="threat-feed">new updates in the cyber space</div>
         </div>
     </div>
 
     <script>
         function toggleReadMore() {
             const content = document.querySelector('.read-more-content');
-            content.style.display = (content.style.display === "none" || content.style.display === "") ? "block" : "none";
+            const button = document.querySelector('.read-more-btn');
+            const isHidden = content.style.display === 'none' || content.style.display === '';
+            
+            content.style.display = isHidden ? 'block' : 'none';
+            button.querySelector('.cyber-text').textContent = isHidden ? 'Show Less' : 'Read More About Yousef';
         }
 
         function toggleBlogReadMore() {
             const blogContent = document.getElementById('full-blog');
             blogContent.style.display = (blogContent.style.display === "none" || blogContent.style.display === "") ? "block" : "none";
         }
+
+        function toggleContactInfo(type) {
+            const info = document.getElementById(`${type}-info`);
+            const allInfos = document.querySelectorAll('.contact-info');
+            
+            allInfos.forEach(item => {
+                if (item !== info) {
+                    item.style.display = 'none';
+                }
+            });
+            
+            info.style.display = info.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        // Close contact info when clicking outside
+        document.addEventListener('click', function(event) {
+            const contactInfos = document.querySelectorAll('.contact-info');
+            const contactIcons = document.querySelectorAll('.contact-icon');
+            
+            let clickedInside = false;
+            contactIcons.forEach(icon => {
+                if (icon.contains(event.target)) {
+                    clickedInside = true;
+                }
+            });
+            
+            if (!clickedInside) {
+                contactInfos.forEach(info => {
+                    info.style.display = 'none';
+                });
+            }
+        });
 
         particlesJS.load('particles-js', 'particles-config.json', function() {
             console.log('Particles.js loaded!');
@@ -142,5 +207,370 @@
             <a href="CV.pdf" download class="download-btn">📥 Download CV</a>
         </div>
     </div>
+
+    <style>
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: var(--bg-color);
+        }
+
+        body {
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            padding: 0.5rem 0;
+            margin: 0.5rem 0;
+        }
+
+        .contact-icon-wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .contact-icon {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: transform 0.3s, color 0.3s;
+        }
+
+        .contact-icon:hover {
+            transform: scale(1.1);
+            color: var(--accent-color);
+        }
+
+        .contact-icon-link {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .contact-info {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--card-bg);
+            padding: 0.8rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: none;
+            flex-direction: column;
+            gap: 0.5rem;
+            z-index: 100;
+            min-width: 220px;
+            text-align: center;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .contact-info span {
+            display: block;
+            font-size: 0.9rem;
+            padding: 0.3rem 0;
+            color: var(--text-color);
+        }
+
+        .contact-info span:hover {
+            background: var(--hover-bg);
+            border-radius: 4px;
+        }
+
+        .flag-icons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .flag-tooltip {
+            position: relative;
+            cursor: help;
+        }
+
+        .flag-tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--card-bg);
+            padding: 0.5rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .flag-tooltip:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .nav-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .cyber-btn {
+            position: relative;
+            background: rgba(0, 0, 0, 0.14);
+            border: 1px solid var(--accent-color);
+            border-radius: 4px;
+            padding: 0.6rem 1rem;
+            color: var(--text-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            box-shadow: 0 0 5px rgba(30, 26, 26, 0.2);
+        }
+
+        .cyber-btn:hover {
+            background: rgba(var(--accent-rgb), 0.1);
+            box-shadow: 0 0 15px var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .cyber-btn:hover .cyber-glow {
+            opacity: 1;
+        }
+
+        .cyber-icon {
+            font-size: 1.1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .cyber-btn:hover .cyber-icon {
+            transform: scale(1.1);
+        }
+
+        .cyber-text {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cyber-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            animation: glitch 2s infinite;
+        }
+
+        @keyframes glitch {
+            0% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-2px);
+            }
+            50% {
+                transform: translateX(2px);
+            }
+            75% {
+                transform: translateX(-1px);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .cyber-btn {
+                width: 200px;
+                justify-content: center;
+            }
+        }
+
+        .cyber-widget {
+            background: rgba(0, 0, 0, 0.14);
+            border: 1px solid var(--accent-color);
+            border-radius: 4px;
+            padding: 1.5rem;
+            box-shadow: 0 0 5px rgba(30, 26, 26, 0.2);
+        }
+
+        .widget-header {
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .widget-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .cyber-section {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-icon {
+            font-size: 1.5rem;
+        }
+
+        .section-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: var(--accent-color);
+        }
+
+        .entry-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 0.5rem 0;
+        }
+
+        .detail-tag {
+            background: rgba(var(--accent-rgb), 0.1);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: var(--accent-color);
+        }
+
+        .cyber-list {
+            list-style: none;
+            padding: 0;
+            margin: 0.5rem 0;
+        }
+
+        .cyber-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin: 0.5rem 0;
+        }
+
+        .cyber-list li::before {
+            content: "•";
+            color: var(--accent-color);
+            position: absolute;
+            left: 0;
+        }
+
+        .certification-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .certification-card {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .certification-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        .cert-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .certification-card h4 {
+            margin: 0.5rem 0;
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .certification-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .read-more-btn {
+            margin-top: 1rem;
+            width: fit-content;
+        }
+
+        .read-more-content {
+            display: none;
+            margin-top: 1.5rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .profile-section {
+            margin-bottom: 1rem;
+        }
+
+        .section-icon, .cert-icon {
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .section-header i, .certification-card i {
+            font-size: 1.2rem;
+            margin-right: 0.5rem;
+        }
+
+        .cyber-icon i {
+            font-size: 1rem;
+        }
+
+        .widget-header i {
+            margin-right: 0.5rem;
+            color: var(--accent-color);
+        }
+
+        .experience-entry h4 i, .education-entry h4 i {
+            margin-right: 0.5rem;
+            color: var(--accent-color);
+        }
+    </style>
 </body>
 </html>

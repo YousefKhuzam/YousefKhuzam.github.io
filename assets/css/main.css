@@ -141,12 +141,12 @@ h1 {
 .theme-toggle {
     position: fixed;
     top: 20px;
-    right: 20px; /* Changed from left to right */
+    right: 20px;
     background: var(--secondary);
     color: var(--text);
     padding: 10px;
     border-radius: 50%;
-    border: 1px solid var(--accent); /* Fixed negative border */
+    border: 1px solid var(--accent);
     cursor: pointer;
     transition: all 0.3s ease;
     z-index: 1000;
@@ -225,24 +225,7 @@ iframe {
     transform: translateY(-2px);
 }
 
-/* Back Button - Consistent positioning */
-.back-btn {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    background: var(--secondary);
-    color: var(--text);
-    padding: 10px 20px;
-    border-radius: 25px;
-    border: 1px solid var(--accent); /* Fixed negative border */
-    text-decoration: none;
-    transition: all 0.3s ease;
-    z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.back-btn:hover {
-    background: var(--button-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+/* Hide back button on home page */
+.home-page .back-btn {
+    display: none;
 }

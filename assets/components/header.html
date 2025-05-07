@@ -1,0 +1,68 @@
+<header class="global-header">
+    <a href="/" class="home-btn">
+        <i class="fas fa-home"></i>
+    </a>
+    <button class="theme-toggle">🌓</button>
+</header>
+
+<style>
+    .global-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .home-btn {
+        background: rgba(0, 0, 0, 0.14);
+        border: 1px solid var(--accent-color);
+        border-radius: 4px;
+        padding: 0.6rem 1rem;
+        color: var(--text-color);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 5px rgba(30, 26, 26, 0.2);
+    }
+
+    .home-btn:hover {
+        background: rgba(var(--accent-rgb), 0.1);
+        box-shadow: 0 0 15px var(--accent-color);
+        transform: translateY(-2px);
+    }
+
+    .home-btn i {
+        font-size: 1.1rem;
+        transition: transform 0.3s ease;
+    }
+
+    .home-btn:hover i {
+        transform: scale(1.1);
+    }
+
+    .theme-toggle {
+        background: rgba(0, 0, 0, 0.14);
+        border: 1px solid var(--accent-color);
+        border-radius: 4px;
+        padding: 0.6rem 1rem;
+        color: var(--text-color);
+        cursor: pointer;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 5px rgba(30, 26, 26, 0.2);
+    }
+
+    .theme-toggle:hover {
+        background: rgba(var(--accent-rgb), 0.1);
+        box-shadow: 0 0 15px var(--accent-color);
+        transform: translateY(-2px);
+    }
+</style> 

@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog | Yousef Alkhuzam</title>
+    <link rel="icon" type="image/png" href="../../assets/images/bitmoji.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/components/header.css">
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="../../assets/js/main.js" defer></script>
     <style>
@@ -119,35 +121,8 @@
             text-shadow: 0 0 6px #62b1ff99;
         }
         .blog-home-btn {
-            position: fixed !important;
-            top: 16px !important;
-            right: 16px !important;
-            left: auto !important;
-            width: 28px;
-            height: 28px;
-            background: var(--primary);
-            color: var(--text);
-            border-radius: 50%;
-            text-align: center;
-            text-decoration: none;
-            transition: all 0.2s ease;
-            font-size: 1.1em;
-            border: 1.5px solid var(--border);
-            z-index: 9999 !important;
-            box-shadow: 0 4px 24px 0 rgba(0,0,0,0.18);
-            font-family: inherit;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-            pointer-events: all;
+            display: none;
         }
-        .blog-home-btn:hover {
-            background: var(--button-hover);
-            box-shadow: 0 0 10px #62b1ff;
-        }
-
         #particles-js {
             position: fixed;
             width: 100%;
@@ -258,16 +233,10 @@
     </style>
 </head>
 <body>
-    <button class="theme-toggle">🌓</button>
     <div id="particles-js"></div>
-    <a href="../../index.html" class="blog-home-btn" title="Home">←</a>
-
-    <header class="hekayat-header">
-        <div class="hekayat-logo">🧑‍💻</div>
-        <div class="hekayat-title-group">
-            <h1 class="hekayat-title">Hekayat Cyber</h1>
-            <div class="hekayat-subtitle">Stories & Insights from the Cyber World</div>
-        </div>
+    
+    <header class="global-header">
+        <button class="theme-toggle">🌓</button>
     </header>
 
     <div class="blog-container">
